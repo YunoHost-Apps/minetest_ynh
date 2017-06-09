@@ -1,0 +1,71 @@
+{
+    "name": "Minetest",
+    "id": "minetest",
+    "packaging_format": 1,
+    "description": {
+        "en": "Minetest is a free, open source voxel game engine and game. Fully extendable. Need a client to connect to the server.",
+        "fr": "Minetest est un moteur de jeu de type « bac à sable » gratuit et open source. Entièrement extensible. Nécessite un client pour se connecter au serveur."
+    },
+    "url": "http://www.minetest.net/",
+    "license": "MIT",
+    "maintainer": {
+        "name": "Luc Didry",
+        "email": "luc@framasoft.org",
+        "url": "https://framasoft.org"
+    },
+    "requirements": {
+        "yunohost": ">> 2.4.0"
+    },
+    "multi_instance": true,
+    "services": [
+    ],
+    "arguments": {
+        "install" : [
+            {
+                "name": "domain",
+                "type": "domain",
+                "ask": {
+                    "en": "Choose a domain for your minetest server",
+                    "fr": "Choisissez un domaine pour votre serveur minetest"
+                },
+                "example": "domain.org"
+            },
+            {
+                "name": "is_public",
+                "type": "boolean",
+                "ask": {
+                    "en": "Is it a public server? (should we announce it?)",
+                    "fr": "Est-ce un serveur public ? (devons-nous l'annoncer ?)"
+                },
+                "default": false
+            },
+            {
+                "name": "pvp",
+                "type": "boolean",
+                "ask": {
+                    "en": "Whether to enable players killing each other",
+                    "fr": "Permettre aux joueurs de se tuer l'un l'autre"
+                },
+                "default": false
+            },
+            {
+                "name": "creative",
+                "type": "boolean",
+                "ask": {
+                    "en": "Whether to enable creative mode (unlimited inventory)",
+                    "fr": "Permettre l'utilisation du mode créatif (inventaire illimité"
+                },
+                "default": false
+            },
+            {
+                "name": "damage",
+                "type": "boolean",
+                "ask": {
+                    "en": "Enable players getting damage and dying",
+                    "fr": "Les joueurs pourront-ils recevoir des dommages et mourir ?"
+                },
+                "default": true
+            }
+        ]
+    }
+}

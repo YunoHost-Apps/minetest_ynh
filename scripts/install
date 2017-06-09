@@ -1,0 +1,99 @@
+#!/bin/bash
+
+#=================================================
+# GENERIC STARTING
+#=================================================
+# IMPORT GENERIC HELPERS
+#=================================================
+
+source _common.sh
+source /usr/share/yunohost/helpers
+
+#=================================================
+# MANAGE FAILURE OF THE SCRIPT
+#=================================================
+
+ynh_abort_if_errors	# Active trap pour arrêter le script si une erreur est détectée.
+
+#=================================================
+# RETRIEVE ARGUMENTS FROM THE MANIFEST
+#=================================================
+
+domain=$YNH_APP_ARG_DOMAIN
+is_public=$YNH_APP_ARG_IS_PUBLIC
+pvp=$YNH_APP_ARG_PVP
+creative=$YNH_APP_ARG_CREATIVE
+damage=$YNH_APP_ARG_DAMAGE
+app=$YNH_APP_INSTANCE_NAME
+
+#=================================================
+# CHECK THE DEBIAN'S CODENAME
+#=================================================
+
+codename=$(lsb_release -a 2>/dev/null | grep Codename | cut -f 2)
+test -z "$codename" && (ynh_die "codename empty")
+
+#=================================================
+# STANDARD MODIFICATIONS
+#=================================================
+# FIND AND OPEN A PORT
+#=================================================
+
+port=$(ynh_find_port 30000)	# Cherche un port libre.
+
+# Ouvre les ports dans le firewall
+ALL_QUIET sudo yunohost firewall allow --no-upnp UDP $port
+ynh_app_setting_set $app port $port
+
+# Enregistre les infos dans la config YunoHost
+ynh_app_setting_set $app domain ${domain}
+ynh_app_setting_set $app is_public ${is_public}
+ynh_app_setting_set $app pvp ${pvp}
+ynh_app_setting_set $app creative ${creative}
+ynh_app_setting_set $app damage ${damage}
+
+#=================================================
+# SPECIFIC SETUP
+#=================================================
+# INSTALL MINETEST
+#=================================================
+
+# Installation du paquet minetest et ses dépendances
+ynh_replace_string "__CODENAME__" "$codename" ../conf/minetest.list
+sudo cp -a ../conf/minetest.list /etc/apt/sources.list.d/
+sudo apt-get update
+sudo apt-get -qq -t $codename-backports -y install minetest-server
+
+#=================================================
+# ENABLE SERVICE IN ADMIN PANEL
+#=================================================
+
+# Ajoute le service au monitoring de Yunohost.
+sudo yunohost service add minetest --log "/var/log/minetest/minetest.log"
+
+#=================================================
+# CONFIGURE MINETEST
+#=================================================
+
+# Modifie la configuration de minetest
+ynh_replace_string "__PORT__" "$port" ../conf/minetest.conf
+if [ $is_public -eq 1 ]
+then
+    ynh_replace_string "__ANNOUNCE__" "true" ../conf/minetest.conf
+else
+    ynh_replace_string "__ANNOUNCE__" "false" ../conf/minetest.conf
+fi
+ynh_replace_string "__DOMAIN__" "$domain" ../conf/minetest.conf
+ynh_replace_string "__PVP__" "$pvp" ../conf/minetest.conf
+ynh_replace_string "__CREATIVE__" "$creative" ../conf/minetest.conf
+ynh_replace_string "__DAMAGE__" "$damage" ../conf/minetest.conf
+sudo cat ../conf/minetest.conf > /etc/minetest/minetest.conf
+
+ynh_store_checksum_config "/etc/minetest/minetest.conf"  # Enregistre la somme de contrôle du fichier de config
+
+#=================================================
+# RESTART MINETEST'S SERVICE
+#=================================================
+
+# Redémarre minetest pour prendre en compte la nouvelle configuration
+sudo systemctl restart minetest-server
