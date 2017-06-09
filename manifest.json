@@ -53,7 +53,7 @@
                 "type": "boolean",
                 "ask": {
                     "en": "Whether to enable creative mode (unlimited inventory)",
-                    "fr": "Permettre l'utilisation du mode créatif (inventaire illimité"
+                    "fr": "Permettre l'utilisation du mode créatif (inventaire illimité)"
                 },
                 "default": false
             },
