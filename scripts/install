@@ -87,7 +87,7 @@ ynh_replace_string "__DOMAIN__" "$domain" ../conf/minetest.conf
 ynh_replace_string "__PVP__" "$pvp" ../conf/minetest.conf
 ynh_replace_string "__CREATIVE__" "$creative" ../conf/minetest.conf
 ynh_replace_string "__DAMAGE__" "$damage" ../conf/minetest.conf
-sudo cp ../conf/minetest.conf /etc/minetest/minetest.conf
+sudo cat ../conf/minetest.conf | sudo tee /etc/minetest/minetest.conf >/dev/null
 
 ynh_store_checksum_config "/etc/minetest/minetest.conf"  # Enregistre la somme de contrôle du fichier de config
 
