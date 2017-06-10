@@ -18,6 +18,7 @@
     },
     "multi_instance": true,
     "services": [
+        "minetest"
     ],
     "arguments": {
         "install" : [
