@@ -42,7 +42,8 @@ test -z "$codename" && (ynh_die "codename empty")
 port=$(ynh_find_port 30000)	# Cherche un port libre.
 
 # Ouvre les ports dans le firewall
-ALL_QUIET sudo yunohost firewall allow --no-upnp UDP $port
+ALL_QUIET sudo yunohost firewall allow UDP $port
+ALL_QUIET sudo yunohost firewall allow TCP $port
 ynh_app_setting_set $app port $port
 
 # Enregistre les infos dans la config YunoHost
@@ -61,6 +62,11 @@ ynh_app_setting_set $app damage ${damage}
 # Installation du paquet minetest et ses dépendances
 ynh_replace_string "__CODENAME__" "$codename" ../conf/minetest.list
 sudo cp -a ../conf/minetest.list /etc/apt/sources.list.d/
+if [ $(uname -m) == "armv7l" ]
+then
+    gpg --keyserver pgpkeys.mit.edu --recv-key 7638D0442B90D010
+    gpg -a --export 7638D0442B90D010 | sudo apt-key add -
+fi
 sudo apt-get update
 sudo apt-get -qq -t $codename-backports -y install minetest-server
 

@@ -36,6 +36,7 @@ fi
 
 # Ferme les ports dans le firewall
 ALL_QUIET sudo yunohost firewall disallow UDP $port
+ALL_QUIET sudo yunohost firewall disallow TCP $port
 
 #=================================================
 # SPECIFIC REMOVE
