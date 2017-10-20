@@ -6,117 +6,23 @@
 #=================================================
 #=================================================
 
-# Remove a file or a directory securely
-#
-# usage: ynh_secure_remove path_to_remove
-# | arg: path_to_remove - File or directory to remove
-ynh_secure_remove () {
-	path_to_remove=$1
-	forbidden_path=" \
-	/var/www \
-	/home/yunohost.app"
-
-	if [[ "$forbidden_path" =~ "$path_to_remove" \
-		# Match all path or subpath in $forbidden_path
-		|| "$path_to_remove" =~ ^/[[:alnum:]]+$ \
-		# Match all first level path from / (Like /var, /root, etc...)
-		|| "${path_to_remove:${#path_to_remove}-1}" = "/" ]]
-		# Match if the path finish by /. Because it's seems there is an empty variable
-	then
-		echo "Avoid deleting of $path_to_remove." >&2
-	else
-		if [ -e "$path_to_remove" ]
-		then
-			sudo rm -R "$path_to_remove"
-		else
-			echo "$path_to_remove doesn't deleted because it's not exist." >&2
-		fi
-	fi
-}
-
-ynh_setup_source () {
-	src_url=$(cat ../conf/app.src | grep SOURCE_URL | cut -d= -f2-)
-	src_checksum=$(cat ../conf/app.src | grep SOURCE_SUM | cut -d= -f2-)
-	arch_format=$(cat ../conf/app.src | grep ARCH_FORMAT | cut -d= -f2-)
-	local_source="/opt/yunohost-apps-src/$YNH_APP_ID/source.$arch_format"
-
-	if test -e "$local_source"
-	then	# Use the local source file if it is present
-		cp $local_source source.$arch_format
-	else	# If not, download the source
-		wget -nv -O source.$arch_format $src_url
-    fi
-
-	# Check the control sum
-	echo "$src_checksum source.$arch_format" \
-		| md5sum -c --status || ynh_die "Corrupt source"
-
-	# Extract source into the app dir
-	sudo mkdir -p "$final_path"
-	if [ $(echo "$arch_format" | tr '[:upper:]' '[:lower:]') = "zip" ]
-	then # Zip format
-		# Using of a temp directory, because unzip doesn't manage --strip-components
-		temp_dir=$(mktemp -d)
-		unzip -quo source.zip -d "$temp_dir"
-		sudo cp -a $temp_dir/*/. "$final_path"
-		ynh_secure_remove "$temp_dir"
-	elif [ $(echo "$arch_format" | tr '[:upper:]' '[:lower:]') = "tar.gz" ]; then
-		sudo tar -x -f source.tar.gz -C "$final_path" --strip-components 1
-	else
-		ynh_die "Format d'archive non reconnu."
-	fi
-
-	# Apply patches
-	if test -f ../sources/patches/*.patch; then
-		(cd "$DEST" \
-			&& for p in ${PKG_DIR}/patches/*.patch; do \
-				sudo patch -p1 < $p; done) \
-			|| ynh_die "Unable to apply patches"
-	fi
-
-	# Add supplementary files
-	if test -e "../sources/extra_files"; then
-		sudo cp -a ../sources/extra_files/. "$final_path"
-	fi
-}
-
-ynh_backup_abstract () {
-	# A intégrer à ynh_backup directement.
-	ynh_backup "$@"
-	echo "$2" "$1" >> backup_list
-}
-
-ynh_restore_file () {
-	file_and_dest=$(grep "^$1" backup_list)
-	backup_file=${file_and_dest%% *}
-	backup_dest=${file_and_dest#* }
-	if [ -f "$backup_dest" ]; then
-		ynh_die "There is already a file at this path: $backup_dest"
-	fi
-	if test -d "$backup_file"; then
-		sudo cp -a "$backup_file/." "$backup_dest"
-	else
-		sudo cp -a "$backup_file" "$backup_dest"
-	fi
-}
-
 ynh_fpm_config () {
 	finalphpconf="/etc/php5/fpm/pool.d/$app.conf"
-	ynh_compare_checksum_config "$finalphpconf" 1
+	ynh_backup_if_checksum_is_different "$finalphpconf" 1
 	sudo cp ../conf/php-fpm.conf "$finalphpconf"
 	ynh_replace_string "__NAMETOCHANGE__" "$app" "$finalphpconf"
 	ynh_replace_string "__FINALPATH__" "$final_path" "$finalphpconf"
 	ynh_replace_string "__USER__" "$app" "$finalphpconf"
 	sudo chown root: "$finalphpconf"
-	ynh_store_checksum_config "$finalphpconf"
+	ynh_store_file_checksum "$finalphpconf"
 
 	if [ -e "../conf/php-fpm.ini" ]
 	then
 		finalphpini="/etc/php5/fpm/conf.d/20-$app.ini"
-		ynh_compare_checksum_config "$finalphpini" 1
+		ynh_backup_if_checksum_is_different "$finalphpini" 1
 		sudo cp ../conf/php-fpm.ini "$finalphpini"
 		sudo chown root: "$finalphpini"
-		ynh_store_checksum_config "$finalphpini"
+		ynh_store_file_checksum "$finalphpini"
 	fi
 
 	sudo systemctl reload php5-fpm
@@ -130,7 +36,7 @@ ynh_remove_fpm_config () {
 
 ynh_nginx_config () {
 	finalnginxconf="/etc/nginx/conf.d/$domain.d/$app.conf"
-	ynh_compare_checksum_config "$finalnginxconf" 1
+	ynh_backup_if_checksum_is_different "$finalnginxconf" 1
 	sudo cp ../conf/nginx.conf "$finalnginxconf"
 
 	# To avoid a break by set -u, use a void substitution ${var:-}. If the variable is not set, it's simply set with an empty variable.
@@ -150,7 +56,7 @@ ynh_nginx_config () {
 	if test -n "${final_path:-}"; then
 		ynh_replace_string "__FINALPATH__" "$final_path" "$finalnginxconf"
 	fi
-	ynh_store_checksum_config "$finalnginxconf"
+	ynh_store_file_checksum "$finalnginxconf"
 
 	sudo systemctl reload nginx
 }
@@ -160,37 +66,9 @@ ynh_remove_nginx_config () {
 	sudo systemctl reload nginx
 }
 
-ynh_store_checksum_config () {
-	config_file_checksum=checksum_${1//[\/ ]/_}	# Replace all '/' and ' ' by '_'
-	ynh_app_setting_set $app $config_file_checksum $(sudo md5sum "$1" | cut -d' ' -f1)
-}
-
-ynh_compare_checksum_config () {
-	current_config_file=$1
-	compress_backup=${2:-0}	# If $2 is empty, compress_backup will set at 0
-	config_file_checksum=checksum_${current_config_file//[\/ ]/_}	# Replace all '/' and ' ' by '_'
-	checksum_value=$(ynh_app_setting_get $app $config_file_checksum)
-	if [ -n "$checksum_value" ]
-	then	# Proceed only if a value was stocked into the app config
-		if ! echo "$checksum_value $current_config_file" | sudo md5sum -c --status
-		then	# If the checksum is now different
-			backup_config_file="$current_config_file.backup.$(date '+%d.%m.%y_%Hh%M,%Ss')"
-			if [ $compress_backup -eq 1 ]
-			then
-				sudo tar --create --gzip --file "$backup_config_file.tar.gz" "$current_config_file"	# Backup the current config file and compress
-				backup_config_file="$backup_config_file.tar.gz"
-			else
-				sudo cp -a "$current_config_file" "$backup_config_file"	# Backup the current config file
-			fi
-			echo "Config file $current_config_file has been manually modified since the installation or last upgrade. So it has been duplicated in $backup_config_file" >&2
-			echo "$backup_config_file"	# Return the name of the backup file
-		fi
-	fi
-}
-
 ynh_systemd_config () {
 	finalsystemdconf="/etc/systemd/system/$app.service"
-	ynh_compare_checksum_config "$finalsystemdconf" 1
+	ynh_backup_if_checksum_is_different "$finalsystemdconf" 1
 	sudo cp ../conf/systemd.service "$finalsystemdconf"
 
 	# To avoid a break by set -u, use a void substitution ${var:-}. If the variable is not set, it's simply set with an empty variable.
@@ -201,7 +79,7 @@ ynh_systemd_config () {
 	if test -n "${app:-}"; then
 		ynh_replace_string "__APP__" "$app" "$finalsystemdconf"
 	fi
-	ynh_store_checksum_config "$finalsystemdconf"
+	ynh_store_file_checksum "$finalsystemdconf"
 
 	sudo chown root: "$finalsystemdconf"
 	sudo systemctl enable $app
@@ -225,7 +103,16 @@ ynh_remove_systemd_config () {
 #=================================================
 
 CHECK_DOMAINPATH () {	# Vérifie la disponibilité du path et du domaine.
-	sudo yunohost app checkurl $domain$path_url -a $app
+	if sudo yunohost app --help | grep --quiet url-available
+	then
+		# Check availability of a web path
+		ynh_webpath_available $domain $path_url
+		# Register/book a web path for an app
+		ynh_webpath_register $app $domain $path_url
+	else
+		# Use the legacy command
+		sudo yunohost app checkurl $domain$path_url -a $app
+	fi
 }
 
 CHECK_FINALPATH () {	# Vérifie que le dossier de destination n'est pas déjà utilisé.
@@ -310,12 +197,114 @@ CHECK_SIZE () {	# Vérifie avant chaque backup que l'espace est suffisant
 	fi
 }
 
+# Ce helper est temporaire et sert de remplacement à la véritable fonction ynh_restore_file. Le temps qu'elle arrive...
+ynh_restore_file () {
+	if [ -f "$1" ]; then
+		ynh_die "There is already a file at this path: $1"
+	fi
+	sudo cp -a "${YNH_APP_BACKUP_DIR}$1" "$1"
+}
+
 #=================================================
 # PACKAGE CHECK BYPASSING...
 #=================================================
 
 IS_PACKAGE_CHECK () {	# Détermine une exécution en conteneur (Non testé)
 	return $(uname -n | grep -c 'pchecker_lxc')
+}
+
+#=================================================
+# NODEJS
+#=================================================
+
+sudo_path () {
+	sudo env "PATH=$PATH" $@
+}
+
+# INFOS
+# n (Node version management) utilise la variable PATH pour stocker le path de la version de node à utiliser.
+# C'est ainsi qu'il change de version
+# En attendant une généralisation de root, il est possible d'utiliser sudo avec le helper temporaire sudo_path
+# Il permet d'utiliser sudo en gardant le $PATH modifié
+# ynh_install_nodejs installe la version de nodejs demandée en argument, avec n
+# ynh_use_nodejs active une version de nodejs dans le script courant
+# 3 variables sont mises à disposition, et 2 sont stockées dans la config de l'app
+# - nodejs_path: Le chemin absolu de cette version de node
+# Utilisé pour des appels directs à node.
+# - nodejs_version: Simplement le numéro de version de nodejs pour cette application
+# - nodejs_use_version: Un alias pour charger une version de node dans le shell courant.
+# Utilisé pour démarrer un service ou un script qui utilise node ou npm
+# Dans ce cas, c'est $PATH qui contient le chemin de la version de node. Il doit être propagé sur les autres shell si nécessaire.
+
+n_install_dir="/opt/node_n"
+ynh_use_nodejs () {
+	nodejs_version=$(ynh_app_setting_get $app nodejs_version)
+
+	load_n_path="[[ :$PATH: == *\":$n_install_dir/bin:\"* ]] || PATH+=\":$n_install_dir/bin\""
+
+	nodejs_use_version="n $nodejs_version"
+
+	# "Load" a version of node
+	eval $load_n_path; $nodejs_use_version
+	eval $load_n_path; sudo env "PATH=$PATH" $nodejs_use_version
+
+	# Get the absolute path of this version of node
+	nodejs_path="$(n bin $nodejs_version)"
+
+	# Make an alias for node use
+	ynh_node_exec="eval $load_n_path; n use $nodejs_version"
+	sudo_ynh_node_exec="eval $load_n_path; sudo env \"PATH=$PATH\" n use $nodejs_version"
+}
+
+ynh_install_nodejs () {
+	# Use n, https://github.com/tj/n to manage the nodejs versions
+	local nodejs_version="$1"
+	local n_install_script="https://git.io/n-install"
+
+	# Create $n_install_dir
+	sudo mkdir -p "$n_install_dir"
+
+	# Load n path in PATH
+	PATH+=":$n_install_dir/bin"
+
+	# If n is not previously setup, install it
+	n --version > /dev/null 2>&1 || \
+	( echo "Installation of N - Node.js version management" >&2; \
+	curl -sL $n_install_script | sudo N_PREFIX="$n_install_dir" bash -s -- -y $nodejs_version )
+
+	# Install the requested version of nodejs (except for the first installation of n, which installed the requested version of node.)
+	sudo env "PATH=$PATH" n $nodejs_version
+
+	# Use the real installed version. Sometimes slightly different
+	nodejs_version=$(node --version | cut -c2-)
+
+	# Store the ID of this app and the version of node requested for it
+	echo "$YNH_APP_ID:$nodejs_version" | sudo tee --append "$n_install_dir/ynh_app_version"
+
+	# Store nodejs_version into the config of this app
+	ynh_app_setting_set $app nodejs_version $nodejs_version
+
+	ynh_use_nodejs
+}
+
+ynh_remove_nodejs () {
+	ynh_use_nodejs
+
+	# Remove the line for this app
+	sudo sed --in-place "/$YNH_APP_ID:$nodejs_version/d" "$n_install_dir/ynh_app_version"
+
+	# If none another app uses this version of nodejs, remove it.
+	if ! grep --quiet "$nodejs_version" "$n_install_dir/ynh_app_version"
+	then
+		n rm $nodejs_version
+	fi
+
+	# If none another app uses n, remove n
+	if [ ! -s "$n_install_dir/ynh_app_version" ]
+	then
+		ynh_secure_remove "$n_install_dir"
+		sudo sed --in-place "/N_PREFIX/d" /root/.bashrc
+	fi
 }
 
 #=================================================
@@ -350,33 +339,58 @@ ynh_normalize_url_path () {
 	echo $path_url
 }
 
+# Check if a mysql user exists
+#
+# usage: ynh_mysql_user_exists user
+# | arg: user - the user for which to check existence
+function ynh_mysql_user_exists()
+{
+   local user=$1
+   if [[ -z $(ynh_mysql_execute_as_root "SELECT User from mysql.user WHERE User = '$user';") ]]
+   then
+      return 1
+   else
+      return 0
+   fi
+}
+
 # Create a database, an user and its password. Then store the password in the app's config
 #
-# User of database will be store in db_user's variable.
-# Name of database will be store in db_name's variable.
-# And password in db_pwd's variable.
+# After executing this helper, the password of the created database will be available in $db_pwd
+# It will also be stored as "mysqlpwd" into the app settings.
 #
-# usage: ynh_mysql_generate_db user name
+# usage: ynh_mysql_setup_db user name [pwd]
 # | arg: user - Owner of the database
 # | arg: name - Name of the database
-ynh_mysql_generate_db () {
-	db_pwd=$(ynh_string_random)	# Generate a random password
-	ynh_mysql_create_db "$2" "$1" "$db_pwd"	# Create the database
+# | arg: pwd - Password of the database. If not given, a password will be generated
+ynh_mysql_setup_db () {
+	local db_user="$1"
+	local db_name="$2"
+	local new_db_pwd=$(ynh_string_random)	# Generate a random password
+	db_pwd="${3:-$new_db_pwd}"
+	ynh_mysql_create_db "$db_name" "$db_user" "$db_pwd"	# Create the database
 	ynh_app_setting_set $app mysqlpwd $db_pwd	# Store the password in the app's config
 }
 
-# Remove a database if it exist and the associated user
+# Remove a database if it exists, and the associated user
 #
 # usage: ynh_mysql_remove_db user name
-# | arg: user - Proprietary of the database
+# | arg: user - Owner of the database
 # | arg: name - Name of the database
 ynh_mysql_remove_db () {
-	if mysqlshow -u root -p$(sudo cat $MYSQL_ROOT_PWD_FILE) | grep -q "^| $2"; then	# Check if the database exist
-		echo "Remove database $2" >&2
-		ynh_mysql_drop_db $2	# Remove the database
-		ynh_mysql_drop_user $1	# Remove the associated user to database
+	local db_user="$1"
+	local db_name="$2"
+	local mysql_root_password=$(sudo cat $MYSQL_ROOT_PWD_FILE)
+	if mysqlshow -u root -p$mysql_root_password | grep -q "^| $db_name"; then	# Check if the database exists
+		echo "Removing database $db_name" >&2
+		ynh_mysql_drop_db $db_name	# Remove the database	
 	else
-		echo "Database $2 not found" >&2
+		echo "Database $db_name not found" >&2
+	fi
+
+	# Remove mysql user if it exists
+        if $(ynh_mysql_user_exists $db_user); then
+		ynh_mysql_drop_user $db_user
 	fi
 }
 
@@ -389,8 +403,8 @@ ynh_mysql_remove_db () {
 # usage: ynh_make_valid_dbid name
 # | arg: name - name to correct
 # | ret: the corrected name
-ynh_make_valid_dbid () {
-	dbid=${1//[-.]/_}	# Mariadb doesn't support - and . in the name of databases. It will be replace by _
+ynh_sanitize_dbid () {
+	dbid=${1//[-.]/_}	# We should avoid having - and . in the name of databases. They are replaced by _
 	echo $dbid
 }
 
@@ -449,7 +463,7 @@ ynh_install_app_dependencies () {
     if [ ! -e "$manifest_path" ]; then
     	manifest_path="../settings/manifest.json"	# Into the restore script, the manifest is not at the same place
     fi
-    version=$(sudo python3 -c "import sys, json;print(json.load(open(\"$manifest_path\"))['version'])")	# Retrieve the version number in the manifest file.
+    version=$(sudo grep '\"version\": ' "$manifest_path" | cut -d '"' -f 4)	# Retrieve the version number in the manifest file.
     dep_app=${app//_/-}	# Replace all '_' by '-'
 
     if ynh_package_is_installed "${dep_app}-ynh-deps"; then
@@ -500,7 +514,7 @@ ynh_use_logrotate () {
 			logfile=$1/.log	# Else, uses the directory and all logfile into it.
 		fi
 	else
-		logfile="/var/log/${app}/.log" # Without argument, use a defaut directory in /var/log
+		logfile="/var/log/${app}/*.log" # Without argument, use a defaut directory in /var/log
 	fi
 	cat > ./${app}-logrotate << EOF	# Build a config file for logrotate
 $logfile {
@@ -603,11 +617,14 @@ ynh_local_curl () {
 	do
 		POST_data="${POST_data}${arg}&"
 	done
-	# (Remove the last character, which is an unecessary '&')
-	POST_data=${POST_data::-1}
+	if [ -n "$POST_data" ]
+	then
+		# Add --data arg and remove the last character, which is an unecessary '&'
+		POST_data="--data \"${POST_data::-1}\""
+	fi
 
 	# Curl the URL
-	curl -kL -H "Host: $domain" --resolve $domain:443:127.0.0.1 --data "$POST_data" "$full_page_url" 2>&1
+	curl --silent --show-error -kL -H "Host: $domain" --resolve $domain:443:127.0.0.1 $POST_data "$full_page_url"
 }
 
 # Substitute/replace a string by another in a file
@@ -623,4 +640,211 @@ ynh_replace_string () {
 	workfile=$3
 
 	sudo sed --in-place "s${delimit}${match_string}${delimit}${replace_string}${delimit}g" "$workfile"
+}
+
+# Remove a file or a directory securely
+#
+# usage: ynh_secure_remove path_to_remove
+# | arg: path_to_remove - File or directory to remove
+ynh_secure_remove () {
+	path_to_remove=$1
+	forbidden_path=" \
+	/var/www \
+	/home/yunohost.app"
+
+	if [[ "$forbidden_path" =~ "$path_to_remove" \
+		# Match all paths or subpaths in $forbidden_path
+		|| "$path_to_remove" =~ ^/[[:alnum:]]+$ \
+		# Match all first level paths from / (Like /var, /root, etc...)
+		|| "${path_to_remove:${#path_to_remove}-1}" = "/" ]]
+		# Match if the path finishes by /. Because it seems there is an empty variable
+	then
+		echo "Avoid deleting $path_to_remove." >&2
+	else
+		if [ -e "$path_to_remove" ]
+		then
+			sudo rm -R "$path_to_remove"
+		else
+			echo "$path_to_remove wasn't deleted because it doesn't exist." >&2
+		fi
+	fi
+}
+
+# Download, check integrity, uncompress and patch the source from app.src
+#
+# The file conf/app.src need to contains:
+# 
+# SOURCE_URL=Address to download the app archive
+# SOURCE_SUM=Control sum
+# # (Optional) Programm to check the integrity (sha256sum, md5sum$YNH_EXECUTION_DIR/...)
+# # default: sha256
+# SOURCE_SUM_PRG=sha256
+# # (Optional) Archive format
+# # default: tar.gz
+# SOURCE_FORMAT=tar.gz
+# # (Optional) Put false if source are directly in the archive root
+# # default: true
+# SOURCE_IN_SUBDIR=false
+# # (Optionnal) Name of the local archive (offline setup support)
+# # default: ${src_id}.${src_format}
+# SOURCE_FILENAME=example.tar.gz 
+#
+# Details:
+# This helper download sources from SOURCE_URL if there is no local source
+# archive in /opt/yunohost-apps-src/APP_ID/SOURCE_FILENAME
+# 
+# Next, it check the integrity with "SOURCE_SUM_PRG -c --status" command.
+# 
+# If it's ok, the source archive will be uncompress in $dest_dir. If the
+# SOURCE_IN_SUBDIR is true, the first level directory of the archive will be
+# removed.
+#
+# Finally, patches named sources/patches/${src_id}-*.patch and extra files in
+# sources/extra_files/$src_id will be applyed to dest_dir
+#
+#
+# usage: ynh_setup_source dest_dir [source_id]
+# | arg: dest_dir  - Directory where to setup sources
+# | arg: source_id - Name of the app, if the package contains more than one app
+YNH_EXECUTION_DIR="."
+ynh_setup_source () {
+    local dest_dir=$1
+    local src_id=${2:-app} # If the argument is not given, source_id equal "app"
+
+    # Load value from configuration file (see above for a small doc about this file
+    # format)
+    local src_url=$(grep 'SOURCE_URL=' "$YNH_EXECUTION_DIR/../conf/${src_id}.src" | cut -d= -f2-)
+    local src_sum=$(grep 'SOURCE_SUM=' "$YNH_EXECUTION_DIR/../conf/${src_id}.src" | cut -d= -f2-)
+    local src_sumprg=$(grep 'SOURCE_SUM_PRG=' "$YNH_EXECUTION_DIR/../conf/${src_id}.src" | cut -d= -f2-)
+    local src_format=$(grep 'SOURCE_FORMAT=' "$YNH_EXECUTION_DIR/../conf/${src_id}.src" | cut -d= -f2-)
+    local src_in_subdir=$(grep 'SOURCE_IN_SUBDIR=' "$YNH_EXECUTION_DIR/../conf/${src_id}.src" | cut -d= -f2-)
+    local src_filename=$(grep 'SOURCE_FILENAME=' "$YNH_EXECUTION_DIR/../conf/${src_id}.src" | cut -d= -f2-)
+
+    # Default value
+    src_sumprg=${src_sumprg:-sha256sum}
+    src_in_subdir=${src_in_subdir:-true}
+    src_format=${src_format:-tar.gz}
+    src_format=$(echo "$src_format" | tr '[:upper:]' '[:lower:]')
+    if [ "$src_filename" = "" ] ; then
+        src_filename="${src_id}.${src_format}"
+    fi
+    local local_src="/opt/yunohost-apps-src/${YNH_APP_ID}/${src_filename}"
+
+    if test -e "$local_src"
+    then    # Use the local source file if it is present
+        cp $local_src $src_filename
+    else    # If not, download the source
+        wget -nv -O $src_filename $src_url
+    fi
+
+    # Check the control sum
+    echo "${src_sum} ${src_filename}" | ${src_sumprg} -c --status \
+        || ynh_die "Corrupt source"
+
+    # Extract source into the app dir
+    sudo mkdir -p "$dest_dir"
+    if [ "$src_format" = "zip" ]
+    then 
+        # Zip format
+        # Using of a temp directory, because unzip doesn't manage --strip-components
+        if $src_in_subdir ; then
+            local tmp_dir=$(mktemp -d)
+            sudo unzip -quo $src_filename -d "$tmp_dir"
+            sudo cp -a $tmp_dir/*/. "$dest_dir"
+            ynh_secure_remove "$tmp_dir"
+        else
+            sudo unzip -quo $src_filename -d "$dest_dir"
+        fi
+    else
+        local strip=""
+        if $src_in_subdir ; then
+            strip="--strip-components 1"
+        fi
+        if [[ "$src_format" =~ ^tar.gz|tar.bz2|tar.xz$ ]] ; then
+            sudo tar -xf $src_filename -C "$dest_dir" $strip
+        else
+            ynh_die "Archive format unrecognized."
+        fi
+    fi
+
+    # Apply patches
+    if (( $(find $YNH_EXECUTION_DIR/../sources/patches/ -type f -name "${src_id}-*.patch" 2> /dev/null | wc -l) > "0" )); then
+        local old_dir=$(pwd)
+        (cd "$dest_dir" \
+            && for p in $YNH_EXECUTION_DIR/../sources/patches/${src_id}-*.patch; do \
+                sudo patch -p1 < $p; done) \
+            || ynh_die "Unable to apply patches"
+        cd $old_dir
+    fi
+
+    # Add supplementary files
+    if test -e "$YNH_EXECUTION_DIR/../sources/extra_files/${src_id}"; then
+        sudo cp -a $YNH_EXECUTION_DIR/../sources/extra_files/$src_id/. "$dest_dir"
+    fi
+}
+
+# Check availability of a web path
+#
+# example: ynh_webpath_available some.domain.tld /coffee
+#
+# usage: ynh_webpath_available domain path
+# | arg: domain - the domain/host of the url
+# | arg: path - the web path to check the availability of
+ynh_webpath_available () {
+	local domain=$1
+	local path=$2
+	sudo yunohost domain url-available $domain $path
+}
+
+# Register/book a web path for an app
+#
+# example: ynh_webpath_register wordpress some.domain.tld /coffee
+#
+# usage: ynh_webpath_register app domain path
+# | arg: app - the app for which the domain should be registered
+# | arg: domain - the domain/host of the web path
+# | arg: path - the web path to be registered
+ynh_webpath_register () {
+	local app=$1
+	local domain=$2
+	local path=$3
+	sudo yunohost app register-url $app $domain $path
+}
+
+# Calculate and store a file checksum into the app settings
+#
+# $app should be defined when calling this helper
+#
+# usage: ynh_store_file_checksum file
+# | arg: file - The file on which the checksum will performed, then stored.
+ynh_store_file_checksum () {
+	local checksum_setting_name=checksum_${1//[\/ ]/_}	# Replace all '/' and ' ' by '_'
+	ynh_app_setting_set $app $checksum_setting_name $(sudo md5sum "$1" | cut -d' ' -f1)
+}
+
+# Verify the checksum and backup the file if it's different
+# This helper is primarily meant to allow to easily backup personalised/manually 
+# modified config files.
+#
+# $app should be defined when calling this helper
+#
+# usage: ynh_backup_if_checksum_is_different file
+# | arg: file - The file on which the checksum test will be perfomed.
+#
+# | ret: Return the name a the backup file, or nothing
+ynh_backup_if_checksum_is_different () {
+	local file=$1
+	local checksum_setting_name=checksum_${file//[\/ ]/_}	# Replace all '/' and ' ' by '_'
+	local checksum_value=$(ynh_app_setting_get $app $checksum_setting_name)
+	if [ -n "$checksum_value" ]
+	then	# Proceed only if a value was stored into the app settings
+		if ! echo "$checksum_value $file" | sudo md5sum -c --status
+		then	# If the checksum is now different
+			backup_file="/home/yunohost.conf/backup/$file.backup.$(date '+%Y%m%d.%H%M%S')"
+			sudo mkdir -p "$(dirname "$backup_file")"
+			sudo cp -a "$file" "$backup_file"	# Backup the current file
+			echo "File $file has been manually modified since the installation or last upgrade. So it has been duplicated in $backup_file" >&2
+			echo "$backup_file"	# Return the name of the backup file
+		fi
+	fi
 }
