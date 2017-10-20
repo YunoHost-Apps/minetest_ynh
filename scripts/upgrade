@@ -1,0 +1,41 @@
+#!/bin/bash
+# Exit on command errors and treat unset variables as an error
+set -eu
+
+#=================================================
+# GENERIC STARTING
+#=================================================
+# IMPORT GENERIC HELPERS
+#=================================================
+
+source _common.sh
+source /usr/share/yunohost/helpers
+
+#=================================================
+# LOAD SETTINGS
+#=================================================
+
+app=$YNH_APP_INSTANCE_NAME
+
+pvp=$(ynh_app_setting_get $app pvp)
+damage=$(ynh_app_setting_get $app damage)
+domain=$(ynh_app_setting_get $app domain)
+creative=$(ynh_app_setting_get $app creative)
+is_public=$(ynh_app_setting_get $app is_public)
+
+#=================================================
+# BACKUP BEFORE UPGRADE THEN ACTIVE TRAP
+#=================================================
+# Backup the current version of the app
+ynh_backup_before_upgrade
+ynh_clean_setup () {
+    # restore it if the upgrade fails
+    ynh_restore_upgradebackup
+}
+# Exit if an error occurs during the execution of the script
+ynh_abort_if_errors
+
+#=================================================
+# STANDARD UPGRADE STEPS
+#=================================================
+# nothing yet
