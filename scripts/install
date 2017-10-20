@@ -86,7 +86,7 @@ then
     fi
 fi
 ynh_package_update
-ynh_install_app_dependencies minetest-server
+ynh_install_app_dependencies minetest-server sqlite3
 
 #=================================================
 # ENABLE SERVICE IN ADMIN PANEL

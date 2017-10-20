@@ -1,0 +1,61 @@
+#!/bin/bash
+# Exit on command errors and treat unset variables as an error
+set -eu
+
+#=================================================
+# GENERIC STARTING
+#=================================================
+
+#=================================================
+# IMPORT GENERIC HELPERS
+#=================================================
+
+if [ ! -e _common.sh ]; then
+    # Get the functions file if not present in the current directory
+    sudo cp ../settings/scripts/_common.sh ./_common.sh
+    sudo chmod a+rx _common.sh
+fi
+source _common.sh
+source /usr/share/yunohost/helpers
+
+#=================================================
+# LOAD SETTINGS
+#=================================================
+
+app=$YNH_APP_INSTANCE_NAME
+
+pvp=$(ynh_app_setting_get $app pvp)
+damage=$(ynh_app_setting_get $app damage)
+domain=$(ynh_app_setting_get $app domain)
+creative=$(ynh_app_setting_get $app creative)
+is_public=$(ynh_app_setting_get $app is_public)
+
+#=================================================
+# BACKUP STEPS
+#=================================================
+# CONFIGURATION
+#=================================================
+CHECK_SIZE "/etc/minetest.conf"
+ynh_backup "/etc/minetest.conf"
+
+#=================================================
+# DATA
+#=================================================
+CHECK_SIZE "/var/games/minetest-server/"
+ynh_backup "/var/games/minetest-server/"
+
+echo ".backup /tmp/map.sqlite" | sqlite3 /var/games/minetest-server/.minetest/worlds/world
+CHECK_SIZE "/tmp/map.sqlite"
+ynh_backup "/tmp/map.sqlite"
+ynh_secure_remove "/tmp/map.sqlite"
+
+#=================================================
+# BACKUP OF APT PREFERENCES AND SOURCES.LIST
+#=================================================
+CHECK_SIZE "/etc/apt/sources.list.d/$app.list"
+ynh_backup "/etc/apt/sources.list.d/$app.list"
+
+CHECK_SIZE "/etc/apt/preferences.d/00MinetestPinning"
+ynh_backup "/etc/apt/preferences.d/00MinetestPinning"
+
+
