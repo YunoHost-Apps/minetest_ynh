@@ -35,19 +35,19 @@ is_public=$(ynh_app_setting_get $app is_public)
 #=================================================
 # CONFIGURATION
 #=================================================
-CHECK_SIZE "/etc/minetest.conf"
-ynh_backup "/etc/minetest.conf"
+CHECK_SIZE "/etc/minetest/minetest.conf"
+ynh_backup "/etc/minetest/minetest.conf"
 
 #=================================================
 # DATA
 #=================================================
+echo ".backup /tmp/map.sqlite" | sqlite3 /var/games/minetest-server/.minetest/worlds/world/map.sqlite
+ls -lh /tmp/map.sqlite
 CHECK_SIZE "/var/games/minetest-server/"
 ynh_backup "/var/games/minetest-server/"
 
-echo ".backup /tmp/map.sqlite" | sqlite3 /var/games/minetest-server/.minetest/worlds/world
 CHECK_SIZE "/tmp/map.sqlite"
 ynh_backup "/tmp/map.sqlite"
-ynh_secure_remove "/tmp/map.sqlite"
 
 #=================================================
 # BACKUP OF APT PREFERENCES AND SOURCES.LIST

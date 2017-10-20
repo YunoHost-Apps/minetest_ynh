@@ -40,7 +40,7 @@ service minetest stop
 #=================================================
 # CONFIGURATION
 #=================================================
-ynh_restore_file "/etc/minetest.conf"
+ynh_restore_file "/etc/minetest/minetest.conf"
 
 #=================================================
 # DATA
@@ -48,7 +48,7 @@ ynh_restore_file "/etc/minetest.conf"
 ynh_restore_file "/var/games/minetest-server/"
 
 ynh_restore_file "/tmp/map.sqlite"
-echo ".restore /tmp/map.sqlite" | sqlite3 /var/games/minetest-server/.minetest/worlds/world
+echo ".restore /tmp/map.sqlite" | sqlite3 /var/games/minetest-server/.minetest/worlds/world/map.sqlite
 
 #=================================================
 # BACKUP OF APT PREFERENCES AND SOURCES.LIST
