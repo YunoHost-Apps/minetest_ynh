@@ -24,10 +24,10 @@ port=$(ynh_app_setting_get $app port)
 #=================================================
 
 # Retire le service du monitoring de Yunohost.
-if sudo yunohost service status | grep -q minetest	# Test l'existence du service dans Yunohost
+if yunohost service status | grep -q minetest	# Test l'existence du service dans Yunohost
 then
 	echo "Remove minetest service"
-	sudo yunohost service remove minetest
+	yunohost service remove minetest
 fi
 
 #=================================================
@@ -35,8 +35,8 @@ fi
 #=================================================
 
 # Ferme les ports dans le firewall
-ALL_QUIET sudo yunohost firewall disallow UDP $port
-ALL_QUIET sudo yunohost firewall disallow TCP $port
+ALL_QUIET yunohost firewall disallow UDP $port
+ALL_QUIET yunohost firewall disallow TCP $port
 
 #=================================================
 # SPECIFIC REMOVE
@@ -47,6 +47,8 @@ ALL_QUIET sudo yunohost firewall disallow TCP $port
 # Suppression du paquet minetest
 if [ -e "/usr/lib/minetest/minetestserver" ]; then
 	echo "Remove minetest package"
-	sudo apt-get -y purge minetest-server minetest-data
+	ynh_remove_app_dependencies
 fi
-ynh_secure_remove "/etc/apt/sources.list.d/minetest.list"
+ynh_secure_remove "/etc/apt/sources.list.d/$app.list"
+ynh_secure_remove "/etc/apt/preferences.d/00MinetestPinning"
+ynh_package_update

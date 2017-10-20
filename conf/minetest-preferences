@@ -1,0 +1,3 @@
+Package: minetest-server minetest-data
+Pin: release a=__CODENAME__-backports
+Pin-Priority: 900
