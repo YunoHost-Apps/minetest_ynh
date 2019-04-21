@@ -10,14 +10,19 @@
     "url": "http://www.minetest.net/",
     "license": "MIT",
     "maintainer": {
-        "name": "Luc Didry",
-        "email": "luc@framasoft.org",
-        "url": "https://framasoft.org"
+        "name": "rafi59",
+        "email": "rafi59_dev@srvmaison.fr.nf",
+        "url": ""
     },
+    "previous_maintainers": {
+    	"name": "Luc Didry",
+    	"email": "luc@framasoft.org",
+	"url": "https://framasoft.org"
+},
     "requirements": {
-        "yunohost": ">> 2.6.4"
+        "yunohost": ">= 3.5"
     },
-    "multi_instance": true,
+    "multi_instance": false,
     "services": [
         "minetest"
     ],
@@ -40,6 +45,24 @@
                     "fr": "Est-ce un serveur public ? (devons-nous l'annoncer ?)"
                 },
                 "default": false
+            },
+            {
+                "name": "postgresql",
+                "type": "boolean",
+                "ask": {
+                    "en": "Do you want to use PostgreSQL? (more powerful but uses more disk space)",
+                    "fr": "Est-ce que vous voulez utiliser PostgreSQL ? (plus puissant mais utilise plus d'espace disque)"
+                },
+                "default": true
+            },
+            {
+                "name": "servername",
+                "type": "string",
+                "ask": {
+                    "en": "Choose a name for your server",
+                    "fr": "Choissisez un nom pour votre serveur"
+                },
+                "default": "Minetest server"
             },
             {
                 "name": "pvp",

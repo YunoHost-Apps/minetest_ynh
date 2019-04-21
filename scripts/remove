@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #=================================================
-# GENERIC STARTING
+# GENERIC START
 #=================================================
 # IMPORT GENERIC HELPERS
 #=================================================
@@ -12,43 +12,100 @@ source /usr/share/yunohost/helpers
 #=================================================
 # LOAD SETTINGS
 #=================================================
+ynh_print_info --message="Loading installation settings..."
 
 app=$YNH_APP_INSTANCE_NAME
 
-port=$(ynh_app_setting_get $app port)
+domain=$(ynh_app_setting_get --app=$app --key=domain)
+port=$(ynh_app_setting_get --app=$app --key=port)
+db_name=$(ynh_app_setting_get --app=$app --key=db_name)
+db_user=$db_name
+final_path=$(ynh_app_setting_get --app=$app --key=final_path)
+postgresql=$(ynh_app_setting_get --app=$app --key=postgresql)
 
 #=================================================
 # STANDARD REMOVE
 #=================================================
-# DISABLE SERVICE IN ADMIN PANEL
+# REMOVE SERVICE FROM ADMIN PANEL
 #=================================================
 
-# Retire le service du monitoring de Yunohost.
-if yunohost service status | grep -q minetest	# Test l'existence du service dans Yunohost
+# Remove a service from the admin panel, added by `yunohost service add`
+if yunohost service status $app >/dev/null 2>&1
 then
-	echo "Remove minetest service"
-	yunohost service remove minetest
+	ynh_print_info --message="Removing $app service"
+	yunohost service remove $app
 fi
 
 #=================================================
-# CLOSE THE PORTS
+# STOP AND REMOVE SERVICE
+#=================================================
+ynh_print_info --message="Stopping and removing the systemd service"
+
+# Remove the dedicated systemd config
+ynh_remove_systemd_config
+
+#=================================================
+# REMOVE THE POSTGRESQL DATABASE
+#=================================================
+if [ $postgresql -eq 1 ]
+then
+ynh_print_info --message="Removing the PostgreSQL database"
+
+# Remove a database if it exists, along with the associated user
+ynh_psql_remove_db --user=$db_user --db=$db_name
+fi
+
+#=================================================
+# REMOVE DEPENDENCIES
+#=================================================
+ynh_print_info --message="Removing dependencies"
+
+# Remove metapackage and its dependencies
+ynh_remove_app_dependencies
+
+#=================================================
+# REMOVE APP MAIN DIR
+#=================================================
+ynh_print_info --message="Removing app main directory"
+
+# Remove the app directory securely
+ynh_secure_remove --file="$final_path"
+ynh_secure_remove --file="/home/yunohost.app/$app/"
+
+#=================================================
+# REMOVE LOGROTATE CONFIGURATION
+#=================================================
+ynh_print_info --message="Removing logrotate configuration"
+
+# Remove the app-specific logrotate config
+ynh_remove_logrotate
+
+#=================================================
+# CLOSE A PORT
 #=================================================
 
-# Ferme les ports dans le firewall
-ALL_QUIET yunohost firewall disallow UDP $port
-ALL_QUIET yunohost firewall disallow TCP $port
+if yunohost firewall list | grep -q "\- $port$"
+then
+	ynh_print_info --message="Closing port $port"
+	ynh_exec_warn_less yunohost firewall disallow UDP $port
+fi
 
 #=================================================
 # SPECIFIC REMOVE
 #=================================================
-# REMOVE MINETEST
+
+#=================================================
+# GENERIC FINALIZATION
+#=================================================
+# REMOVE DEDICATED USER
+#=================================================
+ynh_print_info --message="Removing the dedicated system user"
+
+# Delete a system user
+ynh_system_user_delete --username=$app
+
+#=================================================
+# END OF SCRIPT
 #=================================================
 
-# Suppression du paquet minetest
-if [ -e "/usr/lib/minetest/minetestserver" ]; then
-	echo "Remove minetest package"
-	ynh_remove_app_dependencies
-fi
-ynh_secure_remove "/etc/apt/sources.list.d/$app.list"
-ynh_secure_remove "/etc/apt/preferences.d/00MinetestPinning"
-ynh_package_update
+ynh_print_info --message="Removal of $app completed"

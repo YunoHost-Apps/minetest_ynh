@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #=================================================
-# GENERIC STARTING
+# GENERIC START
 #=================================================
 # IMPORT GENERIC HELPERS
 #=================================================
@@ -10,115 +10,277 @@ source _common.sh
 source /usr/share/yunohost/helpers
 
 #=================================================
-# MANAGE FAILURE OF THE SCRIPT
+# MANAGE SCRIPT FAILURE
 #=================================================
 
+# Exit if an error occurs during the execution of the script
 ynh_abort_if_errors
 
 #=================================================
 # RETRIEVE ARGUMENTS FROM THE MANIFEST
 #=================================================
 
-pvp=$YNH_APP_ARG_PVP
-app=$YNH_APP_INSTANCE_NAME
-damage=$YNH_APP_ARG_DAMAGE
 domain=$YNH_APP_ARG_DOMAIN
-creative=$YNH_APP_ARG_CREATIVE
 is_public=$YNH_APP_ARG_IS_PUBLIC
+postgresql=$YNH_APP_ARG_POSTGRESQL
+pvp=$YNH_APP_ARG_PVP
+creative=$YNH_APP_ARG_CREATIVE
+damage=$YNH_APP_ARG_DAMAGE
+servername=$YNH_APP_ARG_SERVERNAME
+
+### If it's a multi-instance app, meaning it can be installed several times independently
+### The id of the app as stated in the manifest is available as $YNH_APP_ID
+### The instance number is available as $YNH_APP_INSTANCE_NUMBER (equals "1", "2", ...)
+### The app instance name is available as $YNH_APP_INSTANCE_NAME
+###    - the first time the app is installed, YNH_APP_INSTANCE_NAME = ynhexample
+###    - the second time the app is installed, YNH_APP_INSTANCE_NAME = ynhexample__2
+###    - ynhexample__{N} for the subsequent installations, with N=3,4, ...
+### The app instance name is probably what interests you most, since this is
+### guaranteed to be unique. This is a good unique identifier to define installation path,
+### db names, ...
+app=$YNH_APP_INSTANCE_NAME
 
 #=================================================
-# CHECK THE DEBIAN'S CODENAME
+# CHECK IF THE APP CAN BE INSTALLED WITH THESE ARGS
 #=================================================
+ynh_print_info --message="Validating installation parameters..."
 
-codename=$(lsb_release -a 2>/dev/null | grep Codename | cut -f 2)
-test -z "$codename" && (ynh_die "codename empty")
+### If the app uses nginx as web server (written in HTML/PHP in most cases), the final path should be "/var/www/$app".
+### If the app provides an internal web server (or uses another application server such as uwsgi), the final path should be "/opt/yunohost/$app"
+final_path=/opt/yunohost/$app
+test ! -e "$final_path" || ynh_die "This path already contains a folder"
+
+# Register (book) web path
+ynh_webpath_register --app=$app --domain=$domain --path_url=/
+
+#=================================================
+# STORE SETTINGS FROM MANIFEST
+#=================================================
+ynh_print_info --message="Storing installation settings..."
+
+ynh_app_setting_set --app=$app --key=domain --value=$domain
+ynh_app_setting_set --app=$app --key=is_public --value=$is_public
+ynh_app_setting_set --app=$app --key=postgresql --value=$postgresql
+ynh_app_setting_set --app=$app --key=pvp --value=$pvp
+ynh_app_setting_set --app=$app --key=creative --value=$creative
+ynh_app_setting_set --app=$app --key=damage --value=$damage
+ynh_app_setting_set --app=$app --key=servername --value=$servername
 
 #=================================================
 # STANDARD MODIFICATIONS
 #=================================================
 # FIND AND OPEN A PORT
 #=================================================
+ynh_print_info --message="Configuring firewall..."
 
-port=$(ynh_find_port 30000)	# Cherche un port libre.
+### Use these lines if you have to open a port for the application
+### `ynh_find_port` will find the first available port starting from the given port.
+### If you're not using these lines:
+###		- Remove the section "CLOSE A PORT" in the remove script
 
-# Open ports in firewall
-ALL_QUIET yunohost firewall allow UDP $port
-ALL_QUIET yunohost firewall allow TCP $port
-ynh_app_setting_set $app port $port
+# Find a free port
+port=$(ynh_find_port 30000)
+# Open this port
+ynh_exec_warn_less yunohost firewall allow --no-upnp UDP $port
+ynh_app_setting_set --app=$app --key=port --value=$port
 
-# Store informations in Yunohost config
-ynh_app_setting_set $app pvp ${pvp}
-ynh_app_setting_set $app damage ${damage}
-ynh_app_setting_set $app domain ${domain}
-ynh_app_setting_set $app creative ${creative}
-ynh_app_setting_set $app is_public ${is_public}
+#=================================================
+# INSTALL DEPENDENCIES
+#=================================================
+ynh_print_info --message="Installing dependencies..."
+
+### `ynh_install_app_dependencies` allows you to add any "apt" dependencies to the package.
+### Those deb packages will be installed as dependencies of this package.
+### If you're not using this helper:
+###		- Remove the section "REMOVE DEPENDENCIES" in the remove script
+###		- Remove the variable "pkg_dependencies" in _common.sh
+###		- As well as the section "REINSTALL DEPENDENCIES" in the restore script
+###		- And the section "UPGRADE DEPENDENCIES" in the upgrade script
+
+ynh_install_app_dependencies $pkg_dependencies
+#=================================================
+# CREATE A POSTGRESQL DATABASE
+#=================================================
+if [ $postgresql -eq 1 ]
+then
+ynh_print_info --message="Creating a PostgreSQL database..."
+
+# Create a database, an user and its password. Then store the password in the app's config
+#
+# After executing this helper, the password of the created database will be available in $db_pwd
+# It will also be stored as "psqlpwd" into the app settings.
+
+ynh_psql_test_if_first_run
+db_name=$(ynh_sanitize_dbid $app)
+ynh_app_setting_set --app=$app --key=db_name --value=$db_name
+ynh_psql_setup_db --db_user=$db_name --db_name=$db_name
+fi
+
+#=================================================
+# DOWNLOAD, CHECK AND UNPACK SOURCE
+#=================================================
+ynh_print_info --message="Setting up source files..."
+
+### `ynh_setup_source` is used to install an app from a zip or tar.gz file,
+### downloaded from an upstream source, like a git repository.
+### `ynh_setup_source` use the file conf/app.src
+
+ynh_app_setting_set --app=$app --key=final_path --value=$final_path
+# Download, check integrity, uncompress and patch the source from app.src
+ynh_setup_source --dest_dir="$final_path"
+
+#=================================================
+# CREATE DEDICATED USER
+#=================================================
+ynh_print_info --message="Configuring system user..."
+
+# Create a system user
+ynh_system_user_create --username=$app --home_dir=/home/yunohost.app/$app --use_shell
+home_path=/home/yunohost.app/$app
+
+#=================================================
+# COPY CONFIG FILE
+#=================================================
+mkdir -p /home/yunohost.app/$app/.minetest/
+mkdir /home/yunohost.app/$app/.minetest/worlds/
+cp -a ../conf/minetest.conf /home/yunohost.app/$app/.minetest/
+
+#=================================================
+# SETUP SYSTEMD
+#=================================================
+ynh_print_info --message="Configuring a systemd service..."
+
+### `ynh_systemd_config` is used to configure a systemd script for an app.
+### It can be used for apps that use sysvinit (with adaptation) or systemd.
+### Have a look at the app to be sure this app needs a systemd script.
+### `ynh_systemd_config` will use the file conf/systemd.service
+### If you're not using these lines:
+###		- You can remove those files in conf/.
+###		- Remove the section "BACKUP SYSTEMD" in the backup script
+###		- Remove also the section "STOP AND REMOVE SERVICE" in the remove script
+###		- As well as the section "RESTORE SYSTEMD" in the restore script
+###		- And the section "SETUP SYSTEMD" in the upgrade script
+
+# Create a dedicated systemd config
+ynh_add_systemd_config
 
 #=================================================
 # SPECIFIC SETUP
 #=================================================
-# INSTALL MINETEST
-#=================================================
-
-# Installation du paquet minetest et ses dépendances
-cp -a "../conf/minetest.list" "/etc/apt/sources.list.d/$app.list"
-ynh_replace_string "__CODENAME__" "$codename" "/etc/apt/sources.list.d/$app.list"
-cp -a "../conf/minetest-preferences" "/etc/apt/preferences.d/00MinetestPinning"
-ynh_replace_string "__CODENAME__" "$codename" "/etc/apt/preferences.d/00MinetestPinning"
-if [ $(uname -m) == "armv7l" ]
+# Compile Minetest
+cd /opt/yunohost/$app
+# Download Minetest Game
+git clone --depth 1 https://github.com/minetest/minetest_game.git games/minetest_game -b stable-5
+if [ $postgresql -eq 1 ]
 then
-    gpg --list-keys 7638D0442B90D010 > /dev/null 2>&1
-    if [ $? != 0 ]
-    then
-        gpg --keyserver pgpkeys.mit.edu --recv-key 7638D0442B90D010
-    fi
-    gpg --list-keys 8B48AD6246925553 > /dev/null 2>&1
-    if [ $? != 0 ]
-    then
-        gpg --keyserver pgpkeys.mit.edu --recv-key 8B48AD6246925553
-    fi
-    if [ $(apt-key finger | grep "7638 D044 2B90 D010" -c) == 0 ]
-    then
-        gpg -a --export 7638D0442B90D010 | apt-key add -
-    fi
-    if [ $(apt-key finger | grep "8B48 AD62 4692 5553" -c) == 0 ]
-    then
-        gpg -a --export 8B48AD6246925553 | apt-key add -
-    fi
-fi
-ynh_package_update
-ynh_install_app_dependencies minetest-server sqlite3
-
-#=================================================
-# ENABLE SERVICE IN ADMIN PANEL
-#=================================================
-
-# Add service to Yunohost's monitoring
-yunohost service add minetest --log "/var/log/minetest/minetest.log"
-
-#=================================================
-# CONFIGURE MINETEST
-#=================================================
-
-cp "../conf/minetest.conf" "/etc/minetest/minetest.conf"
-chown root:root /etc/minetest/minetest.conf
-chmod 644 /etc/minetest/minetest.conf
-
-# Change Minetest configuration
-ynh_replace_string "__PORT__" "$port" /etc/minetest/minetest.conf
-if [ $is_public -eq 1 ]
-then
-    ynh_replace_string "__ANNOUNCE__" "true" /etc/minetest/minetest.conf
+cmake . -DRUN_IN_PLACE=TRUE -DENABLE_POSTGRESQL=TRUE -DPostgreSQL_TYPE_INCLUDE_DIR=/usr/include/postgresql/ -DENABLE_LUAJIT=TRUE -DBUILD_CLIENT=FALSE -DBUILD_SERVER=TRUE
 else
-    ynh_replace_string "__ANNOUNCE__" "false" /etc/minetest/minetest.conf
+cmake . -DRUN_IN_PLACE=TRUE -DENABLE_LUAJIT=TRUE -DBUILD_CLIENT=FALSE -DBUILD_SERVER=TRUE
 fi
-ynh_replace_string "__DOMAIN__" "$domain" /etc/minetest/minetest.conf
-ynh_replace_string "__PVP__" "$pvp" /etc/minetest/minetest.conf
-ynh_replace_string "__CREATIVE__" "$creative" /etc/minetest/minetest.conf
-ynh_replace_string "__DAMAGE__" "$damage" /etc/minetest/minetest.conf
+
+make -j 2
+
 
 #=================================================
-# RESTART MINETEST'S SERVICE
+# MODIFY A CONFIG FILE
 #=================================================
 
-# Restart Minetest to use new settings
-systemctl restart minetest-server
+### `ynh_replace_string` is used to replace a string in a file.
+### (It's compatible with sed regular expressions syntax)
+
+ynh_replace_string --match_string="__PORT__" --replace_string="$port" --target_file="$home_path/.minetest/minetest.conf"
+ynh_replace_string --match_string="__SERVERNAME__" --replace_string="$servername" --target_file="$home_path/.minetest/minetest.conf"
+ynh_replace_string --match_string="__DOMAIN__" --replace_string="$domain" --target_file="$home_path/.minetest/minetest.conf"
+ynh_replace_string --match_string="__ANNOUNCE__" --replace_string="$is_public" --target_file="$home_path/.minetest/minetest.conf"
+ynh_replace_string --match_string="__PVP__" --replace_string="$pvp" --target_file="$home_path/.minetest/minetest.conf"
+ynh_replace_string --match_string="__CREATIVE__" --replace_string="$creative" --target_file="$home_path/.minetest/minetest.conf"
+ynh_replace_string --match_string="__DAMAGE__" --replace_string="$damage" --target_file="$home_path/.minetest/minetest.conf"
+
+
+#=================================================
+# CREATE WORLD
+#=================================================
+
+# Set permissions on logs
+chown -R minetest:minetest /var/log/minetest
+
+systemctl start minetest
+if [ $postgresql -eq 1 ]
+then
+systemctl stop minetest
+echo "pgsql_connection = host=127.0.0.1 user=$db_user password=$db_pwd dbname=$db_name" > $home_path/.minetest/worlds/world/world.mt
+sleep 5
+/opt/yunohost/$app/bin/minetestserver --migrate postgresql --world $home_path/.minetest/worlds/world
+fi
+
+#=================================================
+# STORE THE CONFIG FILE CHECKSUM
+#=================================================
+
+### `ynh_store_file_checksum` is used to store the checksum of a file.
+### That way, during the upgrade script, by using `ynh_backup_if_checksum_is_different`,
+### you can make a backup of this file before modifying it again if the admin had modified it.
+
+# Calculate and store the config file checksum into the app settings
+ynh_store_file_checksum --file="$home_path/.minetest/minetest.conf"
+
+#=================================================
+# GENERIC FINALIZATION
+#=================================================
+# SECURE FILES AND DIRECTORIES
+#=================================================
+
+### For security reason, any app should set the permissions to root: before anything else.
+### Then, if write authorization is needed, any access should be given only to directories
+### that really need such authorization.
+
+# Set permissions to app files
+chown -R root: $final_path
+chown -R minetest: $home_path
+
+#=================================================
+# SETUP LOGROTATE
+#=================================================
+ynh_print_info --message="Configuring log rotation..."
+
+### `ynh_use_logrotate` is used to configure a logrotate configuration for the logs of this app.
+### Use this helper only if there is effectively a log file for this app.
+### If you're not using this helper:
+###		- Remove the section "BACKUP LOGROTATE" in the backup script
+###		- Remove also the section "REMOVE LOGROTATE CONFIGURATION" in the remove script
+###		- As well as the section "RESTORE THE LOGROTATE CONFIGURATION" in the restore script
+###		- And the section "SETUP LOGROTATE" in the upgrade script
+
+# Use logrotate to manage application logfile(s)
+ynh_use_logrotate
+
+#=================================================
+# ADVERTISE SERVICE IN ADMIN PANEL
+#=================================================
+
+### `yunohost service add` is a CLI yunohost command to add a service in the admin panel.
+### You'll find the service in the 'services' section of YunoHost admin panel.
+### This CLI command would be useless if the app does not have any services (systemd or sysvinit)
+### If you're not using these lines:
+###		- You can remove these files in conf/.
+###		- Remove the section "REMOVE SERVICE FROM ADMIN PANEL" in the remove script
+###		- As well as the section "ADVERTISE SERVICE IN ADMIN PANEL" in the restore script
+
+yunohost service add $app --log "/var/log/$app/$app.log"
+# if using yunohost version 3.2 or more in the 'manifest.json', a description can be added
+#yunohost service add $app --description "$app daemon for XXX" --log "/var/log/$app/$app.log"
+
+#=================================================
+# RELOAD MINETEST
+#=================================================
+ynh_print_info --message="Reloading minetest..."
+
+systemctl restart minetest
+ynh_systemd_action -l "Server for gameid="minetest" listening on :::30000." -p "systemd"
+sleep 1
+
+#=================================================
+# END OF SCRIPT
+#=================================================
+
+ynh_print_info --message="Installation of $app completed"

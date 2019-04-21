@@ -1,0 +1,12 @@
+[Unit]
+Description=Minetest multiplayer server minetest.conf server config
+Documentation=man:minetestserver(6)
+After=network.target
+RequiresMountsFor=/home/yunohost.app/minetest
+[Service]
+Restart=on-failure
+User=minetest
+Group=minetest
+ExecStart=/opt/yunohost/minetest/bin/minetestserver --config /home/yunohost.app/minetest/.minetest/minetest.conf --logfile /var/log/minetest/minetest.log
+[Install]
+WantedBy=multi-user.target
