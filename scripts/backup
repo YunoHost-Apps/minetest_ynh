@@ -44,16 +44,10 @@ ynh_backup --src_path="$final_path"
 #=================================================
 # BACKUP THE HOME DIR
 #=================================================
-ynh_print_info --message="Backing up nginx web server configuration..."
+ynh_print_info --message="Backing up Minetest data..."
 
 ynh_backup --src_path="/home/yunohost.app/$app"
 
-#=================================================
-# BACKUP THE PHP-FPM CONFIGURATION
-#=================================================
-ynh_print_info --message="Backing up php-fpm configuration..."
-
-ynh_backup --src_path="/etc/php/7.0/fpm/pool.d/$app.conf"
 
 #=================================================
 # BACKUP THE POSTGRESQL DATABASE

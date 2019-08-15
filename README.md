@@ -9,7 +9,7 @@
 If you don't have YunoHost, please see [here](https://yunohost.org/#/install) to know how to install and enjoy it.*
 
 ## Overview
-Quick description of this app.
+Minetest is a free open-source voxel game engine with easy modding and game creation.
 
 **Shipped version:** 5.0.1
 

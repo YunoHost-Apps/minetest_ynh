@@ -1,0 +1,69 @@
+#!/bin/bash
+
+#=================================================
+# GENERIC STARTING
+#=================================================
+# IMPORT GENERIC HELPERS
+#=================================================
+
+source _common.sh
+source /usr/share/yunohost/helpers
+
+#=================================================
+# RETRIEVE ARGUMENTS
+#=================================================
+
+old_domain=$YNH_APP_OLD_DOMAIN
+
+new_domain=$YNH_APP_NEW_DOMAIN
+
+app=$YNH_APP_INSTANCE_NAME
+
+#=================================================
+# LOAD SETTINGS
+#=================================================
+ynh_print_info --message="Loading installation settings..."
+
+# Needed for helper "ynh_add_nginx_config"
+final_path=$(ynh_app_setting_get --app=$app --key=final_path)
+
+# Add settings here as needed by your application
+#db_name=$(ynh_app_setting_get --app=$app --key=db_name)
+#db_pwd=$(ynh_app_setting_get --app=$app --key=db_pwd)
+
+#=================================================
+# CHECK WHICH PARTS SHOULD BE CHANGED
+#=================================================
+
+change_domain=0
+if [ "$old_domain" != "$new_domain" ]
+then
+	change_domain=1
+fi
+
+change_path=0
+
+#=================================================
+# STANDARD MODIFICATIONS
+#=================================================
+#=================================================
+# SPECIFIC MODIFICATIONS
+#=================================================
+ynh_print_info --message="Stop Minetest..."
+systemctl stop minetest
+ynh_replace_string --match_string="$old_domain" --replace_string="$new_domain" --target_file="/home/yunohost.app/minetest/.minetest/minetest.conf"
+
+#=================================================
+# GENERIC FINALISATION
+#=================================================
+# RELOAD MINETEST
+#=================================================
+ynh_print_info --message="Reloading Minetest..."
+
+systemctl start minetest
+
+#=================================================
+# END OF SCRIPT
+#=================================================
+
+ynh_print_info --message="Change of URL completed for $app"

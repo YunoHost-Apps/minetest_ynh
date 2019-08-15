@@ -47,7 +47,7 @@
                 "default": false
             },
             {
-                "name": "postgresql",
+                "name": "use_postgresql",
                 "type": "boolean",
                 "ask": {
                     "en": "Do you want to use PostgreSQL? (more powerful but uses more disk space)",
