@@ -1,7 +1,7 @@
 {
     "name": "Minetest",
     "id": "minetest",
-    "version": "0.01",
+    "version": "5.1.0~ynh1",
     "packaging_format": 1,
     "description": {
         "en": "Minetest is a free, open source voxel game engine and game. Fully extendable. Need a client to connect to the server.",
@@ -24,7 +24,7 @@
     },
     "multi_instance": false,
     "services": [
-        "minetest"
+        "nginx"
     ],
     "arguments": {
         "install" : [
@@ -45,15 +45,6 @@
                     "fr": "Est-ce un serveur public ? (devons-nous l'annoncer ?)"
                 },
                 "default": false
-            },
-            {
-                "name": "use_postgresql",
-                "type": "boolean",
-                "ask": {
-                    "en": "Do you want to use PostgreSQL? (more powerful but uses more disk space)",
-                    "fr": "Est-ce que vous voulez utiliser PostgreSQL ? (plus puissant mais utilise plus d'espace disque)"
-                },
-                "default": true
             },
             {
                 "name": "servername",
