@@ -18,10 +18,7 @@ app=$YNH_APP_INSTANCE_NAME
 
 domain=$(ynh_app_setting_get --app=$app --key=domain)
 port=$(ynh_app_setting_get --app=$app --key=port)
-db_name=$(ynh_app_setting_get --app=$app --key=db_name)
-db_user=$db_name
 final_path=$(ynh_app_setting_get --app=$app --key=final_path)
-use_postgresql=$(ynh_app_setting_get --app=$app --key=use_postgresql)
 
 #=================================================
 # STANDARD REMOVE
@@ -43,17 +40,6 @@ ynh_print_info --message="Stopping and removing the systemd service"
 
 # Remove the dedicated systemd config
 ynh_remove_systemd_config
-
-#=================================================
-# REMOVE THE POSTGRESQL DATABASE
-#=================================================
-if [ $use_postgresql -eq 1 ]
-then
-ynh_print_info --message="Removing the PostgreSQL database"
-
-# Remove a database if it exists, along with the associated user
-ynh_psql_remove_db --user=$db_user --db=$db_name
-fi
 
 #=================================================
 # REMOVE DEPENDENCIES

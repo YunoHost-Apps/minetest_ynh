@@ -26,8 +26,6 @@ app=$YNH_APP_INSTANCE_NAME
 
 final_path=$(ynh_app_setting_get --app=$app --key=final_path)
 domain=$(ynh_app_setting_get --app=$app --key=domain)
-db_name=$(ynh_app_setting_get --app=$app --key=db_name)
-postgresql=$(ynh_app_setting_get --app=$app --key=postgresql)
 
 #=================================================
 # STANDARD BACKUP STEPS
@@ -47,17 +45,6 @@ ynh_backup --src_path="$final_path"
 ynh_print_info --message="Backing up Minetest data..."
 
 ynh_backup --src_path="/home/yunohost.app/$app"
-
-
-#=================================================
-# BACKUP THE POSTGRESQL DATABASE
-#=================================================
-if [ $postgresql -eq 1 ]
-then
-ynh_print_info --message="Backing up the PostgreSQL database..."
-
-ynh_psql_dump_db --database="$db_name" > db.sql
-fi
 
 #=================================================
 # SPECIFIC BACKUP

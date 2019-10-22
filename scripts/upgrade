@@ -19,8 +19,6 @@ app=$YNH_APP_INSTANCE_NAME
 domain=$(ynh_app_setting_get --app=$app --key=domain)
 is_public=$(ynh_app_setting_get --app=$app --key=is_public)
 final_path=$(ynh_app_setting_get --app=$app --key=final_path)
-use_postgresql=$(ynh_app_setting_get --app=$app --key=use_postgresql)
-db_name=$(ynh_app_setting_get --app=$app --key=db_name)
 
 #=================================================
 # ENSURE DOWNWARD COMPATIBILITY
@@ -34,12 +32,6 @@ if [ "$is_public" = "Yes" ]; then
 elif [ "$is_public" = "No" ]; then
 	ynh_app_setting_set --app=$app --key=is_public --value=0
 	is_public=0
-fi
-
-# If db_name doesn't exist, create it
-if [ -z $db_name ]; then
-	db_name=$(ynh_sanitize_dbid --db_name=$app)
-	ynh_app_setting_set --app=$app --key=db_name --value=$db_name
 fi
 
 # If final_path doesn't exist, create it
@@ -115,14 +107,10 @@ ynh_add_systemd_config
 cd /opt/yunohost/$app
 # Download Minetest Game
 git clone --depth 1 https://github.com/minetest/minetest_game.git games/minetest_game -b stable-5
-if [ $use_postgresql -eq 1 ]
-then
-cmake . -DRUN_IN_PLACE=TRUE -DENABLE_POSTGRESQL=TRUE -DPostgreSQL_TYPE_INCLUDE_DIR=/usr/include/postgresql/ -DENABLE_LUAJIT=TRUE -DBUILD_CLIENT=FALSE -DBUILD_SERVER=TRUE
-else
-cmake . -DRUN_IN_PLACE=TRUE -DENABLE_LUAJIT=TRUE -DBUILD_CLIENT=FALSE -DBUILD_SERVER=TRUE
-fi
 
-make -j 2
+cmake . -DRUN_IN_PLACE=TRUE -DENABLE_LUAJIT=TRUE -DBUILD_CLIENT=FALSE -DBUILD_SERVER=TRUE
+
+make -j$(nproc)
 
 ### Verify the checksum of a file, stored by `ynh_store_file_checksum` in the install script.
 ### And create a backup of this file if the checksum is different. So the file will be backed up if the admin had modified it.
@@ -150,11 +138,11 @@ ynh_use_logrotate --non-append
 chown -R root: $final_path
 
 #=================================================
-# RELOAD NGINX
+# RELOAD MINETEST
 #=================================================
-ynh_print_info --message="Reloading nginx web server..."
+ynh_print_info --message="Restarting Minetest..."
 
-systemctl reload nginx
+systemctl restart minetest
 
 #=================================================
 # END OF SCRIPT

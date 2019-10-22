@@ -22,7 +22,6 @@ ynh_abort_if_errors
 
 domain=$YNH_APP_ARG_DOMAIN
 is_public=$YNH_APP_ARG_IS_PUBLIC
-use_postgresql=$YNH_APP_ARG_USE_POSTGRESQL
 pvp=$YNH_APP_ARG_PVP
 creative=$YNH_APP_ARG_CREATIVE
 damage=$YNH_APP_ARG_DAMAGE
@@ -60,7 +59,6 @@ ynh_print_info --message="Storing installation settings..."
 
 ynh_app_setting_set --app=$app --key=domain --value=$domain
 ynh_app_setting_set --app=$app --key=is_public --value=$is_public
-ynh_app_setting_set --app=$app --key=use_postgresql --value=$use_postgresql
 ynh_app_setting_set --app=$app --key=pvp --value=$pvp
 ynh_app_setting_set --app=$app --key=creative --value=$creative
 ynh_app_setting_set --app=$app --key=damage --value=$damage
@@ -98,23 +96,6 @@ ynh_print_info --message="Installing dependencies..."
 ###		- And the section "UPGRADE DEPENDENCIES" in the upgrade script
 
 ynh_install_app_dependencies $pkg_dependencies
-#=================================================
-# CREATE A POSTGRESQL DATABASE
-#=================================================
-if [ $use_postgresql -eq 1 ]
-then
-ynh_print_info --message="Creating a PostgreSQL database..."
-
-# Create a database, an user and its password. Then store the password in the app's config
-#
-# After executing this helper, the password of the created database will be available in $db_pwd
-# It will also be stored as "psqlpwd" into the app settings.
-
-ynh_psql_test_if_first_run
-db_name=$(ynh_sanitize_dbid $app)
-ynh_app_setting_set --app=$app --key=db_name --value=$db_name
-ynh_psql_setup_db --db_user=$db_name --db_name=$db_name
-fi
 
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
@@ -178,12 +159,8 @@ ynh_add_systemd_config
 cd /opt/yunohost/$app
 # Download Minetest Game
 git clone --depth 1 https://github.com/minetest/minetest_game.git games/minetest_game -b stable-5
-if [ $use_postgresql -eq 1 ]
-then
-cmake . -DRUN_IN_PLACE=TRUE -DENABLE_POSTGRESQL=TRUE -DPostgreSQL_TYPE_INCLUDE_DIR=/usr/include/postgresql/ -DENABLE_LUAJIT=TRUE -DBUILD_CLIENT=FALSE -DBUILD_SERVER=TRUE
-else
+
 cmake . -DRUN_IN_PLACE=TRUE -DENABLE_LUAJIT=TRUE -DBUILD_CLIENT=FALSE -DBUILD_SERVER=TRUE
-fi
 
 make -j$(nproc)
 
@@ -220,13 +197,6 @@ fi
 chown -R minetest:minetest /var/log/minetest
 
 systemctl start minetest
-if [ $use_postgresql -eq 1 ]
-then
-systemctl stop minetest
-echo "pgsql_connection = host=127.0.0.1 user=$db_user password=$db_pwd dbname=$db_name" > $home_path/.minetest/worlds/world/world.mt
-sleep 5
-/opt/yunohost/$app/bin/minetestserver --migrate postgresql --world $home_path/.minetest/worlds/world
-fi
 
 #=================================================
 # STORE THE CONFIG FILE CHECKSUM
