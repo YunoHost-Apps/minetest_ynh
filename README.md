@@ -1,7 +1,8 @@
-# Minetest app for YunoHost
+# Minetest for YunoHost
 
 [![Integration level](https://dash.yunohost.org/integration/minetest.svg)](https://dash.yunohost.org/appci/app/minetest)
-[![Install REPLACEBYYOURAPP with YunoHost](https://install-app.yunohost.org/install-with-yunohost.png)](https://install-app.yunohost.org/?app=minetest)
+
+[![Install Minetest with YunoHost](https://install-app.yunohost.org/install-with-yunohost.png)](https://install-app.yunohost.org/?app=minetest)
 
 *[Lire ce readme en français.](./README_fr.md)*
 
@@ -11,7 +12,7 @@ If you don't have YunoHost, please see [here](https://yunohost.org/#/install) to
 ## Overview
 Minetest is a free open-source voxel game engine with easy modding and game creation.
 
-**Shipped version:** 5.0.1
+**Shipped version:** 5.1.0
 
 ## Screenshots
 
@@ -35,6 +36,7 @@ How to configure this app: by SSH
 #### Multi-users support
 
 Are LDAP and HTTP auth supported? No
+
 Can the app be used by multiple users? Yes
 
 #### Supported architectures
@@ -57,6 +59,14 @@ You can't migrate directly with an update.
 	* Stop Minetest service `sudo systemctl stop minetest`
 	* Copy the folder you have copied before in `/home/yunohost.app/minetest/.minetest/worlds`
 	* Start the Minetest service `sudo systemctl start minetest`
+
+* Installing mods
+	* For installing mods you need to create a mods folder in /home/yunohost.app/minetest/.minetest
+	* Clone the repo of the mod in this folder (ex: git clone https://github.com/minetest-mods/mesecons)
+	* Edit /home/yunohost.app/minetest/.minetest/worlds/world/world.mt and add at the end ```load_mod_mesecons = true```
+	* Restart Minetest with ```sudo systemctl restart minetest```
+	* The mod is now installed :)
+
 
 **More information on the documentation page:**
 https://yunohost.org/packaging_apps
