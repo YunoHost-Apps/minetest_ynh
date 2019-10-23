@@ -30,6 +30,15 @@ servername=$(ynh_app_setting_get --app=$app --key=servername)
 #=================================================
 # ENSURE DOWNWARD COMPATIBILITY
 #=================================================
+ynh_print_info --message="Checking version..."
+version=ynh_app_upstream_version
+
+if [ "$version" = "0.01" ]; then
+then
+ynh_die --message="You can't upgrade to this version with simple upgrade. Please read the readme for upgrading https://github.com/YunoHost-Apps/minetest_ynh#additional-information ..."
+fi
+
+
 ynh_print_info --message="Ensuring downward compatibility..."
 
 # Fix is_public as a boolean value
@@ -96,6 +105,20 @@ ynh_print_info --message="Upgrading systemd configuration..."
 
 # Create a dedicated systemd config
 ynh_add_systemd_config
+
+#=================================================
+# COPY CONFIG FILE
+#=================================================
+
+if [ -e /home/yunohost.app/$app ]
+then
+echo "Nothing to do..."
+else
+mkdir -p /home/yunohost.app/$app/.minetest/
+mkdir /home/yunohost.app/$app/.minetest/worlds/
+fi
+
+cp -a ../conf/minetest.conf /home/yunohost.app/$app/.minetest/
 
 #=================================================
 # SPECIFIC UPGRADE
