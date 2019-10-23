@@ -33,7 +33,7 @@ domain=$(ynh_app_setting_get --app=$app --key=domain)
 # BACKUP THE APP MAIN DIR
 #=================================================
 # Stop Minetest before backup...
-systemctl stop minetest
+systemctl stop $app
 
 ynh_print_info --message="Backing up the main app directory..."
 
@@ -66,6 +66,6 @@ ynh_backup --src_path="/etc/systemd/system/$app.service"
 # END OF SCRIPT
 #=================================================
 # Restart Minetest
-systemctl start minetest
+systemctl start $app
 
 ynh_print_info --message="Backup script completed for $app. (YunoHost will then actually copy those files to the archive)."

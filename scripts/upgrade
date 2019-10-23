@@ -17,9 +17,15 @@ ynh_print_info --message="Loading installation settings..."
 app=$YNH_APP_INSTANCE_NAME
 
 domain=$(ynh_app_setting_get --app=$app --key=domain)
+port=$(ynh_app_setting_get --app=$app --key=port)
 is_public=$(ynh_app_setting_get --app=$app --key=is_public)
 final_path=$(ynh_app_setting_get --app=$app --key=final_path)
 home_path=$(ynh_app_setting_get --app=$app --key=home_path)
+pvp=$(ynh_app_setting_get --app=$app --key=pvp)
+creative=$(ynh_app_setting_get --app=$app --key=creative)
+damage=$(ynh_app_setting_get --app=$app --key=damage)
+servername=$(ynh_app_setting_get --app=$app --key=servername)
+
 
 #=================================================
 # ENSURE DOWNWARD COMPATIBILITY
@@ -37,7 +43,7 @@ fi
 
 # If final_path doesn't exist, create it
 if [ -z $final_path ]; then
-	final_path=/var/www/$app
+	final_path=/opt/yunohost/$app
 	ynh_app_setting_set --app=$app --key=final_path --value=$final_path
 fi
 
@@ -95,19 +101,37 @@ ynh_add_systemd_config
 # SPECIFIC UPGRADE
 #=================================================
 # Compile Minetest
-cd /opt/yunohost/$app
+pushd /opt/yunohost/$app
 # Download Minetest Game
-git clone --depth 1 https://github.com/minetest/minetest_game.git games/minetest_game -b stable-5
+ynh_setup_source --dest_dir=/opt/yunohost/$app/games/minetest_game --source_id=minetest_game
 
 cmake . -DRUN_IN_PLACE=TRUE -DENABLE_LUAJIT=TRUE -DBUILD_CLIENT=FALSE -DBUILD_SERVER=TRUE
 
 make -j$(nproc)
 
+popd
+
 ### Verify the checksum of a file, stored by `ynh_store_file_checksum` in the install script.
 ### And create a backup of this file if the checksum is different. So the file will be backed up if the admin had modified it.
-ynh_backup_if_checksum_is_different --file="$final_path/CONFIG_FILE"
+ynh_backup_if_checksum_is_different --file="$home_path/.minetest/minetest.conf"
 # Recalculate and store the checksum of the file for the next upgrade.
 ynh_store_file_checksum --file="$home_path/.minetest/minetest.conf"
+
+#=================================================
+# MODIFY A CONFIG FILE
+#=================================================
+
+### `ynh_replace_string` is used to replace a string in a file.
+### (It's compatible with sed regular expressions syntax)
+
+ynh_replace_string --match_string="__APP__" --replace_string="$app" --target_file="$home_path/.minetest/minetest.conf"
+ynh_replace_string --match_string="__PORT__" --replace_string="$port" --target_file="$home_path/.minetest/minetest.conf"
+ynh_replace_string --match_string="__SERVERNAME__" --replace_string="$servername" --target_file="$home_path/.minetest/minetest.conf"
+ynh_replace_string --match_string="__DOMAIN__" --replace_string="$domain" --target_file="$home_path/.minetest/minetest.conf"
+ynh_replace_string --match_string="__ANNOUNCE__" --replace_string="$is_public" --target_file="$home_path/.minetest/minetest.conf"
+ynh_replace_string --match_string="__PVP__" --replace_string="$pvp" --target_file="$home_path/.minetest/minetest.conf"
+ynh_replace_string --match_string="__CREATIVE__" --replace_string="$creative" --target_file="$home_path/.minetest/minetest.conf"
+ynh_replace_string --match_string="__DAMAGE__" --replace_string="$damage" --target_file="$home_path/.minetest/minetest.conf"
 
 #=================================================
 # SETUP LOGROTATE
@@ -127,13 +151,14 @@ ynh_use_logrotate --non-append
 
 # Set permissions on app files
 chown -R root: $final_path
+chown -R $app: $home_path
 
 #=================================================
 # RELOAD MINETEST
 #=================================================
 ynh_print_info --message="Restarting Minetest..."
 
-systemctl restart minetest
+systemctl restart $app
 
 #=================================================
 # END OF SCRIPT

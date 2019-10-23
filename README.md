@@ -61,7 +61,7 @@ You can't migrate directly with an update.
 	* Start the Minetest service `sudo systemctl start minetest`
 
 * Installing mods
-	* For installing mods you need to create a mods folder in /home/yunohost.app/minetest/.minetest
+	* For installing mods you need to create a worldmods folder in /home/yunohost.app/minetest/.minetest/worlds/world/.
 	* Clone the repo of the mod in this folder (ex: git clone https://github.com/minetest-mods/mesecons)
 	* Edit /home/yunohost.app/minetest/.minetest/worlds/world/world.mt and add at the end ```load_mod_mesecons = true```
 	* Restart Minetest with ```sudo systemctl restart minetest```
