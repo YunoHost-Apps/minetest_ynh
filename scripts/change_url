@@ -60,7 +60,7 @@ ynh_replace_string --match_string="$old_domain" --replace_string="$new_domain" -
 #=================================================
 ynh_print_info --message="Reloading Minetest..."
 
-systemctl start $app
+systemctl restart $app
 
 #=================================================
 # END OF SCRIPT
