@@ -118,8 +118,6 @@ mkdir -p /home/yunohost.app/$app/.minetest/
 mkdir /home/yunohost.app/$app/.minetest/worlds/
 fi
 
-cp -a ../conf/minetest.conf /home/yunohost.app/$app/.minetest/
-
 #=================================================
 # SPECIFIC UPGRADE
 #=================================================
@@ -134,15 +132,14 @@ make -j$(nproc)
 
 popd
 
-### Verify the checksum of a file, stored by `ynh_store_file_checksum` in the install script.
-### And create a backup of this file if the checksum is different. So the file will be backed up if the admin had modified it.
-ynh_backup_if_checksum_is_different --file="$home_path/.minetest/minetest.conf"
-# Recalculate and store the checksum of the file for the next upgrade.
-ynh_store_file_checksum --file="$home_path/.minetest/minetest.conf"
 
 #=================================================
 # MODIFY A CONFIG FILE
 #=================================================
+
+ynh_backup_if_checksum_is_different --file="$home_path/.minetest/minetest.conf"
+
+cp ../conf/minetest.conf $home/.minetest/minetest.conf
 
 ### `ynh_replace_string` is used to replace a string in a file.
 ### (It's compatible with sed regular expressions syntax)
@@ -155,6 +152,8 @@ ynh_replace_string --match_string="__ANNOUNCE__" --replace_string="$is_public" -
 ynh_replace_string --match_string="__PVP__" --replace_string="$pvp" --target_file="$home_path/.minetest/minetest.conf"
 ynh_replace_string --match_string="__CREATIVE__" --replace_string="$creative" --target_file="$home_path/.minetest/minetest.conf"
 ynh_replace_string --match_string="__DAMAGE__" --replace_string="$damage" --target_file="$home_path/.minetest/minetest.conf"
+
+ynh_store_file_checksum --file="$home_path/.minetest/minetest.conf"
 
 #=================================================
 # SETUP LOGROTATE
