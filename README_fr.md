@@ -1,13 +1,13 @@
 # Minetest for YunoHost
 
-[![Niveau d'intégration](https://dash.yunohost.org/integration/minetest.svg)](https://dash.yunohost.org/appci/app/minetest)](https://dash.yunohost.org/appci/app/minetest)
+[![Niveau d'intégration](https://dash.yunohost.org/integration/minetest.svg)](https://dash.yunohost.org/appci/app/minetest)
 
-[![Installer Minetest avec YunoHost](https://install-app.yunohost.org/install-with-yunohost.png)](https://install-app.yunohost.org/?app=minetest)(https://install-app.yunohost.org/?app=minetest)
+[![Installer Minetest avec YunoHost](https://install-app.yunohost.org/install-with-yunohost.png)](https://install-app.yunohost.org/?app=minetest)
 
 *[Read this readme in English.](./README.md)*
 
 > *Ce package vous permet d'installer Minetest rapidement et simplement sur un serveur YunoHost.
-Si vous n'avez pas YunoHost, veuillez consulter[ici](https://yunohost.org/#/install) pour savoir comment l'installer et en profiter.*
+Si vous n'avez pas YunoHost, veuillez consulter [ici](https://yunohost.org/#/install) pour savoir comment l'installer et en profiter.*
 
 ## Aperçu
 Minetest est un moteur de jeu voxel open-source gratuit avec modding et création de jeu faciles.
@@ -41,9 +41,9 @@ L'application peut-elle être utilisée par plusieurs utilisateurs ? Oui
 
 ##### Architectures supportées
 
-* x86-64b - [![Build Status](https://ci-apps.yunohost.org/ci/logs/minetest%20%28Community%29.svg)](https://ci-apps.yunohost.org/ci/apps/minetest/)](https://ci-apps.yunohost.org/ci/apps/minetest/)
-* ARMv8-A - [![Build Status](https://ci-apps-arm.yunohost.org/ci/logs/minetest%20%28Community%29.svg)](https://ci-apps-arm.yunohost.org/ci/apps/minetest/)](https://ci-apps-arm.yunohost.org/ci/apps/minetest/)
-* Jessie x86-64b - [![Build Status](https://ci-stretch.nohost.me/ci/logs/minetest%20%28Community%29.svg)](https://ci-stretch.nohost.me/ci/apps/minetest/)](https://ci-stretch.nohost.me/ci/apps/minetest/)
+* x86-64b - [![Build Status](https://ci-apps.yunohost.org/ci/logs/minetest%20%28Community%29.svg)](https://ci-apps.yunohost.org/ci/apps/minetest/)
+* ARMv8-A - [![Build Status](https://ci-apps-arm.yunohost.org/ci/logs/minetest%20%28Community%29.svg)](https://ci-apps-arm.yunohost.org/ci/apps/minetest/)
+* Jessie x86-64b - [![Build Status](https://ci-stretch.nohost.me/ci/logs/minetest%20%28Community%29.svg)](https://ci-stretch.nohost.me/ci/apps/minetest/)
 
 ## Limitations
 
