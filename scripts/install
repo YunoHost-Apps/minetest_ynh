@@ -50,7 +50,7 @@ final_path=/opt/yunohost/$app
 test ! -e "$final_path" || ynh_die "This path already contains a folder"
 
 # Register (book) web path
-ynh_webpath_register --app=$app --domain=$domain --path_url=/
+ynh_webpath_register --app=$app --domain=$domain --path_url="/"
 
 #=================================================
 # STORE SETTINGS FROM MANIFEST
