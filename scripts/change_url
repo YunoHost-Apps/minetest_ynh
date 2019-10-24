@@ -60,7 +60,7 @@ ynh_replace_string --match_string="$old_domain" --replace_string="$new_domain" -
 #=================================================
 ynh_print_info --message="Reloading Minetest..."
 
-ynh_systemd_action --action=restart --line_match="Server for gameid=\"$app\" listening on :::30000." --log_path="/var/log/$app/minetest.log"
+ynh_systemd_action --service_name=$app --action="restart" --log_path="/var/log/$app/$app.log"
 
 #=================================================
 # END OF SCRIPT

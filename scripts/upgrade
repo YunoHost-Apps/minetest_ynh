@@ -34,7 +34,6 @@ ynh_print_info --message="Checking version..."
 version=ynh_app_upstream_version
 
 if [ "$version" = "0.01" ]; then
-then
 ynh_die --message="You can't upgrade to this version with simple upgrade. Please read the readme for upgrading https://github.com/YunoHost-Apps/minetest_ynh#additional-information ..."
 fi
 
@@ -182,7 +181,7 @@ chown -R $app: $home_path
 #=================================================
 ynh_print_info --message="Restarting Minetest..."
 
-ynh_systemd_action --action=restart --line_match="Server for gameid=\"$app\" listening on :::30000." --log_path="/var/log/$app/minetest.log"
+ynh_systemd_action --service_name=$app --action="restart" --log_path="/var/log/$app/$app.log"
 
 #=================================================
 # END OF SCRIPT
