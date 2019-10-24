@@ -13,6 +13,10 @@ source /usr/share/yunohost/helpers
 # MANAGE SCRIPT FAILURE
 #=================================================
 
+ynh_clean_setup () {
+	ynh_clean_check_starting # Need for the param line_match of ynh_systemd_action
+}
+
 # Exit if an error occurs during the execution of the script
 ynh_abort_if_errors
 
@@ -38,6 +42,7 @@ servername=$YNH_APP_ARG_SERVERNAME
 ### guaranteed to be unique. This is a good unique identifier to define installation path,
 ### db names, ...
 app=$YNH_APP_INSTANCE_NAME
+path_url="/"
 
 #=================================================
 # CHECK IF THE APP CAN BE INSTALLED WITH THESE ARGS
@@ -50,7 +55,7 @@ final_path=/opt/yunohost/$app
 test ! -e "$final_path" || ynh_die "This path already contains a folder"
 
 # Register (book) web path
-ynh_webpath_register --app=$app --domain=$domain --path_url="/"
+ynh_webpath_register --app=$app --domain=$domain --path_url=$path_url
 
 #=================================================
 # STORE SETTINGS FROM MANIFEST
@@ -58,6 +63,7 @@ ynh_webpath_register --app=$app --domain=$domain --path_url="/"
 ynh_print_info --message="Storing installation settings..."
 
 ynh_app_setting_set --app=$app --key=domain --value=$domain
+ynh_app_setting_set --app=$app --key=path --value=$path_url
 ynh_app_setting_set --app=$app --key=is_public --value=$is_public
 ynh_app_setting_set --app=$app --key=pvp --value=$pvp
 ynh_app_setting_set --app=$app --key=creative --value=$creative
@@ -198,7 +204,7 @@ fi
 # Set permissions on logs
 chown -R $app:$app /var/log/$app
 
-systemctl start $app
+ynh_systemd_action --action=start
 
 #=================================================
 # STORE THE CONFIG FILE CHECKSUM
@@ -253,7 +259,7 @@ ynh_use_logrotate
 ###		- Remove the section "REMOVE SERVICE FROM ADMIN PANEL" in the remove script
 ###		- As well as the section "ADVERTISE SERVICE IN ADMIN PANEL" in the restore script
 
-yunohost service add $app --log "/var/log/$app/$app.log"
+yunohost service add $app --log "/var/log/$app/minetest.log"
 # if using yunohost version 3.2 or more in the 'manifest.json', a description can be added
 #yunohost service add $app --description "$app daemon for XXX" --log "/var/log/$app/$app.log"
 

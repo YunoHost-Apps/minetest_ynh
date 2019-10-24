@@ -14,6 +14,10 @@ source /usr/share/yunohost/helpers
 # MANAGE SCRIPT FAILURE
 #=================================================
 
+ynh_clean_setup () {
+	ynh_clean_check_starting # Need for the param line_match of ynh_systemd_action
+}
+
 # Exit if an error occurs during the execution of the script
 ynh_abort_if_errors
 
@@ -33,7 +37,7 @@ domain=$(ynh_app_setting_get --app=$app --key=domain)
 # BACKUP THE APP MAIN DIR
 #=================================================
 # Stop Minetest before backup...
-systemctl stop $app
+ynh_systemd_action --action=stop
 
 ynh_print_info --message="Backing up the main app directory..."
 
@@ -66,6 +70,6 @@ ynh_backup --src_path="/etc/systemd/system/$app.service"
 # END OF SCRIPT
 #=================================================
 # Restart Minetest
-systemctl start $app
+ynh_systemd_action --action=start --line_match="Server for gameid=\"$app\" listening on :::30000." --log_path="/var/log/$app/minetest.log"
 
 ynh_print_info --message="Backup script completed for $app. (YunoHost will then actually copy those files to the archive)."

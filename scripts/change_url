@@ -50,7 +50,7 @@ change_path=0
 # SPECIFIC MODIFICATIONS
 #=================================================
 ynh_print_info --message="Stop Minetest..."
-systemctl stop $app
+ynh_systemd_action --action=restart
 ynh_replace_string --match_string="$old_domain" --replace_string="$new_domain" --target_file="/home/yunohost.app/$app/.minetest/minetest.conf"
 
 #=================================================
@@ -60,7 +60,7 @@ ynh_replace_string --match_string="$old_domain" --replace_string="$new_domain" -
 #=================================================
 ynh_print_info --message="Reloading Minetest..."
 
-systemctl restart $app
+ynh_systemd_action --action=restart --line_match="Server for gameid=\"$app\" listening on :::30000." --log_path="/var/log/$app/minetest.log"
 
 #=================================================
 # END OF SCRIPT

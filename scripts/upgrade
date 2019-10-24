@@ -64,6 +64,8 @@ ynh_print_info --message="Backing up the app before upgrading (may take a while)
 # Backup the current version of the app
 ynh_backup_before_upgrade
 ynh_clean_setup () {
+	ynh_clean_check_starting # Need for the param line_match of ynh_systemd_action
+
 	# restore it if the upgrade fails
 	ynh_restore_upgradebackup
 }
