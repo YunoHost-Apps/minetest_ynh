@@ -121,23 +121,25 @@ ynh_setup_source --dest_dir="$final_path"
 #=================================================
 ynh_print_info --message="Configuring system user..."
 
-# Create a system user
-ynh_system_user_create --username=$app --home_dir=/home/yunohost.app/$app --use_shell
 home_path=/home/yunohost.app/$app
+ynh_app_setting_set --app=$app --key=home_path --value=$home_path
+
+# Create a system user
+ynh_system_user_create --username=$app --home_dir=$home_path --use_shell
 
 #=================================================
 # COPY CONFIG FILE
 #=================================================
 
-if [ -e /home/yunohost.app/$app ]
+if [ -e $home_path ]
 then
 echo "Nothing to do..."
 else
-mkdir -p /home/yunohost.app/$app/.minetest/
-mkdir /home/yunohost.app/$app/.minetest/worlds/
+mkdir -p $home_path/.minetest/
+mkdir $home_path/.minetest/worlds/
 fi
 
-cp -a ../conf/minetest.conf /home/yunohost.app/$app/.minetest/
+cp -a ../conf/minetest.conf $home_path/.minetest/
 
 #=================================================
 # SETUP SYSTEMD

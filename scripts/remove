@@ -19,6 +19,7 @@ app=$YNH_APP_INSTANCE_NAME
 domain=$(ynh_app_setting_get --app=$app --key=domain)
 port=$(ynh_app_setting_get --app=$app --key=port)
 final_path=$(ynh_app_setting_get --app=$app --key=final_path)
+home_path=$(ynh_app_setting_get --app=$app --key=home_path)
 
 #=================================================
 # STANDARD REMOVE
@@ -56,7 +57,7 @@ ynh_print_info --message="Removing app main directory"
 
 # Remove the app directory securely
 ynh_secure_remove --file="$final_path"
-ynh_secure_remove --file="/home/yunohost.app/$app"
+ynh_secure_remove --file="$home_path"
 
 #=================================================
 # REMOVE LOGROTATE CONFIGURATION

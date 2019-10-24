@@ -26,6 +26,7 @@ ynh_print_info --message="Loading installation settings..."
 
 # Needed for helper "ynh_add_nginx_config"
 final_path=$(ynh_app_setting_get --app=$app --key=final_path)
+home_path=$(ynh_app_setting_get --app=$app --key=home_path)
 
 # Add settings here as needed by your application
 #db_name=$(ynh_app_setting_get --app=$app --key=db_name)
@@ -51,7 +52,7 @@ change_path=0
 #=================================================
 ynh_print_info --message="Stop Minetest..."
 ynh_systemd_action --action=restart
-ynh_replace_string --match_string="$old_domain" --replace_string="$new_domain" --target_file="/home/yunohost.app/$app/.minetest/minetest.conf"
+ynh_replace_string --match_string="$old_domain" --replace_string="$new_domain" --target_file="$home_path/.minetest/minetest.conf"
 
 #=================================================
 # GENERIC FINALISATION
