@@ -2,5 +2,5 @@ SOURCE_URL=https://github.com/minetest/minetest_game/archive/5.1.0.tar.gz
 SOURCE_SUM=f165fac0081bf4797cf9094282cc25034b2347b3ea94e6bb8d9329c5ee63f41b
 SOURCE_SUM_PRG=sha256sum
 SOURCE_FORMAT=tar.gz
-SOURCE_IN_SUBDIR=false
+SOURCE_IN_SUBDIR=true
 SOURCE_FILENAME=minetest_game-5.1.0.tar.gz
