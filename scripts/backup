@@ -77,6 +77,6 @@ ynh_backup --src_path="/etc/systemd/system/$app.service"
 # END OF SCRIPT
 #=================================================
 # Restart Minetest
-ynh_systemd_action --service_name=$app --action="start" --log_path="/var/log/$app/$app.log"
+ynh_systemd_action --service_name=$app --action="start" --log_path="/var/log/$app/minetest.log"
 
 ynh_print_info --message="Backup script completed for $app. (YunoHost will then actually copy those files to the archive)."
