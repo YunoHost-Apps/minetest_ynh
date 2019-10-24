@@ -140,7 +140,7 @@ popd
 
 ynh_backup_if_checksum_is_different --file="$home_path/.minetest/minetest.conf"
 
-cp ../conf/minetest.conf $home/.minetest/minetest.conf
+cp ../conf/minetest.conf $home_path/.minetest/minetest.conf
 
 ### `ynh_replace_string` is used to replace a string in a file.
 ### (It's compatible with sed regular expressions syntax)
