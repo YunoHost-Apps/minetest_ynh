@@ -29,7 +29,7 @@
     "arguments": {
         "install" : [
             {
-                "name": "domain",
+                "name": "server_domain",
                 "type": "domain",
                 "ask": {
                     "en": "Choose a domain for your minetest server",
