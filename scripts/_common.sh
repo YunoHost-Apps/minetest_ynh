@@ -12,6 +12,23 @@ pkg_dependencies="build-essential libirrlicht-dev cmake libbz2-dev libpng-dev li
 # PERSONAL HELPERS
 #=================================================
 
+# To remove once https://github.com/YunoHost/yunohost/pull/827 get merged
+ynh_find_port () {
+	# Declare an array to define the options of this helper.
+	local legacy_args=p
+	declare -Ar args_array=( [p]=port= )
+	local port
+	# Manage arguments with getopts
+	ynh_handle_getopts_args "$@"
+
+	test -n "$port" || ynh_die --message="The argument of ynh_find_port must be a valid port."
+	while ss -nltu | grep -q -w :$port       # Check if the port is free
+	do
+		port=$((port+1))	# Else, pass to next port
+	done
+	echo $port
+}
+
 #=================================================
 # EXPERIMENTAL HELPERS
 #=================================================
