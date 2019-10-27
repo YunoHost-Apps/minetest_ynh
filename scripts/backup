@@ -1,61 +1,80 @@
 #!/bin/bash
-# Exit on command errors and treat unset variables as an error
-set -eu
 
 #=================================================
-# GENERIC STARTING
-#=================================================
-
+# GENERIC START
 #=================================================
 # IMPORT GENERIC HELPERS
 #=================================================
 
-if [ ! -e _common.sh ]; then
-    # Get the functions file if not present in the current directory
-    sudo cp ../settings/scripts/_common.sh ./_common.sh
-    sudo chmod a+rx _common.sh
-fi
-source _common.sh
+#Keep this path for calling _common.sh inside the execution's context of backup and restore scripts
+source ../settings/scripts/_common.sh
 source /usr/share/yunohost/helpers
+
+#=================================================
+# MANAGE SCRIPT FAILURE
+#=================================================
+
+ynh_clean_setup () {
+	ynh_clean_check_starting # Need for the param line_match of ynh_systemd_action
+}
+
+# Exit if an error occurs during the execution of the script
+ynh_abort_if_errors
 
 #=================================================
 # LOAD SETTINGS
 #=================================================
+ynh_print_info --message="Loading installation settings..."
 
 app=$YNH_APP_INSTANCE_NAME
 
-pvp=$(ynh_app_setting_get $app pvp)
-damage=$(ynh_app_setting_get $app damage)
-domain=$(ynh_app_setting_get $app domain)
-creative=$(ynh_app_setting_get $app creative)
-is_public=$(ynh_app_setting_get $app is_public)
+final_path=$(ynh_app_setting_get --app=$app --key=final_path)
+home_path=$(ynh_app_setting_get --app=$app --key=home_path)
 
 #=================================================
-# BACKUP STEPS
+# STANDARD BACKUP STEPS
 #=================================================
-# CONFIGURATION
+# BACKUP THE APP MAIN DIR
 #=================================================
-CHECK_SIZE "/etc/minetest/minetest.conf"
-ynh_backup "/etc/minetest/minetest.conf"
+# STOP SYSTEMD SERVICE
+#=================================================
+ynh_systemd_action --service_name=$app --action="stop" --log_path="/var/log/$app/$app.log"
 
 #=================================================
-# DATA
+# BACKUP THE APP MAIN DIR
 #=================================================
-echo ".backup /tmp/map.sqlite" | sqlite3 /var/games/minetest-server/.minetest/worlds/world/map.sqlite
-ls -lh /tmp/map.sqlite
-CHECK_SIZE "/var/games/minetest-server/"
-ynh_backup "/var/games/minetest-server/"
 
-CHECK_SIZE "/tmp/map.sqlite"
-ynh_backup "/tmp/map.sqlite"
+ynh_print_info --message="Backing up the main app directory..."
+
+ynh_backup --src_path="$final_path"
 
 #=================================================
-# BACKUP OF APT PREFERENCES AND SOURCES.LIST
+# BACKUP THE HOME DIR
 #=================================================
-CHECK_SIZE "/etc/apt/sources.list.d/$app.list"
-ynh_backup "/etc/apt/sources.list.d/$app.list"
+ynh_print_info --message="Backing up Minetest data..."
 
-CHECK_SIZE "/etc/apt/preferences.d/00MinetestPinning"
-ynh_backup "/etc/apt/preferences.d/00MinetestPinning"
+ynh_backup --src_path="$home_path"
 
+#=================================================
+# SPECIFIC BACKUP
+#=================================================
+# BACKUP LOGROTATE
+#=================================================
+ynh_print_info --message="Backing up logrotate configuration..."
 
+ynh_backup --src_path="/etc/logrotate.d/$app"
+
+#=================================================
+# BACKUP SYSTEMD
+#=================================================
+ynh_print_info --message="Backing up systemd configuration..."
+
+ynh_backup --src_path="/etc/systemd/system/$app.service"
+
+#=================================================
+# END OF SCRIPT
+#=================================================
+# Restart Minetest
+ynh_systemd_action --service_name=$app --action="start" --log_path="/var/log/$app/minetest.log" --line_match="listening on"
+
+ynh_print_info --message="Backup script completed for $app. (YunoHost will then actually copy those files to the archive)."

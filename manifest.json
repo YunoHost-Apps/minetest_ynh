@@ -1,7 +1,7 @@
 {
     "name": "Minetest",
     "id": "minetest",
-    "version": "0.01",
+    "version": "5.1.0~ynh1",
     "packaging_format": 1,
     "description": {
         "en": "Minetest is a free, open source voxel game engine and game. Fully extendable. Need a client to connect to the server.",
@@ -10,21 +10,26 @@
     "url": "http://www.minetest.net/",
     "license": "MIT",
     "maintainer": {
-        "name": "Luc Didry",
-        "email": "luc@framasoft.org",
-        "url": "https://framasoft.org"
+        "name": "rafi59",
+        "email": "rafi59_dev@srvmaison.fr.nf",
+        "url": ""
     },
+    "previous_maintainers": {
+    	"name": "Luc Didry",
+    	"email": "luc@framasoft.org",
+	"url": "https://framasoft.org"
+},
     "requirements": {
-        "yunohost": ">> 2.6.4"
+        "yunohost": ">= 3.5"
     },
     "multi_instance": true,
     "services": [
-        "minetest"
+        "nginx"
     ],
     "arguments": {
         "install" : [
             {
-                "name": "domain",
+                "name": "server_domain",
                 "type": "domain",
                 "ask": {
                     "en": "Choose a domain for your minetest server",
@@ -40,6 +45,15 @@
                     "fr": "Est-ce un serveur public ? (devons-nous l'annoncer ?)"
                 },
                 "default": false
+            },
+            {
+                "name": "servername",
+                "type": "string",
+                "ask": {
+                    "en": "Choose a name for your server",
+                    "fr": "Choissisez un nom pour votre serveur"
+                },
+                "default": "Minetest server"
             },
             {
                 "name": "pvp",

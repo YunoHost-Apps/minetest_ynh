@@ -1,9 +1,7 @@
 #!/bin/bash
-# Exit on command errors and treat unset variables as an error
-set -eu
 
 #=================================================
-# GENERIC STARTING
+# GENERIC START
 #=================================================
 # IMPORT GENERIC HELPERS
 #=================================================
@@ -14,23 +12,61 @@ source /usr/share/yunohost/helpers
 #=================================================
 # LOAD SETTINGS
 #=================================================
+ynh_print_info --message="Loading installation settings..."
 
 app=$YNH_APP_INSTANCE_NAME
 
-pvp=$(ynh_app_setting_get $app pvp)
-damage=$(ynh_app_setting_get $app damage)
-domain=$(ynh_app_setting_get $app domain)
-creative=$(ynh_app_setting_get $app creative)
-is_public=$(ynh_app_setting_get $app is_public)
+server_domain=$(ynh_app_setting_get --app=$app --key=server_domain)
+port=$(ynh_app_setting_get --app=$app --key=port)
+is_public=$(ynh_app_setting_get --app=$app --key=is_public)
+final_path=$(ynh_app_setting_get --app=$app --key=final_path)
+home_path=$(ynh_app_setting_get --app=$app --key=home_path)
+pvp=$(ynh_app_setting_get --app=$app --key=pvp)
+creative=$(ynh_app_setting_get --app=$app --key=creative)
+damage=$(ynh_app_setting_get --app=$app --key=damage)
+servername=$(ynh_app_setting_get --app=$app --key=servername)
+
+
+#=================================================
+# ENSURE DOWNWARD COMPATIBILITY
+#=================================================
+ynh_print_info --message="Checking version..."
+version=ynh_app_upstream_version
+
+if [ "$version" = "0.01" ]; then
+ynh_die --message="You can't upgrade to this version with simple upgrade. Please read the readme for upgrading https://github.com/YunoHost-Apps/minetest_ynh#additional-information ..."
+fi
+
+
+ynh_print_info --message="Ensuring downward compatibility..."
+
+# Fix is_public as a boolean value
+if [ "$is_public" = "Yes" ]; then
+	ynh_app_setting_set --app=$app --key=is_public --value=1
+	is_public=1
+elif [ "$is_public" = "No" ]; then
+	ynh_app_setting_set --app=$app --key=is_public --value=0
+	is_public=0
+fi
+
+# If final_path doesn't exist, create it
+if [ -z $final_path ]; then
+	final_path=/opt/yunohost/$app
+	ynh_app_setting_set --app=$app --key=final_path --value=$final_path
+fi
 
 #=================================================
 # BACKUP BEFORE UPGRADE THEN ACTIVE TRAP
 #=================================================
+ynh_print_info --message="Backing up the app before upgrading (may take a while)..."
+
 # Backup the current version of the app
 ynh_backup_before_upgrade
 ynh_clean_setup () {
-    # restore it if the upgrade fails
-    ynh_restore_upgradebackup
+	ynh_clean_check_starting # Need for the param line_match of ynh_systemd_action
+
+	# restore it if the upgrade fails
+	ynh_restore_upgradebackup
 }
 # Exit if an error occurs during the execution of the script
 ynh_abort_if_errors
@@ -38,4 +74,117 @@ ynh_abort_if_errors
 #=================================================
 # STANDARD UPGRADE STEPS
 #=================================================
-# nothing yet
+# DOWNLOAD, CHECK AND UNPACK SOURCE
+#=================================================
+ynh_print_info --message="Upgrading source files..."
+
+# Remove old install
+ynh_secure_remove --file="$final_path"
+
+# Download, check integrity, uncompress and patch the source from app.src
+ynh_setup_source --dest_dir="$final_path"
+
+#=================================================
+# UPGRADE DEPENDENCIES
+#=================================================
+ynh_print_info --message="Upgrading dependencies..."
+
+ynh_install_app_dependencies $pkg_dependencies
+
+#=================================================
+# CREATE DEDICATED USER
+#=================================================
+ynh_print_info --message="Making sure dedicated system user exists..."
+
+# Create a dedicated user (if not existing)
+ynh_system_user_create --username=$app --home_dir=$home_path --use_shell
+
+#=================================================
+# SETUP SYSTEMD
+#=================================================
+ynh_print_info --message="Upgrading systemd configuration..."
+
+# Create a dedicated systemd config
+ynh_add_systemd_config
+
+#=================================================
+# COPY CONFIG FILE
+#=================================================
+
+if [ -e $home_path ]
+then
+echo "Nothing to do..."
+else
+mkdir -p $home_path/.minetest/
+mkdir $home_path/.minetest/worlds/
+fi
+
+#=================================================
+# SPECIFIC UPGRADE
+#=================================================
+# Compile Minetest
+pushd /opt/yunohost/$app
+# Download Minetest Game
+ynh_setup_source --dest_dir=/opt/yunohost/$app/games/minetest_game --source_id=minetest_game
+
+cmake . -DRUN_IN_PLACE=TRUE -DENABLE_LUAJIT=TRUE -DBUILD_CLIENT=FALSE -DBUILD_SERVER=TRUE
+
+make -j$(nproc)
+
+popd
+
+
+#=================================================
+# MODIFY A CONFIG FILE
+#=================================================
+
+ynh_backup_if_checksum_is_different --file="$home_path/.minetest/minetest.conf"
+
+cp ../conf/minetest.conf $home_path/.minetest/minetest.conf
+
+### `ynh_replace_string` is used to replace a string in a file.
+### (It's compatible with sed regular expressions syntax)
+
+ynh_replace_string --match_string="__APP__" --replace_string="$app" --target_file="$home_path/.minetest/minetest.conf"
+ynh_replace_string --match_string="__PORT__" --replace_string="$port" --target_file="$home_path/.minetest/minetest.conf"
+ynh_replace_string --match_string="__SERVERNAME__" --replace_string="$servername" --target_file="$home_path/.minetest/minetest.conf"
+ynh_replace_string --match_string="__DOMAIN__" --replace_string="$server_domain" --target_file="$home_path/.minetest/minetest.conf"
+ynh_replace_string --match_string="__ANNOUNCE__" --replace_string="$is_public" --target_file="$home_path/.minetest/minetest.conf"
+ynh_replace_string --match_string="__PVP__" --replace_string="$pvp" --target_file="$home_path/.minetest/minetest.conf"
+ynh_replace_string --match_string="__CREATIVE__" --replace_string="$creative" --target_file="$home_path/.minetest/minetest.conf"
+ynh_replace_string --match_string="__DAMAGE__" --replace_string="$damage" --target_file="$home_path/.minetest/minetest.conf"
+
+ynh_store_file_checksum --file="$home_path/.minetest/minetest.conf"
+
+#=================================================
+# SETUP LOGROTATE
+#=================================================
+ynh_print_info --message="Upgrading logrotate configuration..."
+
+# Use logrotate to manage app-specific logfile(s)
+ynh_use_logrotate --non-append
+
+
+
+#=================================================
+# GENERIC FINALIZATION
+#=================================================
+# SECURE FILES AND DIRECTORIES
+#=================================================
+
+# Set permissions on app files
+chown -R root: $final_path
+chown -R $app: $home_path
+
+#=================================================
+# RELOAD MINETEST
+#=================================================
+ynh_print_info --message="Restarting Minetest..."
+
+ynh_systemd_action --service_name=$app --action="restart" --log_path="/var/log/$app/minetest.log" --line_match="listening on"
+
+#=================================================
+# END OF SCRIPT
+#=================================================
+
+ynh_print_info --message="Upgrade of $app completed"

@@ -1,0 +1,6 @@
+SOURCE_URL=https://github.com/minetest/minetest/archive/5.1.0.tar.gz
+SOURCE_SUM=ca53975eecf6a39383040658f41d697c8d7f8d5fe9176460f564979c73b53906
+SOURCE_SUM_PRG=sha256sum
+SOURCE_FORMAT=tar.gz
+SOURCE_IN_SUBDIR=true
+SOURCE_FILENAME=minetest
