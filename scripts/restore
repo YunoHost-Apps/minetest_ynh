@@ -84,8 +84,10 @@ systemctl enable $app.service
 # ADVERTISE SERVICE IN ADMIN PANEL
 #=================================================
 
-yunohost service add $app --log "/var/log/$app/minetest.log"
+mkdir /var/log/$app -p
+chown -R $app: /var/log/$app
 
+yunohost service add $app --log "/var/log/$app/minetest.log"
 
 #=================================================
 # RESTORE THE LOGROTATE CONFIGURATION

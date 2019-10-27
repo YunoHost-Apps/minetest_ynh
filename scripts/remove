@@ -58,6 +58,10 @@ ynh_print_info --message="Removing app main directory"
 ynh_secure_remove --file="$final_path"
 ynh_secure_remove --file="$home_path"
 
+# Remove the log files
+ynh_secure_remove "/var/log/$app"
+
+
 #=================================================
 # REMOVE LOGROTATE CONFIGURATION
 #=================================================
