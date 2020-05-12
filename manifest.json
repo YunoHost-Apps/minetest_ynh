@@ -1,7 +1,7 @@
 {
     "name": "Minetest",
     "id": "minetest",
-    "version": "5.1.0~ynh1",
+    "version": "5.2.0~ynh1",
     "packaging_format": 1,
     "description": {
         "en": "Minetest is a free, open source voxel game engine and game. Fully extendable. Need a client to connect to the server.",
