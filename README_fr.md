@@ -51,7 +51,7 @@ Comment configurer cette application : par SSH
 
 * Migration de l’ancien paquet
 
-Vous ne pouvez pas migrer directement avec une mise à jour.
+* Vous ne pouvez pas migrer directement avec une mise à jour.
 	* Avant d’installer le nouveau paquet, vous devez télécharger ce dossier depuis votre serveur `/var/games/minetest-server/.minetest/worlds/world` (ce dossier contient toutes les données des mondes)
 	* Désinstallez l’ancien paquet `sudo yunohost app remove minetest`
 	* Installez le nouveau `sudo yunohost app install https://github.com/YunoHost-Apps/minetest_ynh`
