@@ -34,14 +34,13 @@ Comment configurer cette application : par SSH
 
 #### Support multi-utilisateurs
 
-* Les authentifications LDAP et HTTP sont-elles prises en charge ? Non
-* L’application peut-elle être utilisée par plusieurs utilisateurs ? Oui
+* Les authentifications LDAP et HTTP sont-elles prises en charge ? **Non**
+* L’application peut-elle être utilisée par plusieurs utilisateurs ? **Oui**
 
 ##### Architectures supportées
 
-* x86-64b - [![Build Status](https://ci-apps.yunohost.org/ci/logs/minetest%20%28Community%29.svg)](https://ci-apps.yunohost.org/ci/apps/minetest/)
+* x86-64 - [![Build Status](https://ci-apps.yunohost.org/ci/logs/minetest%20%28Community%29.svg)](https://ci-apps.yunohost.org/ci/apps/minetest/)
 * ARMv8-A - [![Build Status](https://ci-apps-arm.yunohost.org/ci/logs/minetest%20%28Community%29.svg)](https://ci-apps-arm.yunohost.org/ci/apps/minetest/)
-* Jessie x86-64b - [![Build Status](https://ci-stretch.nohost.me/ci/logs/minetest%20%28Community%29.svg)](https://ci-stretch.nohost.me/ci/apps/minetest/)
 
 ## Limitations
 

@@ -133,7 +133,6 @@ make -j$(nproc)
 
 popd
 
-
 #=================================================
 # MODIFY A CONFIG FILE
 #=================================================
@@ -163,8 +162,6 @@ ynh_print_info --message="Upgrading logrotate configuration..."
 
 # Use logrotate to manage app-specific logfile(s)
 ynh_use_logrotate --non-append
-
-
 
 #=================================================
 # GENERIC FINALIZATION

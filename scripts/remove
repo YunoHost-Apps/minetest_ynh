@@ -61,7 +61,6 @@ ynh_secure_remove --file="$home_path"
 # Remove the log files
 ynh_secure_remove "/var/log/$app"
 
-
 #=================================================
 # REMOVE LOGROTATE CONFIGURATION
 #=================================================

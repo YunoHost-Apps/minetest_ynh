@@ -34,14 +34,13 @@ How to configure this app: by SSH
 
 #### Multi-users support
 
-* Are LDAP and HTTP auth supported? No
-* Can the app be used by multiple users? Yes
+* Are LDAP and HTTP auth supported? **No**
+* Can the app be used by multiple users? **Yes**
 
 #### Supported architectures
 
-* x86-64b - [![Build Status](https://ci-apps.yunohost.org/ci/logs/minetest%20%28Apps%29.svg)](https://ci-apps.yunohost.org/ci/apps/minetest/)
+* x86-64 - [![Build Status](https://ci-apps.yunohost.org/ci/logs/minetest%20%28Apps%29.svg)](https://ci-apps.yunohost.org/ci/apps/minetest/)
 * ARMv8-A - [![Build Status](https://ci-apps-arm.yunohost.org/ci/logs/minetest%20%28Apps%29.svg)](https://ci-apps-arm.yunohost.org/ci/apps/minetest/)
-* Jessie x86-64b - [![Build Status](https://ci-stretch.nohost.me/ci/logs/minetest%20%28Apps%29.svg)](https://ci-stretch.nohost.me/ci/apps/minetest/)
 
 ## Limitations
 
