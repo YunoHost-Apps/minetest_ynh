@@ -1,6 +1,6 @@
 # Minetest for YunoHost
 
-[![Niveau d’intégration](https://dash.yunohost.org/integration/minetest.svg)](https://dash.yunohost.org/appci/app/minetest)  
+[![Niveau d’intégration](https://dash.yunohost.org/integration/minetest.svg)](https://dash.yunohost.org/appci/app/minetest) ![](https://ci-apps.yunohost.org/ci/badges/minetest.status.svg) ![](https://ci-apps.yunohost.org/ci/badges/minetest.maintain.svg)  
 [![Installer Minetest avec YunoHost](https://install-app.yunohost.org/install-with-yunohost.png)](https://install-app.yunohost.org/?app=minetest)
 
 *[Read this readme in English.](./README.md)*
@@ -39,8 +39,8 @@ Comment configurer cette application : par SSH
 
 ##### Architectures supportées
 
-* x86-64 - [![Build Status](https://ci-apps.yunohost.org/ci/logs/minetest%20%28Community%29.svg)](https://ci-apps.yunohost.org/ci/apps/minetest/)
-* ARMv8-A - [![Build Status](https://ci-apps-arm.yunohost.org/ci/logs/minetest%20%28Community%29.svg)](https://ci-apps-arm.yunohost.org/ci/apps/minetest/)
+* x86-64 - [![Build Status](https://ci-apps.yunohost.org/ci/logs/minetest%20%28Apps%29.svg)](https://ci-apps.yunohost.org/ci/apps/minetest/)
+* ARMv8-A - [![Build Status](https://ci-apps-arm.yunohost.org/ci/logs/minetest%20%28Apps%29.svg)](https://ci-apps-arm.yunohost.org/ci/apps/minetest/)
 
 ## Limitations
 
@@ -59,7 +59,7 @@ Comment configurer cette application : par SSH
 	* Démarrez le service Minetest `sudo systemctl start minetest`
 
 * Installation des mods
-	* Pour installer les mods, vous devez créer un dossier `worldmods` dans `/home/yunohost.app/minetest/.minetest/worlds/world/`
+	* Pour installer des mods, vous devez créer un dossier `worldmods` dans `/home/yunohost.app/minetest/.minetest/worlds/world/`
 	* Clonez le repo du mod dans ce dossier (ex : `git clone https://github.com/minetest-mods/mesecons`)
 	* Éditez `/home/yunohost.app/minetest/.minetest/worlds/world/world/world.mt` et ajoutez à la fin `load_mod_mesecons = true`
 	* Redémarrez Minetest avec `sudo systemctl restart minetest`
