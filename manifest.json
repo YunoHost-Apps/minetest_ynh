@@ -1,12 +1,12 @@
 {
     "name": "Minetest",
     "id": "minetest",
-    "version": "5.1.0~ynh1",
     "packaging_format": 1,
     "description": {
-        "en": "Minetest is a free, open source voxel game engine and game. Fully extendable. Need a client to connect to the server.",
-        "fr": "Minetest est un moteur de jeu de type « bac à sable » gratuit et open source. Entièrement extensible. Nécessite un client pour se connecter au serveur."
+        "en": "Free, open source voxel game engine and game. Need a client to connect to the server.",
+        "fr": "Moteur de jeu de type « bac à sable » gratuit et open source. Nécessite un client pour se connecter au serveur."
     },
+    "version": "5.2.0~ynh1",
     "url": "http://www.minetest.net/",
     "license": "MIT",
     "maintainer": {
@@ -32,8 +32,8 @@
                 "name": "server_domain",
                 "type": "domain",
                 "ask": {
-                    "en": "Choose a domain for your minetest server",
-                    "fr": "Choisissez un domaine pour votre serveur minetest"
+                    "en": "Choose a domain for your Minetest server",
+                    "fr": "Choisissez un domaine pour votre serveur Minetest"
                 },
                 "example": "domain.org"
             },
