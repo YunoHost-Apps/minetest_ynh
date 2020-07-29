@@ -18,6 +18,7 @@ app=$YNH_APP_INSTANCE_NAME
 
 server_domain=$(ynh_app_setting_get --app=$app --key=server_domain)
 port=$(ynh_app_setting_get --app=$app --key=port)
+game=$(ynh_app_setting_get --app=$app --key=game)
 is_public=$(ynh_app_setting_get --app=$app --key=is_public)
 final_path=$(ynh_app_setting_get --app=$app --key=final_path)
 home_path=$(ynh_app_setting_get --app=$app --key=home_path)
@@ -124,8 +125,14 @@ fi
 #=================================================
 # Compile Minetest
 pushd /opt/yunohost/$app
+# Install the game
+if [ $game = "capturetheflag" ]; then
+# Download Capture The Flag
+git clone --recursive https://github.com/MT-CTF/capturetheflag.git games/capturetheflag
+else
 # Download Minetest Game
 ynh_setup_source --dest_dir=/opt/yunohost/$app/games/minetest_game --source_id=minetest_game
+fi
 
 cmake . -DRUN_IN_PLACE=TRUE -DENABLE_LUAJIT=TRUE -DBUILD_CLIENT=FALSE -DBUILD_SERVER=TRUE
 
@@ -144,6 +151,7 @@ cp ../conf/minetest.conf $home_path/.minetest/minetest.conf
 ### `ynh_replace_string` is used to replace a string in a file.
 ### (It's compatible with sed regular expressions syntax)
 
+ynh_replace_string --match_string="__GAME__" --replace_string="$game" --target_file="$home_path/.minetest/minetest.conf"
 ynh_replace_string --match_string="__APP__" --replace_string="$app" --target_file="$home_path/.minetest/minetest.conf"
 ynh_replace_string --match_string="__PORT__" --replace_string="$port" --target_file="$home_path/.minetest/minetest.conf"
 ynh_replace_string --match_string="__SERVERNAME__" --replace_string="$servername" --target_file="$home_path/.minetest/minetest.conf"
