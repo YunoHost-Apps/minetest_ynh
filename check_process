@@ -3,11 +3,12 @@
 
 # Move this file from check_process.default to check_process when you have filled it.
 
-;; Test complet
+;; Test complet minetest_game
 	; Manifest
 		domain="domain.tld"	(DOMAIN)
 		pvp=1
 		servername="packagecheck"
+        game="minetest_game"
 		creative=0
 		damage=1
 		is_public=0	(PUBLIC|public=1|private=0)
@@ -26,6 +27,32 @@
 		incorrect_path=0
 		port_already_use=1
 		change_url=0
+
+;; Test complet capturetheflag
+	; Manifest
+		domain="domain.tld"	(DOMAIN)
+		pvp=1
+		servername="packagecheck"
+        game="capturetheflag"
+		creative=0
+		damage=1
+		is_public=0	(PUBLIC|public=1|private=0)
+		password="pass"
+		port="30000"	(PORT)
+	; Checks
+		pkg_linter=1
+		setup_sub_dir=0
+		setup_root=0
+		setup_nourl=1
+		setup_private=0
+		setup_public=0
+		upgrade=1
+		backup_restore=1
+		multi_instance=1
+		incorrect_path=0
+		port_already_use=1
+		change_url=0
+
 
 ;;; Levels
 	# If the level 5 (Package linter) is forced to 1. Please add justifications here.
