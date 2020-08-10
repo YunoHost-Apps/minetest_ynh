@@ -36,14 +36,6 @@ home_path=$(ynh_app_setting_get --app=$app --key=home_path)
 #=================================================
 # BACKUP THE APP MAIN DIR
 #=================================================
-# STOP SYSTEMD SERVICE
-#=================================================
-ynh_systemd_action --service_name=$app --action="stop" --log_path="/var/log/$app/$app.log"
-
-#=================================================
-# BACKUP THE APP MAIN DIR
-#=================================================
-
 ynh_print_info --message="Backing up the main app directory..."
 
 ynh_backup --src_path="$final_path"
@@ -74,7 +66,4 @@ ynh_backup --src_path="/etc/systemd/system/$app.service"
 #=================================================
 # END OF SCRIPT
 #=================================================
-# Restart Minetest
-ynh_systemd_action --service_name=$app --action="start" --log_path="/var/log/$app/minetest.log" --line_match="listening on"
-
 ynh_print_info --message="Backup script completed for $app. (YunoHost will then actually copy those files to the archive)."
