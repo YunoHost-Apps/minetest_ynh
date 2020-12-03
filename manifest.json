@@ -48,6 +48,7 @@
             },
             {
                 "name": "game",
+                "type": "string",
                 "ask": {
                     "en": "Choose a game for your server",
                     "fr": "Choissisez un jeu pour votre serveur"

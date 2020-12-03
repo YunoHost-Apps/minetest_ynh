@@ -186,6 +186,12 @@ chown -R root: $final_path
 chown -R $app: $home_path
 
 #=================================================
+# ADVERTISE SERVICE IN ADMIN PANEL
+#=================================================
+
+yunohost service add $app --description="Voxel game engine and game" --log="/var/log/$app/minetest.log"
+
+#=================================================
 # RELOAD MINETEST
 #=================================================
 ynh_print_info --message="Restarting Minetest..."

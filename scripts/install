@@ -38,7 +38,7 @@ path_url="/"
 #=================================================
 # CHECK IF THE APP CAN BE INSTALLED WITH THESE ARGS
 #=================================================
-ynh_print_info --message="Validating installation parameters..."
+ynh_script_progression --message="Validating installation parameters..."
 
 final_path=/opt/yunohost/$app
 test ! -e "$final_path" || ynh_die "This path already contains a folder"
@@ -46,7 +46,7 @@ test ! -e "$final_path" || ynh_die "This path already contains a folder"
 #=================================================
 # STORE SETTINGS FROM MANIFEST
 #=================================================
-ynh_print_info --message="Storing installation settings..."
+ynh_script_progression --message="Storing installation settings..."
 
 ynh_app_setting_set --app=$app --key=server_domain --value=$server_domain
 ynh_app_setting_set --app=$app --key=path --value=$path_url
@@ -62,7 +62,7 @@ ynh_app_setting_set --app=$app --key=servername --value=$servername
 #=================================================
 # FIND AND OPEN A PORT
 #=================================================
-ynh_print_info --message="Configuring firewall..."
+ynh_script_progression --message="Configuring firewall..."
 
 # Find a free port
 port=$(ynh_find_port 30000)
@@ -73,14 +73,14 @@ ynh_app_setting_set --app=$app --key=port --value=$port
 #=================================================
 # INSTALL DEPENDENCIES
 #=================================================
-ynh_print_info --message="Installing dependencies..."
+ynh_script_progression --message="Installing dependencies..."
 
 ynh_install_app_dependencies $pkg_dependencies
 
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
 #=================================================
-ynh_print_info --message="Setting up source files..."
+ynh_script_progression --message="Setting up source files..."
 
 ynh_app_setting_set --app=$app --key=final_path --value=$final_path
 # Download, check integrity, uncompress and patch the source from app.src
@@ -89,7 +89,7 @@ ynh_setup_source --dest_dir="$final_path"
 #=================================================
 # CREATE DEDICATED USER
 #=================================================
-ynh_print_info --message="Configuring system user..."
+ynh_script_progression --message="Configuring system user..."
 
 home_path=/home/yunohost.app/$app
 ynh_app_setting_set --app=$app --key=home_path --value=$home_path
@@ -107,7 +107,7 @@ cp -a ../conf/minetest.conf $home_path/.minetest/
 #=================================================
 # SETUP SYSTEMD
 #=================================================
-ynh_print_info --message="Configuring a systemd service..."
+ynh_script_progression --message="Configuring a systemd service..."
 
 # Create a dedicated systemd config
 ynh_add_systemd_config
@@ -149,7 +149,6 @@ ynh_replace_string --match_string="__PVP__" --replace_string="$pvp" --target_fil
 ynh_replace_string --match_string="__CREATIVE__" --replace_string="$creative" --target_file="$home_path/.minetest/minetest.conf"
 ynh_replace_string --match_string="__DAMAGE__" --replace_string="$damage" --target_file="$home_path/.minetest/minetest.conf"
 
-
 #=================================================
 # CREATE WORLD
 #=================================================
@@ -179,7 +178,7 @@ chown -R $app: $home_path
 #=================================================
 # SETUP LOGROTATE
 #=================================================
-ynh_print_info --message="Configuring log rotation..."
+ynh_script_progression --message="Configuring log rotation..."
 
 # Use logrotate to manage application logfile(s)
 ynh_use_logrotate
@@ -188,7 +187,7 @@ ynh_use_logrotate
 # ADVERTISE SERVICE IN ADMIN PANEL
 #=================================================
 
-yunohost service add $app --log "/var/log/$app/minetest.log"
+yunohost service add $app --description="Voxel game engine and game" --log="/var/log/$app/minetest.log" --needs_exposed_ports
 
 #=================================================
 # RELOAD MINETEST
