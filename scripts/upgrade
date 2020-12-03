@@ -189,7 +189,7 @@ chown -R $app: $home_path
 # ADVERTISE SERVICE IN ADMIN PANEL
 #=================================================
 
-yunohost service add $app --description="Voxel game engine and game" --log="/var/log/$app/minetest.log"
+yunohost service add $app --description="Voxel game engine and game" --log="/var/log/$app/$app.log" --needs_exposed_ports
 
 #=================================================
 # RELOAD MINETEST
