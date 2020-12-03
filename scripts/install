@@ -187,7 +187,7 @@ ynh_use_logrotate
 # ADVERTISE SERVICE IN ADMIN PANEL
 #=================================================
 
-yunohost service add $app --description="Voxel game engine and game" --log="/var/log/$app/minetest.log" --needs_exposed_ports
+yunohost service add $app --description="Voxel game engine and game" --log="/var/log/$app/minetest.log" --needs_exposed_ports="$port"
 
 #=================================================
 # RELOAD MINETEST
