@@ -32,18 +32,19 @@ final_path=$(ynh_app_setting_get --app=$app --key=final_path)
 home_path=$(ynh_app_setting_get --app=$app --key=home_path)
 
 #=================================================
-# STANDARD BACKUP STEPS
+# DECLARE DATA AND CONF FILES TO BACKUP
+#=================================================
+ynh_print_info --message="Declaring files to be backed up..."
+
 #=================================================
 # BACKUP THE APP MAIN DIR
 #=================================================
-ynh_print_info --message="Backing up the main app directory..."
 
 ynh_backup --src_path="$final_path"
 
 #=================================================
 # BACKUP THE HOME DIR
 #=================================================
-ynh_print_info --message="Backing up Minetest data..."
 
 ynh_backup --src_path="$home_path"
 
@@ -52,14 +53,12 @@ ynh_backup --src_path="$home_path"
 #=================================================
 # BACKUP LOGROTATE
 #=================================================
-ynh_print_info --message="Backing up logrotate configuration..."
 
 ynh_backup --src_path="/etc/logrotate.d/$app"
 
 #=================================================
 # BACKUP SYSTEMD
 #=================================================
-ynh_print_info --message="Backing up systemd configuration..."
 
 ynh_backup --src_path="/etc/systemd/system/$app.service"
 
