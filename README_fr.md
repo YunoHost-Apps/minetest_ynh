@@ -74,8 +74,7 @@ Comment configurer cette application : par SSH
 
 ---
 
-Informations pour les développeurs
-----------------
+## Informations pour les développeurs
 
 Merci de faire vos pull request sur la [branche testing](https://github.com/YunoHost-Apps/minetest_ynh/tree/testing).
 

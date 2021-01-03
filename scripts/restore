@@ -24,29 +24,28 @@ ynh_abort_if_errors
 #=================================================
 # LOAD SETTINGS
 #=================================================
-ynh_print_info --message="Loading settings..."
+ynh_script_progression --message="Loading settings..."
 
 app=$YNH_APP_INSTANCE_NAME
 
 path_url=$(ynh_app_setting_get --app=$app --key=path)
 final_path=$(ynh_app_setting_get --app=$app --key=final_path)
 home_path=$(ynh_app_setting_get --app=$app --key=home_path)
+port=$(ynh_app_setting_get --app=$app --key=port)
 
 #=================================================
 # STANDARD RESTORATION STEPS
 #=================================================
-
-#=================================================
 # RESTORE THE APP MAIN DIR
 #=================================================
-ynh_print_info --message="Restoring the app main directory..."
+ynh_script_progression --message="Restoring the app main directory..."
 
 ynh_restore_file --origin_path="$final_path"
 
 #=================================================
 # RECREATE THE DEDICATED USER
 #=================================================
-ynh_print_info --message="Recreating the dedicated system user..."
+ynh_script_progression --message="Recreating the dedicated system user..."
 
 # Create the dedicated user (if not existing)
 ynh_system_user_create --username=$app --home_dir=$home_path --use_shell
@@ -67,7 +66,7 @@ chown -R $app: $home_path
 #=================================================
 # REINSTALL DEPENDENCIES
 #=================================================
-ynh_print_info --message="Reinstalling dependencies..."
+ynh_script_progression --message="Reinstalling dependencies..."
 
 # Define and install dependencies
 ynh_install_app_dependencies $pkg_dependencies
@@ -75,10 +74,10 @@ ynh_install_app_dependencies $pkg_dependencies
 #=================================================
 # RESTORE SYSTEMD
 #=================================================
-ynh_print_info --message="Restoring the systemd configuration..."
+ynh_script_progression --message="Restoring the systemd configuration..."
 
 ynh_restore_file --origin_path="/etc/systemd/system/$app.service"
-systemctl enable $app.service
+systemctl enable $app.service --quiet
 
 #=================================================
 # ADVERTISE SERVICE IN ADMIN PANEL
@@ -87,7 +86,12 @@ systemctl enable $app.service
 mkdir /var/log/$app -p
 chown -R $app: /var/log/$app
 
-yunohost service add $app --log "/var/log/$app/minetest.log"
+#=================================================
+# INTEGRATE SERVICE IN YUNOHOST
+#=================================================
+ynh_script_progression --message="Integrating service in YunoHost..."
+
+yunohost service add $app --description="Voxel game engine and game" --log="/var/log/$app/$app.log" --needs_exposed_ports="$port"
 
 #=================================================
 # RESTORE THE LOGROTATE CONFIGURATION
@@ -100,7 +104,7 @@ ynh_restore_file --origin_path="/etc/logrotate.d/$app"
 #=================================================
 # RELOAD MINETEST
 #=================================================
-ynh_print_info --message="Reloading minetest..."
+ynh_script_progression --message="Reloading minetest..."
 
 ynh_systemd_action --service_name=$app --action="start" --log_path="/var/log/$app/minetest.log" --line_match="listening on"
 
@@ -108,4 +112,4 @@ ynh_systemd_action --service_name=$app --action="start" --log_path="/var/log/$ap
 # END OF SCRIPT
 #=================================================
 
-ynh_print_info --message="Restoration completed for $app"
+ynh_script_progression --message="Restoration completed for $app"
