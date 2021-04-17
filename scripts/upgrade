@@ -150,7 +150,7 @@ popd
 # MODIFY A CONFIG FILE
 #=================================================
 
-if [ $is_public = 1 ]; then
+if [ $is_public -eq 1 ]; then
 	annouce = "true"
 else
 	annouce = "fase"
