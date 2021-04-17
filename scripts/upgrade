@@ -78,7 +78,7 @@ ynh_script_progression --message="Upgrading source files..."
 
 if [ "$upgrade_type" == "UPGRADE_APP" ]
 then
-	ynh_script_progression --message="Upgrading source files..." --time --weight=1
+	ynh_script_progression --message="Upgrading source files..." --weight=1
 
 	# Remove old install
 	ynh_secure_remove --file="$final_path"
@@ -86,11 +86,6 @@ then
 	# Download, check integrity, uncompress and patch the source from app.src
 	ynh_setup_source --dest_dir="$final_path"
 fi
-
-
-
-# Download, check integrity, uncompress and patch the source from app.src
-ynh_setup_source --dest_dir="$final_path"
 
 #=================================================
 # UPGRADE DEPENDENCIES
@@ -120,11 +115,11 @@ ynh_add_systemd_config
 #=================================================
 
 if [ -e $home_path ]
-then
-echo "Nothing to do..."
-else
-mkdir -p $home_path/.minetest/
-mkdir $home_path/.minetest/worlds/
+	then
+	echo "Nothing to do..."
+	else
+	mkdir -p $home_path/.minetest/
+	mkdir $home_path/.minetest/worlds/
 fi
 
 #=================================================
@@ -155,21 +150,13 @@ popd
 # MODIFY A CONFIG FILE
 #=================================================
 
-ynh_backup_if_checksum_is_different --file="$home_path/.minetest/minetest.conf"
+if [ $is_public = 1 ]; then
+	annouce = "true"
+else
+	annouce = "fase"
+fi
 
-cp ../conf/minetest.conf $home_path/.minetest/minetest.conf
-
-ynh_replace_string --match_string="__GAME__" --replace_string="$game" --target_file="$home_path/.minetest/minetest.conf"
-ynh_replace_string --match_string="__APP__" --replace_string="$app" --target_file="$home_path/.minetest/minetest.conf"
-ynh_replace_string --match_string="__PORT__" --replace_string="$port" --target_file="$home_path/.minetest/minetest.conf"
-ynh_replace_string --match_string="__SERVERNAME__" --replace_string="$servername" --target_file="$home_path/.minetest/minetest.conf"
-ynh_replace_string --match_string="__DOMAIN__" --replace_string="$domain" --target_file="$home_path/.minetest/minetest.conf"
-ynh_replace_string --match_string="__ANNOUNCE__" --replace_string="$is_public" --target_file="$home_path/.minetest/minetest.conf"
-ynh_replace_string --match_string="__PVP__" --replace_string="$pvp" --target_file="$home_path/.minetest/minetest.conf"
-ynh_replace_string --match_string="__CREATIVE__" --replace_string="$creative" --target_file="$home_path/.minetest/minetest.conf"
-ynh_replace_string --match_string="__DAMAGE__" --replace_string="$damage" --target_file="$home_path/.minetest/minetest.conf"
-
-ynh_store_file_checksum --file="$home_path/.minetest/minetest.conf"
+ynh_add_config --template="../conf/minetest.conf" --destination="$home_path/.minetest/minetest.conf"
 
 #=================================================
 # SETUP LOGROTATE

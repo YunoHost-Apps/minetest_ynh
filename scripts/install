@@ -138,16 +138,15 @@ popd
 
 ### `ynh_replace_string` is used to replace a string in a file.
 ### (It's compatible with sed regular expressions syntax)
+# Install the game
 
-ynh_replace_string --match_string="__GAME__" --replace_string="$game" --target_file="$home_path/.minetest/minetest.conf"
-ynh_replace_string --match_string="__APP__" --replace_string="$app" --target_file="$home_path/.minetest/minetest.conf"
-ynh_replace_string --match_string="__PORT__" --replace_string="$port" --target_file="$home_path/.minetest/minetest.conf"
-ynh_replace_string --match_string="__SERVERNAME__" --replace_string="$servername" --target_file="$home_path/.minetest/minetest.conf"
-ynh_replace_string --match_string="__DOMAIN__" --replace_string="$domain" --target_file="$home_path/.minetest/minetest.conf"
-ynh_replace_string --match_string="__ANNOUNCE__" --replace_string="$is_public" --target_file="$home_path/.minetest/minetest.conf"
-ynh_replace_string --match_string="__PVP__" --replace_string="$pvp" --target_file="$home_path/.minetest/minetest.conf"
-ynh_replace_string --match_string="__CREATIVE__" --replace_string="$creative" --target_file="$home_path/.minetest/minetest.conf"
-ynh_replace_string --match_string="__DAMAGE__" --replace_string="$damage" --target_file="$home_path/.minetest/minetest.conf"
+if [ $is_public = 1 ]; then
+	annouce = "true"
+else
+	annouce = "fase"
+fi
+
+ynh_add_config --template="../conf/minetest.conf" --destination="$home_path/.minetest/minetest.conf"
 
 #=================================================
 # CREATE WORLD
