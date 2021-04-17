@@ -19,13 +19,13 @@ app=$YNH_APP_INSTANCE_NAME
 domain=$(ynh_app_setting_get --app=$app --key=domain)
 port=$(ynh_app_setting_get --app=$app --key=port)
 game=$(ynh_app_setting_get --app=$app --key=game)
-is_public=$(ynh_app_setting_get --app=$app --key=is_public)
 final_path=$(ynh_app_setting_get --app=$app --key=final_path)
 home_path=$(ynh_app_setting_get --app=$app --key=home_path)
 pvp=$(ynh_app_setting_get --app=$app --key=pvp)
 creative=$(ynh_app_setting_get --app=$app --key=creative)
 damage=$(ynh_app_setting_get --app=$app --key=damage)
 servername=$(ynh_app_setting_get --app=$app --key=servername)
+is_public=$(ynh_app_setting_get --app=$app --key=is_public)
 
 #=================================================
 # ENSURE DOWNWARD COMPATIBILITY
@@ -38,9 +38,7 @@ if [ "$version" = "0.01" ]; then
 ynh_die --message="You can't upgrade to this version with simple upgrade. Please read the readme for upgrading https://github.com/YunoHost-Apps/minetest_ynh#additional-information ..."
 fi
 
-
 ynh_script_progression --message="Ensuring downward compatibility..."
-
 
 # If final_path doesn't exist, create it
 if [ -z $final_path ]; then
@@ -78,8 +76,18 @@ ynh_abort_if_errors
 #=================================================
 ynh_script_progression --message="Upgrading source files..."
 
-# Remove old install
-ynh_secure_remove --file="$final_path"
+if [ "$upgrade_type" == "UPGRADE_APP" ]
+then
+	ynh_script_progression --message="Upgrading source files..." --time --weight=1
+
+	# Remove old install
+	ynh_secure_remove --file="$final_path"
+
+	# Download, check integrity, uncompress and patch the source from app.src
+	ynh_setup_source --dest_dir="$final_path"
+fi
+
+
 
 # Download, check integrity, uncompress and patch the source from app.src
 ynh_setup_source --dest_dir="$final_path"

@@ -6,7 +6,7 @@
         "en": "Free, open source voxel game engine and game. Need a client to connect to the server.",
         "fr": "Moteur de jeu de type « bac à sable » gratuit et open source. Nécessite un client pour se connecter au serveur."
     },
-    "version": "5.4.0~ynh1",
+    "version": "5.4.1~ynh1",
     "url": "http://www.minetest.net/",
     "license": "MIT",
     "maintainer": {
@@ -20,7 +20,7 @@
 	"url": "https://framasoft.org"
 },
     "requirements": {
-        "yunohost": ">= 3.8.1"
+        "yunohost": ">= 4.1.7"
     },
     "multi_instance": true,
     "services": [
@@ -31,19 +31,11 @@
             {
                 "name": "domain",
                 "type": "domain",
-                "ask": {
-                    "en": "Choose a domain for your Minetest server",
-                    "fr": "Choisissez un domaine pour votre serveur Minetest"
-                },
                 "example": "domain.org"
             },
             {
                 "name": "is_public",
                 "type": "boolean",
-                "ask": {
-                    "en": "Is it a public server? (should we announce it?)",
-                    "fr": "Est-ce un serveur public ? (devons-nous l'annoncer ?)"
-                },
                 "default": false
             },
             {
