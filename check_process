@@ -5,10 +5,10 @@
 
 ;; Test complet minetest_game
 	; Manifest
-		server_domain="domain.tld"	(DOMAIN)
+		domain="domain.tld"	(DOMAIN)
 		pvp=1
 		servername="packagecheck"
-                game="minetest_game"
+        game="minetest_game"
 		creative=0
 		damage=1
 		is_public=0	(PUBLIC|public=1|private=0)
@@ -30,10 +30,10 @@
 
 ;; Test complet capturetheflag
 	; Manifest
-		server_domain="domain.tld"	(DOMAIN)
+		domain="domain.tld"	(DOMAIN)
 		pvp=1
 		servername="packagecheck"
-                game="capturetheflag"
+        game="capturetheflag"
 		creative=0
 		damage=1
 		is_public=0	(PUBLIC|public=1|private=0)
