@@ -28,6 +28,12 @@ servername=$(ynh_app_setting_get --app=$app --key=servername)
 is_public=$(ynh_app_setting_get --app=$app --key=is_public)
 
 #=================================================
+# CHECK VERSION
+#=================================================
+
+upgrade_type=$(ynh_check_app_version_changed)
+
+#=================================================
 # ENSURE DOWNWARD COMPATIBILITY
 #=================================================
 ynh_script_progression --message="Checking version..."
