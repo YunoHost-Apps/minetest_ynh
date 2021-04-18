@@ -151,9 +151,9 @@ popd
 #=================================================
 
 if [ $is_public -eq 1 ]; then
-	annouce = "true"
+	announce="true"
 else
-	annouce = "fase"
+	announce="fase"
 fi
 
 ynh_add_config --template="../conf/minetest.conf" --destination="$home_path/.minetest/minetest.conf"
