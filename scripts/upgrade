@@ -54,7 +54,7 @@ fi
 
 # If domain doesn't exist, create it
 if [ -z "$domain" ]; then
-	domain=$server_domain
+	domain=$(ynh_app_setting_get --app=$app --key=server_domain)
 	ynh_app_setting_set --app=$app --key=domain --value=$domain
 fi
 
