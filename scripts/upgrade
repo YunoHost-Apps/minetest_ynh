@@ -16,43 +16,53 @@ ynh_script_progression --message="Loading installation settings..."
 
 app=$YNH_APP_INSTANCE_NAME
 
-server_domain=$(ynh_app_setting_get --app=$app --key=server_domain)
+domain=$(ynh_app_setting_get --app=$app --key=domain)
 port=$(ynh_app_setting_get --app=$app --key=port)
 game=$(ynh_app_setting_get --app=$app --key=game)
-is_public=$(ynh_app_setting_get --app=$app --key=is_public)
 final_path=$(ynh_app_setting_get --app=$app --key=final_path)
 home_path=$(ynh_app_setting_get --app=$app --key=home_path)
 pvp=$(ynh_app_setting_get --app=$app --key=pvp)
 creative=$(ynh_app_setting_get --app=$app --key=creative)
 damage=$(ynh_app_setting_get --app=$app --key=damage)
 servername=$(ynh_app_setting_get --app=$app --key=servername)
+is_public=$(ynh_app_setting_get --app=$app --key=is_public)
+
+#=================================================
+# CHECK VERSION
+#=================================================
+
+upgrade_type=$(ynh_check_app_version_changed)
 
 #=================================================
 # ENSURE DOWNWARD COMPATIBILITY
 #=================================================
 ynh_script_progression --message="Checking version..."
+
 version=ynh_app_upstream_version
 
 if [ "$version" = "0.01" ]; then
 ynh_die --message="You can't upgrade to this version with simple upgrade. Please read the readme for upgrading https://github.com/YunoHost-Apps/minetest_ynh#additional-information ..."
 fi
 
-
 ynh_script_progression --message="Ensuring downward compatibility..."
-
-# Fix is_public as a boolean value
-if [ "$is_public" = "Yes" ]; then
-	ynh_app_setting_set --app=$app --key=is_public --value=1
-	is_public=1
-elif [ "$is_public" = "No" ]; then
-	ynh_app_setting_set --app=$app --key=is_public --value=0
-	is_public=0
-fi
 
 # If final_path doesn't exist, create it
 if [ -z $final_path ]; then
 	final_path=/opt/yunohost/$app
 	ynh_app_setting_set --app=$app --key=final_path --value=$final_path
+fi
+
+# If domain doesn't exist, create it
+if [ -z "$domain" ]; then
+	domain=$(ynh_app_setting_get --app=$app --key=server_domain)
+	ynh_app_setting_set --app=$app --key=domain --value=$domain
+fi
+
+# Cleaning legacy permissions
+if ynh_legacy_permissions_exists; then
+	ynh_legacy_permissions_delete_all
+
+	ynh_app_setting_delete --app=$app --key=is_public
 fi
 
 #=================================================
@@ -78,11 +88,16 @@ ynh_abort_if_errors
 #=================================================
 ynh_script_progression --message="Upgrading source files..."
 
-# Remove old install
-ynh_secure_remove --file="$final_path"
+if [ "$upgrade_type" == "UPGRADE_APP" ]
+then
+	ynh_script_progression --message="Upgrading source files..." --weight=1
 
-# Download, check integrity, uncompress and patch the source from app.src
-ynh_setup_source --dest_dir="$final_path"
+	# Remove old install
+	ynh_secure_remove --file="$final_path"
+
+	# Download, check integrity, uncompress and patch the source from app.src
+	ynh_setup_source --dest_dir="$final_path"
+fi
 
 #=================================================
 # UPGRADE DEPENDENCIES
@@ -112,11 +127,11 @@ ynh_add_systemd_config
 #=================================================
 
 if [ -e $home_path ]
-then
-echo "Nothing to do..."
-else
-mkdir -p $home_path/.minetest/
-mkdir $home_path/.minetest/worlds/
+	then
+	echo "Nothing to do..."
+	else
+	mkdir -p $home_path/.minetest/
+	mkdir $home_path/.minetest/worlds/
 fi
 
 #=================================================
@@ -147,21 +162,13 @@ popd
 # MODIFY A CONFIG FILE
 #=================================================
 
-ynh_backup_if_checksum_is_different --file="$home_path/.minetest/minetest.conf"
+if [ $is_public -eq 1 ]; then
+	announce="true"
+else
+	announce="fase"
+fi
 
-cp ../conf/minetest.conf $home_path/.minetest/minetest.conf
-
-ynh_replace_string --match_string="__GAME__" --replace_string="$game" --target_file="$home_path/.minetest/minetest.conf"
-ynh_replace_string --match_string="__APP__" --replace_string="$app" --target_file="$home_path/.minetest/minetest.conf"
-ynh_replace_string --match_string="__PORT__" --replace_string="$port" --target_file="$home_path/.minetest/minetest.conf"
-ynh_replace_string --match_string="__SERVERNAME__" --replace_string="$servername" --target_file="$home_path/.minetest/minetest.conf"
-ynh_replace_string --match_string="__DOMAIN__" --replace_string="$server_domain" --target_file="$home_path/.minetest/minetest.conf"
-ynh_replace_string --match_string="__ANNOUNCE__" --replace_string="$is_public" --target_file="$home_path/.minetest/minetest.conf"
-ynh_replace_string --match_string="__PVP__" --replace_string="$pvp" --target_file="$home_path/.minetest/minetest.conf"
-ynh_replace_string --match_string="__CREATIVE__" --replace_string="$creative" --target_file="$home_path/.minetest/minetest.conf"
-ynh_replace_string --match_string="__DAMAGE__" --replace_string="$damage" --target_file="$home_path/.minetest/minetest.conf"
-
-ynh_store_file_checksum --file="$home_path/.minetest/minetest.conf"
+ynh_add_config --template="../conf/minetest.conf" --destination="$home_path/.minetest/minetest.conf"
 
 #=================================================
 # SETUP LOGROTATE
@@ -192,7 +199,7 @@ yunohost service add $app --description="Voxel game engine and game" --log="/var
 #=================================================
 ynh_script_progression --message="Restarting Minetest..."
 
-ynh_systemd_action --service_name=$app --action="restart" --log_path="/var/log/$app/minetest.log" --line_match="listening on"
+ynh_systemd_action --service_name=$app --action="restart" --log_path="/var/log/$app/$app.log" --line_match="listening on"
 
 #=================================================
 # END OF SCRIPT
