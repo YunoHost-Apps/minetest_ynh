@@ -131,21 +131,21 @@ ynh_add_systemd_config
 #=================================================
 ynh_script_progression --message="Building Minetest..."
 
-# Compile Minetest
-pushd /opt/yunohost/$app
 
-	# Install the game
-	if [ $game = "capturetheflag" ]; then
+# Install the game
+if [ $game = "capturetheflag" ]; then
+	pushd $final_path
 		git clone --recursive https://github.com/MT-CTF/capturetheflag.git games/capturetheflag
-	else
-		# Download Minetest Game
-		ynh_setup_source --dest_dir=/opt/yunohost/$app/games/minetest_game --source_id=minetest_game
-	fi
+	popd
+else
+	# Download Minetest Game
+	ynh_setup_source --dest_dir=$final_path/games/minetest_game --source_id=minetest_game
+fi
 
+pushd $final_path
 	cmake . -DRUN_IN_PLACE=TRUE -DENABLE_LUAJIT=TRUE -DBUILD_CLIENT=FALSE -DBUILD_SERVER=TRUE
 
 	make -j$(nproc)
-
 popd
 
 #=================================================

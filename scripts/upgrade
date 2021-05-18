@@ -141,24 +141,26 @@ fi
 # SPECIFIC UPGRADE
 #=================================================
 # Compile Minetest
-pushd /opt/yunohost/$app
-	# Install the game
-	if [ $game = "capturetheflag" ]; then
-		# Download Capture The Flag
 
+# Install the game
+if [ $game = "capturetheflag" ]; then
+	# Download Capture The Flag
+
+	pushd $final_path
 		# To avoid mess remove this first
 		ynh_secure_remove games/capturetheflag/
 		# Then clone the latest version from git
 		git clone --recursive https://github.com/MT-CTF/capturetheflag.git games/capturetheflag
-	else
-		# Download Minetest Game
-		ynh_setup_source --dest_dir=/opt/yunohost/$app/games/minetest_game --source_id=minetest_game
-	fi
+	popd
+else
+	# Download Minetest Game
+	ynh_setup_source --dest_dir=$final_path/games/minetest_game --source_id=minetest_game
+fi
 
+pushd $final_path
 	cmake . -DRUN_IN_PLACE=TRUE -DENABLE_LUAJIT=TRUE -DBUILD_CLIENT=FALSE -DBUILD_SERVER=TRUE
 
 	make -j$(nproc)
-
 popd
 
 #=================================================
