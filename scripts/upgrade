@@ -25,6 +25,7 @@ pvp=$(ynh_app_setting_get --app=$app --key=pvp)
 creative=$(ynh_app_setting_get --app=$app --key=creative)
 damage=$(ynh_app_setting_get --app=$app --key=damage)
 servername=$(ynh_app_setting_get --app=$app --key=servername)
+is_public=$(ynh_app_setting_get --app=$app --key=is_public)
 
 #=================================================
 # CHECK VERSION
