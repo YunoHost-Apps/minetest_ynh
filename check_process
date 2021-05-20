@@ -1,19 +1,14 @@
-# See here for more information
-# https://github.com/YunoHost/package_check#syntax-check_process-file
-
-# Move this file from check_process.default to check_process when you have filled it.
-
 ;; Test complet minetest_game
 	; Manifest
-		domain="domain.tld"	(DOMAIN)
+		domain="domain.tld"
 		pvp=1
 		servername="packagecheck"
         game="minetest_game"
 		creative=0
 		damage=1
-		is_public=0	(PUBLIC|public=1|private=0)
+		is_public=0
 		password="pass"
-		port="30000"	(PORT)
+		port="30000"
 	; Checks
 		pkg_linter=1
 		setup_sub_dir=0
