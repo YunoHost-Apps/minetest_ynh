@@ -168,7 +168,9 @@ popd
 # UPDATE A CONFIG FILE
 #=================================================
 ynh_script_progression --message="Updating a configuration file..."
-if [ $is_public -eq 1 ]; then
+
+if ynh_permission_has_user --permission=main --user=visitors
+then
 	announce="true"
 else
 	announce="fase"
