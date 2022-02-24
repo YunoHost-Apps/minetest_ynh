@@ -66,6 +66,17 @@ ynh_script_progression --message="Removing logrotate configuration..."
 ynh_remove_logrotate
 
 #=================================================
+# REMOVE DATA DIR
+#=================================================
+
+# Remove the data directory if --purge option is used
+if [ "${YNH_APP_PURGE:-0}" -eq 1 ]
+then
+	ynh_script_progression --message="Removing app data directory..." --time --weight=1
+	ynh_secure_remove --file="$home_path"
+fi
+
+#=================================================
 # CLOSE A PORT
 #=================================================
 
