@@ -1,12 +1,22 @@
-* Any known limitations, constrains or stuff not working, such as (but not limited to):
-    * requiring a full dedicated domain ?
-    * architectures not supported ?
-    * not-working single-sign on or LDAP integration ?
-    * the app requires an important amount of RAM / disk / .. to install or to work properly
-    * etc...
+## Configuration
 
-* Other infos that people should be aware of, such as:
-    * any specific step to perform after installing (such as manually finishing the install, specific admin credentials, ...)
-    * how to configure / administrate the application if it ain't obvious
-    * upgrade process / specificities / things to be aware of ?
-    * security considerations ?
+Comment configurer cette application : par SSH
+
+## Renseignements supplémentaires
+
+* Migration de l’ancien paquet
+
+* Vous ne pouvez pas migrer directement avec une mise à jour.
+	* Avant d’installer le nouveau paquet, vous devez télécharger ce dossier depuis votre serveur `/var/games/minetest-server/.minetest/worlds/world` (ce dossier contient toutes les données des mondes)
+	* Désinstallez l’ancien paquet `sudo yunohost app remove minetest`
+	* Installez le nouveau `sudo yunohost app install https://github.com/YunoHost-Apps/minetest_ynh`
+	* Stoppez le service Minetest `sudo systemctl stop minetest`
+	* Copiez le dossier que vous avez copié auparavant dans `/home/yunohost.app/minetest/.minetest/.worlds`
+	* Démarrez le service Minetest `sudo systemctl start minetest`
+
+* Installation des mods
+	* Pour installer des mods, vous devez créer un dossier `worldmods` dans `/home/yunohost.app/minetest/.minetest/worlds/world/`
+	* Clonez le repo du mod dans ce dossier (ex : `git clone https://github.com/minetest-mods/mesecons`)
+	* Éditez `/home/yunohost.app/minetest/.minetest/worlds/world/world/world.mt` et ajoutez à la fin `load_mod_mesecons = true`
+	* Redémarrez Minetest avec `sudo systemctl restart minetest`
+	* Le mod est maintenant installé :)
