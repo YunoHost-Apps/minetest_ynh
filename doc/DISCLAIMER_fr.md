@@ -2,21 +2,21 @@
 
 Comment configurer cette application : par SSH
 
-## Renseignements supplémentaires
+## Renseignements supplÃ©mentaires
 
-* Migration de l’ancien paquet
+* Migration de lâ€™ancien paquet
 
-* Vous ne pouvez pas migrer directement avec une mise à jour.
-	* Avant d’installer le nouveau paquet, vous devez télécharger ce dossier depuis votre serveur `/var/games/minetest-server/.minetest/worlds/world` (ce dossier contient toutes les données des mondes)
-	* Désinstallez l’ancien paquet `sudo yunohost app remove minetest`
+* Vous ne pouvez pas migrer directement avec une mise Ã  jour.
+	* Avant dâ€™installer le nouveau paquet, vous devez tÃ©lÃ©charger ce dossier depuis votre serveur `/var/games/minetest-server/.minetest/worlds/world` (ce dossier contient toutes les donnÃ©es des mondes)
+	* DÃ©sinstallez lâ€™ancien paquet `sudo yunohost app remove minetest`
 	* Installez le nouveau `sudo yunohost app install https://github.com/YunoHost-Apps/minetest_ynh`
 	* Stoppez le service Minetest `sudo systemctl stop minetest`
-	* Copiez le dossier que vous avez copié auparavant dans `/home/yunohost.app/minetest/.minetest/.worlds`
-	* Démarrez le service Minetest `sudo systemctl start minetest`
+	* Copiez le dossier que vous avez copiÃ© auparavant dans `/home/yunohost.app/minetest/.minetest/.worlds`
+	* DÃ©marrez le service Minetest `sudo systemctl start minetest`
 
 * Installation des mods
-	* Pour installer des mods, vous devez créer un dossier `worldmods` dans `/home/yunohost.app/minetest/.minetest/worlds/world/`
+	* Pour installer des mods, vous devez crÃ©er un dossier `worldmods` dans `/home/yunohost.app/minetest/.minetest/worlds/world/`
 	* Clonez le repo du mod dans ce dossier (ex : `git clone https://github.com/minetest-mods/mesecons`)
-	* Éditez `/home/yunohost.app/minetest/.minetest/worlds/world/world/world.mt` et ajoutez à la fin `load_mod_mesecons = true`
-	* Redémarrez Minetest avec `sudo systemctl restart minetest`
-	* Le mod est maintenant installé :)
+	* Ã‰ditez `/home/yunohost.app/minetest/.minetest/worlds/world/world/world.mt` et ajoutez Ã  la fin `load_mod_mesecons = true`
+	* RedÃ©marrez Minetest avec `sudo systemctl restart minetest`
+	* Le mod est maintenant installÃ© :)
