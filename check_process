@@ -17,6 +17,8 @@
 		setup_private=0
 		setup_public=0
 		upgrade=1
+		# 5.4.1~ynh2
+		upgrade=1	from_commit=bd09fd83cb3f127d242f551786d49202a434c4b2
 		backup_restore=1
 		multi_instance=1
 		incorrect_path=0

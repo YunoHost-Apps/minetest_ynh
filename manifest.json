@@ -8,6 +8,11 @@
     },
     "version": "5.4.1~ynh2",
     "url": "http://www.minetest.net/",
+    "upstream": {
+        "license": "MIT",
+        "website": "http://www.minetest.net",
+        "code": "https://github.com/minetest/minetest"
+    },
     "license": "MIT",
     "maintainer": {
         "name": "rafi59",
@@ -17,10 +22,10 @@
     "previous_maintainers": {
     	"name": "Luc Didry",
     	"email": "luc@framasoft.org",
-	"url": "https://framasoft.org"
+    	"url": "https://framasoft.org"
 },
     "requirements": {
-        "yunohost": ">= 4.1.7"
+        "yunohost": ">= 4.3.0"
     },
     "multi_instance": true,
     "services": [
@@ -30,8 +35,7 @@
         "install" : [
             {
                 "name": "domain",
-                "type": "domain",
-                "example": "domain.org"
+                "type": "domain"
             },
             {
                 "name": "is_public",
