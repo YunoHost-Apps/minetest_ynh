@@ -25,7 +25,6 @@ pvp=$(ynh_app_setting_get --app=$app --key=pvp)
 creative=$(ynh_app_setting_get --app=$app --key=creative)
 damage=$(ynh_app_setting_get --app=$app --key=damage)
 servername=$(ynh_app_setting_get --app=$app --key=servername)
-is_public=$(ynh_app_setting_get --app=$app --key=is_public)
 
 #=================================================
 # CHECK VERSION
@@ -43,7 +42,6 @@ ynh_script_progression --message="Backing up the app before upgrading (may take 
 ynh_backup_before_upgrade
 ynh_clean_setup () {
 	ynh_clean_check_starting
-
 	# Restore it if the upgrade fails
 	ynh_restore_upgradebackup
 }
@@ -102,7 +100,6 @@ ynh_system_user_create --username=$app --home_dir=$home_path --use_shell
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
 #=================================================
-ynh_script_progression --message="Upgrading source files..."
 
 if [ "$upgrade_type" == "UPGRADE_APP" ]
 then
