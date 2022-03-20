@@ -170,7 +170,7 @@ if ynh_permission_has_user --permission=main --user=visitors
 then
 	announce="true"
 else
-	announce="fase"
+	announce="false"
 fi
 
 ynh_add_config --template="../conf/minetest.conf" --destination="$home_path/.minetest/minetest.conf"
