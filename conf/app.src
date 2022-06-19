@@ -1,7 +1,7 @@
-SOURCE_URL=https://github.com/minetest/minetest/archive/5.4.1.tar.gz
-SOURCE_SUM=de9e4410583c845c104b4be25f9d0b8743d8573c120149b8910ae2519f9ab14e
+SOURCE_URL=https://github.com/minetest/minetest/archive/5.5.1.tar.gz
+SOURCE_SUM=dc0ae5188ef351db85c38b27f38f8549b133ed82aa46daea6deee148aa3454f4
 SOURCE_SUM_PRG=sha256sum
 SOURCE_FORMAT=tar.gz
 SOURCE_IN_SUBDIR=true
-SOURCE_FILENAME=minetest-5.4.1.tar.gz
+SOURCE_FILENAME=minetest-5.5.1.tar.gz
 SOURCE_EXTRACT=true

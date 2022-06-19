@@ -20,7 +20,7 @@ domain=$(ynh_app_setting_get --app=$app --key=domain)
 port=$(ynh_app_setting_get --app=$app --key=port)
 game=$(ynh_app_setting_get --app=$app --key=game)
 final_path=$(ynh_app_setting_get --app=$app --key=final_path)
-home_path=$(ynh_app_setting_get --app=$app --key=home_path)
+datadir=$(ynh_app_setting_get --app=$app --key=datadir)
 pvp=$(ynh_app_setting_get --app=$app --key=pvp)
 creative=$(ynh_app_setting_get --app=$app --key=creative)
 damage=$(ynh_app_setting_get --app=$app --key=damage)
@@ -82,6 +82,13 @@ if [ -z "$domain" ]; then
 	ynh_app_setting_set --app=$app --key=domain --value=$domain
 fi
 
+# If datadir doesn't exist, create it
+if [ -z $datadir ]; then
+	datadir=$(ynh_app_setting_get --app=$app --key=home_path)
+	ynh_app_setting_set --app=$app --key=datadir --value=$datadir
+	ynh_app_setting_delete --app=$app --key=home_path
+fi
+
 # Cleaning legacy permissions
 if ynh_legacy_permissions_exists; then
 	ynh_legacy_permissions_delete_all
@@ -95,7 +102,7 @@ fi
 ynh_script_progression --message="Making sure dedicated system user exists..."
 
 # Create a dedicated user (if not existing)
-ynh_system_user_create --username=$app --home_dir=$home_path --use_shell
+ynh_system_user_create --username=$app --home_dir="$final_path"
 
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
@@ -124,21 +131,11 @@ ynh_script_progression --message="Upgrading dependencies..."
 ynh_install_app_dependencies $pkg_dependencies
 
 #=================================================
-# COPY CONFIG FILE
-#=================================================
-
-if [ -e $home_path ]
-	then
-	echo "Nothing to do..."
-	else
-	mkdir -p $home_path/.minetest/
-	mkdir $home_path/.minetest/worlds/
-fi
-
-#=================================================
 # SPECIFIC UPGRADE
 #=================================================
-# Compile Minetest
+# BUILDING
+#=================================================
+ynh_script_progression --message="Building Minetest..."
 
 # Install the game
 if [ $game = "capturetheflag" ]; then
@@ -162,6 +159,18 @@ pushd $final_path
 popd
 
 #=================================================
+# COPY CONFIG FILE
+#=================================================
+
+if [ -e $datadir ]
+then
+	echo "Nothing to do..."
+else
+	mkdir -p $datadir/.minetest/
+	mkdir $datadir/.minetest/worlds/
+fi
+
+#=================================================
 # UPDATE A CONFIG FILE
 #=================================================
 ynh_script_progression --message="Updating a configuration file..."
@@ -173,7 +182,10 @@ else
 	announce="false"
 fi
 
-ynh_add_config --template="../conf/minetest.conf" --destination="$home_path/.minetest/minetest.conf"
+ynh_add_config --template="../conf/minetest.conf" --destination="$datadir/.minetest/minetest.conf"
+
+chmod 400 "$datadir/.minetest/minetest.conf"
+chown $app:$app "$datadir/.minetest/minetest.conf"
 
 #=================================================
 # SETUP SYSTEMD
