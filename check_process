@@ -1,13 +1,12 @@
 ;; Test complet minetest_game
 	; Manifest
 		domain="domain.tld"
-		pvp=1
-		servername="packagecheck"
+		is_public=0
         game="minetest_game"
+		servername="packagecheck"
+		pvp=1
 		creative=0
 		damage=1
-		is_public=0
-		password="pass"
 		port="30000"
 	; Checks
 		pkg_linter=1
@@ -27,15 +26,14 @@
 
 ;; Test complet capturetheflag
 	; Manifest
-		domain="domain.tld"	(DOMAIN)
-		pvp=1
-		servername="packagecheck"
+		domain="domain.tld"
+		is_public=0
         game="capturetheflag"
+		servername="packagecheck"
+		pvp=1
 		creative=0
 		damage=1
-		is_public=0	(PUBLIC|public=1|private=0)
-		password="pass"
-		port="30000"	(PORT)
+		port="30000"
 	; Checks
 		pkg_linter=1
 		setup_sub_dir=0
