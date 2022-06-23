@@ -28,7 +28,7 @@ ynh_print_info --message="Loading installation settings..."
 app=$YNH_APP_INSTANCE_NAME
 
 final_path=$(ynh_app_setting_get --app=$app --key=final_path)
-home_path=$(ynh_app_setting_get --app=$app --key=home_path)
+datadir=$(ynh_app_setting_get --app=$app --key=datadir)
 
 #=================================================
 # DECLARE DATA AND CONF FILES TO BACKUP
@@ -40,6 +40,12 @@ ynh_print_info --message="Declaring files to be backed up..."
 #=================================================
 
 ynh_backup --src_path="$final_path"
+
+#=================================================
+# BACKUP THE DATA DIR
+#=================================================
+
+ynh_backup --src_path="$datadir" --is_big
 
 #=================================================
 # SPECIFIC BACKUP
@@ -54,12 +60,6 @@ ynh_backup --src_path="/etc/logrotate.d/$app"
 #=================================================
 
 ynh_backup --src_path="/etc/systemd/system/$app.service"
-
-#=================================================
-# BACKUP THE HOME DIR
-#=================================================
-
-ynh_backup --src_path="$home_path" --is_big
 
 #=================================================
 # END OF SCRIPT

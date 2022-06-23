@@ -26,10 +26,10 @@ ynh_abort_if_errors
 domain=$YNH_APP_ARG_DOMAIN
 is_public=$YNH_APP_ARG_IS_PUBLIC
 game=$YNH_APP_ARG_GAME
+servername=$YNH_APP_ARG_SERVERNAME
 pvp=$YNH_APP_ARG_PVP
 creative=$YNH_APP_ARG_CREATIVE
 damage=$YNH_APP_ARG_DAMAGE
-servername=$YNH_APP_ARG_SERVERNAME
 
 app=$YNH_APP_INSTANCE_NAME
 
@@ -48,10 +48,10 @@ ynh_script_progression --message="Storing installation settings..."
 
 ynh_app_setting_set --app=$app --key=domain --value=$domain
 ynh_app_setting_set --app=$app --key=game --value=$game
+ynh_app_setting_set --app=$app --key=servername --value=$servername
 ynh_app_setting_set --app=$app --key=pvp --value=$pvp
 ynh_app_setting_set --app=$app --key=creative --value=$creative
 ynh_app_setting_set --app=$app --key=damage --value=$damage
-ynh_app_setting_set --app=$app --key=servername --value=$servername
 
 #=================================================
 # STANDARD MODIFICATIONS
@@ -63,6 +63,7 @@ ynh_script_progression --message="Finding an available port..."
 # Find an available port
 port=$(ynh_find_port 30000)
 ynh_app_setting_set --app=$app --key=port --value=$port
+
 # Open the port
 ynh_script_progression --message="Configuring firewall..."
 ynh_exec_warn_less yunohost firewall allow --no-upnp UDP $port
@@ -79,16 +80,8 @@ ynh_install_app_dependencies $pkg_dependencies
 #=================================================
 ynh_script_progression --message="Configuring system user..."
 
-home_path=/home/yunohost.app/$app
-ynh_app_setting_set --app=$app --key=home_path --value=$home_path
-
 # Create a system user
-ynh_system_user_create --username=$app --home_dir=$home_path --use_shell
-
-mkdir -p "$home_path"
-chmod 750 "$home_path"
-chmod -R o-rwx "$home_path"
-chown -R $app:$app "$home_path"
+ynh_system_user_create --username=$app --home_dir="$final_path"
 
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
@@ -106,26 +99,24 @@ chown -R $app:$app "$final_path"
 #=================================================
 # SPECIFIC SETUP
 #=================================================
-# ADD A CONFIGURATION
+# CREATE DATA DIRECTORY
 #=================================================
-ynh_script_progression --message="Adding a configuration file..."
+ynh_script_progression --message="Creating a data directory..."
 
-mkdir -p $home_path/.minetest/worlds/
-cp -a ../conf/minetest.conf $home_path/.minetest/
+datadir=/home/yunohost.app/$app
+ynh_app_setting_set --app=$app --key=datadir --value=$datadir
 
-#=================================================
-# SETUP SYSTEMD
-#=================================================
-ynh_script_progression --message="Configuring a systemd service..."
+mkdir -p $datadir
+mkdir -p "$datadir/.minetest/worlds/"
 
-# Create a dedicated systemd config
-ynh_add_systemd_config
+chmod 750 "$datadir"
+chmod -R o-rwx "$datadir"
+chown -R $app:www-data "$datadir"
 
 #=================================================
 # BUILDING
 #=================================================
 ynh_script_progression --message="Building Minetest..."
-
 
 # Install the game
 if [ $game = "capturetheflag" ]; then
@@ -144,13 +135,9 @@ pushd $final_path
 popd
 
 #=================================================
-# MODIFY A CONFIG FILE
+# ADD A CONFIGURATION
 #=================================================
 ynh_script_progression --message="Adding a configuration file..."
-
-### `ynh_replace_string` is used to replace a string in a file.
-### (It's compatible with sed regular expressions syntax)
-# Install the game
 
 if [ $is_public -eq 1 ]; then
 	announce="true"
@@ -158,17 +145,18 @@ else
 	announce="false"
 fi
 
-ynh_add_config --template="../conf/minetest.conf" --destination="$home_path/.minetest/minetest.conf"
+ynh_add_config --template="../conf/minetest.conf" --destination="$datadir/.minetest/minetest.conf"
+
+chmod 400 "$datadir/.minetest/minetest.conf"
+chown $app:$app "$datadir/.minetest/minetest.conf"
 
 #=================================================
-# CREATE LOG DIRECTORY
+# SETUP SYSTEMD
 #=================================================
-ynh_script_progression --message="Creating log directory..."
+ynh_script_progression --message="Configuring a systemd service..."
 
-mkdir -p /var/log/$app
-
-# Set permissions on logs
-chown -R $app:$app /var/log/$app
+# Create a dedicated systemd config
+ynh_add_systemd_config
 
 #=================================================
 # GENERIC FINALIZATION
@@ -176,6 +164,9 @@ chown -R $app:$app /var/log/$app
 # SETUP LOGROTATE
 #=================================================
 ynh_script_progression --message="Configuring log rotation..."
+
+mkdir -p /var/log/$app
+chown -R $app:$app /var/log/$app
 
 # Use logrotate to manage application logfile(s)
 ynh_use_logrotate

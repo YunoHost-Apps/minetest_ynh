@@ -18,7 +18,7 @@ app=$YNH_APP_INSTANCE_NAME
 
 port=$(ynh_app_setting_get --app=$app --key=port)
 final_path=$(ynh_app_setting_get --app=$app --key=final_path)
-home_path=$(ynh_app_setting_get --app=$app --key=home_path)
+datadir=$(ynh_app_setting_get --app=$app --key=datadir)
 
 #=================================================
 # STANDARD REMOVE
@@ -58,6 +58,17 @@ ynh_script_progression --message="Removing app main directory..."
 ynh_secure_remove --file="$final_path"
 
 #=================================================
+# REMOVE DATA DIR
+#=================================================
+
+# Remove the data directory if --purge option is used
+if [ "${YNH_APP_PURGE:-0}" -eq 1 ]
+then
+	ynh_script_progression --message="Removing app data directory..."
+	ynh_secure_remove --file="$datadir"
+fi
+
+#=================================================
 # REMOVE DEPENDENCIES
 #=================================================
 ynh_script_progression --message="Removing dependencies..."
@@ -81,8 +92,6 @@ fi
 # REMOVE VARIOUS FILES
 #=================================================
 ynh_script_progression --message="Removing various files..."
-
-ynh_secure_remove --file="$home_path"
 
 # Remove the log files
 ynh_secure_remove --file="/var/log/$app"

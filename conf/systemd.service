@@ -8,7 +8,7 @@ RequiresMountsFor=/home/yunohost.app/__APP__
 Restart=on-failure
 User=__APP__
 Group=__APP__
-ExecStart=__FINALPATH__/bin/minetestserver --config /home/yunohost.app/__APP__/.minetest/minetest.conf --logfile /var/log/__APP__/__APP__.log
+ExecStart=__FINALPATH__/bin/minetestserver --config __DATADIR__/.minetest/minetest.conf --logfile /var/log/__APP__/__APP__.log
 
 # Sandboxing options to harden security
 # Depending on specificities of your service/app, you may need to tweak these 
