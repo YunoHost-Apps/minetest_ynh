@@ -89,6 +89,12 @@ if [ -z $datadir ]; then
 	ynh_app_setting_delete --app=$app --key=home_path
 fi
 
+# If game doesn't exist, create it
+if [ -z $game ]; then
+	game="minetest_game"
+	ynh_app_setting_set --app=$app --key=game --value=$game
+fi
+
 # Cleaning legacy permissions
 if ynh_legacy_permissions_exists; then
 	ynh_legacy_permissions_delete_all
