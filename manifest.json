@@ -15,15 +15,9 @@
     },
     "license": "MIT",
     "maintainer": {
-        "name": "rafi59",
-        "email": "rafi59_dev@srvmaison.fr.nf",
-        "url": ""
+        "name": "",
+        "email": ""
     },
-    "previous_maintainers": {
-    	"name": "Luc Didry",
-    	"email": "luc@framasoft.org",
-    	"url": "https://framasoft.org"
-},
     "requirements": {
         "yunohost": ">= 4.3.0"
     },
