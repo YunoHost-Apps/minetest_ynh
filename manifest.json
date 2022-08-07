@@ -11,7 +11,8 @@
     "upstream": {
         "license": "MIT",
         "website": "http://www.minetest.net",
-        "code": "https://github.com/minetest/minetest"
+        "code": "https://github.com/minetest/minetest",
+        "cpe": "cpe:2.3:a:minetest:minetest"
     },
     "license": "MIT",
     "maintainer": {
@@ -43,7 +44,10 @@
                     "en": "Choose a game for your server",
                     "fr": "Choissisez un jeu pour votre serveur"
                 },
-                "choises": ["minetest_game", "capturetheflag"],
+                "choises": [
+                    "minetest_game",
+                    "capturetheflag"
+                ],
                 "default": "minetest_game",
                 "hint": "Minetest_game is the minetest default game.  / Capture The Flag player vs player game."
             },
