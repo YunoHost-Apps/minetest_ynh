@@ -118,6 +118,11 @@ chown -R $app:www-data "$datadir"
 #=================================================
 ynh_script_progression --message="Building Minetest..."
 
+git clone --depth=1 https://github.com/minetest/irrlicht lib/irrlichtmt
+cd lib/irrlichtmt
+ynh_exec_warn_less cmake . -DBUILD_SHARED_LIBS=OFF
+ynh_exec_warn_less make -j$(nproc)
+
 # Install the game
 if [ $game = "capturetheflag" ]; then
 	pushd $final_path
