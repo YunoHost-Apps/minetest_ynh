@@ -3,8 +3,8 @@
     "id": "minetest",
     "packaging_format": 1,
     "description": {
-        "en": "Free, open source voxel game engine and game. Need a client to connect to the server.",
-        "fr": "Moteur de jeu de type « bac à sable » gratuit et open source. Nécessite un client pour se connecter au serveur."
+        "en": "Voxel game engine and game. Need a client to connect to the server",
+        "fr": "Moteur de jeu de type « bac à sable ». Nécessite un client pour se connecter au serveur"
     },
     "version": "5.5.1~ynh2",
     "url": "http://www.minetest.net/",
