@@ -5,24 +5,25 @@ It shall NOT be edited by hand.
 
 # Minetest pour YunoHost
 
-[![Niveau d'intégration](https://dash.yunohost.org/integration/minetest.svg)](https://dash.yunohost.org/appci/app/minetest) ![Statut du fonctionnement](https://ci-apps.yunohost.org/ci/badges/minetest.status.svg) ![Statut de maintenance](https://ci-apps.yunohost.org/ci/badges/minetest.maintain.svg)  
+[![Niveau d’intégration](https://dash.yunohost.org/integration/minetest.svg)](https://dash.yunohost.org/appci/app/minetest) ![Statut du fonctionnement](https://ci-apps.yunohost.org/ci/badges/minetest.status.svg) ![Statut de maintenance](https://ci-apps.yunohost.org/ci/badges/minetest.maintain.svg)
+
 [![Installer Minetest avec YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=minetest)
 
 *[Read this readme in english.](./README.md)*
 
-> *Ce package vous permet d'installer Minetest rapidement et simplement sur un serveur YunoHost.
-Si vous n'avez pas YunoHost, regardez [ici](https://yunohost.org/#/install) pour savoir comment l'installer et en profiter.*
+> *Ce package vous permet d’installer Minetest rapidement et simplement sur un serveur YunoHost.
+Si vous n’avez pas YunoHost, regardez [ici](https://yunohost.org/#/install) pour savoir comment l’installer et en profiter.*
 
-## Vue d'ensemble
+## Vue d’ensemble
 
 Minetest est un moteur de jeu voxel open-source avec modding et création de jeux faciles.
 
 
 **Version incluse :** 5.5.1~ynh2
 
-## Captures d'écran
+## Captures d’écran
 
-![Capture d'écran de Minetest](./doc/screenshots/1.jpg)
+![Capture d’écran de Minetest](./doc/screenshots/1.jpg)
 
 ## Avertissements / informations importantes
 
@@ -51,9 +52,9 @@ Comment configurer cette application : par SSH
 
 ## Documentations et ressources
 
-* Site officiel de l'app : <http://www.minetest.net>
-* Dépôt de code officiel de l'app : <https://github.com/minetest/minetest>
-* Documentation YunoHost pour cette app : <https://yunohost.org/app_minetest>
+* Site officiel de l’app : <http://www.minetest.net>
+* Dépôt de code officiel de l’app : <https://github.com/minetest/minetest>
+* YunoHost Store: <https://apps.yunohost.org/app/minetest>
 * Signaler un bug : <https://github.com/YunoHost-Apps/minetest_ynh/issues>
 
 ## Informations pour les développeurs
@@ -68,4 +69,4 @@ ou
 sudo yunohost app upgrade minetest -u https://github.com/YunoHost-Apps/minetest_ynh/tree/testing --debug
 ```
 
-**Plus d'infos sur le packaging d'applications :** <https://yunohost.org/packaging_apps>
+**Plus d’infos sur le packaging d’applications :** <https://yunohost.org/packaging_apps>

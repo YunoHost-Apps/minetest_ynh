@@ -5,7 +5,8 @@ It shall NOT be edited by hand.
 
 # Minetest for YunoHost
 
-[![Integration level](https://dash.yunohost.org/integration/minetest.svg)](https://dash.yunohost.org/appci/app/minetest) ![Working status](https://ci-apps.yunohost.org/ci/badges/minetest.status.svg) ![Maintenance status](https://ci-apps.yunohost.org/ci/badges/minetest.maintain.svg)  
+[![Integration level](https://dash.yunohost.org/integration/minetest.svg)](https://dash.yunohost.org/appci/app/minetest) ![Working status](https://ci-apps.yunohost.org/ci/badges/minetest.status.svg) ![Maintenance status](https://ci-apps.yunohost.org/ci/badges/minetest.maintain.svg)
+
 [![Install Minetest with YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=minetest)
 
 *[Lire ce readme en français.](./README_fr.md)*
@@ -53,7 +54,7 @@ How to configure this app: by SSH
 
 * Official app website: <http://www.minetest.net>
 * Upstream app code repository: <https://github.com/minetest/minetest>
-* YunoHost documentation for this app: <https://yunohost.org/app_minetest>
+* YunoHost Store: <https://apps.yunohost.org/app/minetest>
 * Report a bug: <https://github.com/YunoHost-Apps/minetest_ynh/issues>
 
 ## Developer info
