@@ -128,6 +128,9 @@ else
 	ynh_setup_source --dest_dir=$final_path/games/minetest_game --source_id=minetest_game
 fi
 
+# Install IrrlichtMt
+ynh_setup_source --dest_dir=$final_path/lib/irrlichtmt --source_id=irrlichtmt
+
 pushd $final_path
 	ynh_exec_warn_less cmake . -DRUN_IN_PLACE=TRUE -DENABLE_LUAJIT=TRUE -DBUILD_CLIENT=FALSE -DBUILD_SERVER=TRUE
 
