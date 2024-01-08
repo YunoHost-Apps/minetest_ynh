@@ -42,7 +42,6 @@ ram.runtime = "50M"
     type = "select"
     choises = ["minetest_game", "capturetheflag"]
     default = "minetest_game"
-    hint = "Minetest_game is the minetest default game.  / Capture The Flag player vs player game."
 
     [install.servername]
     ask.en = "Choose a name for your server"
