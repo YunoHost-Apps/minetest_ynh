@@ -2,6 +2,20 @@ test_format = 1.0
 
 [default]
 
+    # ------------
+    # Tests to run
+    # ------------
+
+    # NB: the tests to run are automatically deduced by the CI script according to the
+    # content of the app's manifest. The declarations below allow to customize which
+    # tests are ran, possibly add special test suite to test special args, or
+    # declare which commits to test upgrade from.
+    #
+    # You can also decide (though this is discouraged!) to ban/ignore some tests,
+
+    exclude = ["change_url", "install.multi"]  # The test IDs to be used in only/exclude statements are: install.root, install.subdir, install.nourl, install.multi, backup_restore, upgrade, upgrade.someCommitId change_url
+    # NB: you should NOT need this except if you really have a good reason...
+
     # -------------------------------
     # Default args to use for install
     # -------------------------------
