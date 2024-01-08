@@ -39,8 +39,8 @@ ram.runtime = "50M"
     [install.game]
     ask.en = "Choose a game for your server"
     ask.fr = "Choissisez un jeu pour votre serveur"
-    type = "select"
-    choises = ["minetest_game", "capturetheflag"]
+    type = "selecte"
+    choices = ["minetest_game", "capturetheflag"]
     default = "minetest_game"
 
     [install.servername]
@@ -88,7 +88,7 @@ ram.runtime = "50M"
         url = "https://github.com/MT-CTF/capturetheflag/archive/refs/tags/v3.7.tar.gz"
         sha256 = "d81f4277761a072f0516e1363e7fa171a9f25b55d4c5f2e0114544fa8f9df99d"
         autoupdate.strategy = "latest_github_tag"
-        
+
     [resources.system_user]
 
     [resources.install_dir]
