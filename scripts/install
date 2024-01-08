@@ -48,12 +48,6 @@ popd
 #=================================================
 ynh_script_progression --message="Adding a configuration file..."
 
-if [ $is_public -eq 1 ]; then
-	announce="true"
-else
-	announce="false"
-fi
-
 ynh_add_config --template="minetest.conf" --destination="$data_dir/.minetest/minetest.conf"
 
 chmod 400 "$data_dir/.minetest/minetest.conf"
@@ -72,7 +66,6 @@ chown -R $app:$app /var/log/$app
 
 # Use logrotate to manage application logfile(s)
 ynh_use_logrotate
-
 
 yunohost service add $app --description="Voxel game engine and game" --log="/var/log/$app/$app.log" --needs_exposed_ports="$port"
 
