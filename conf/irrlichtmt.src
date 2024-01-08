@@ -1,7 +1,0 @@
-SOURCE_URL=https://github.com/minetest/irrlicht/archive/1.9.0mt13.tar.gz
-SOURCE_SUM=2fde8e27144988210b9c0ff1e202905834d9d25aaa63ce452763fd7171096adc
-SOURCE_SUM_PRG=sha256sum
-SOURCE_FORMAT=tar.gz
-SOURCE_IN_SUBDIR=true
-SOURCE_FILENAME=irrlicht-1.9.0mt13.tar.gz
-SOURCE_EXTRACT=true

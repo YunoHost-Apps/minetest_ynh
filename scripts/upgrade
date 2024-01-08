@@ -12,19 +12,19 @@ source /usr/share/yunohost/helpers
 #=================================================
 # LOAD SETTINGS
 #=================================================
-ynh_script_progression --message="Loading installation settings..."
+#REMOVEME? ynh_script_progression --message="Loading installation settings..."
 
-app=$YNH_APP_INSTANCE_NAME
+#REMOVEME? app=$YNH_APP_INSTANCE_NAME
 
-domain=$(ynh_app_setting_get --app=$app --key=domain)
-port=$(ynh_app_setting_get --app=$app --key=port)
-game=$(ynh_app_setting_get --app=$app --key=game)
-final_path=$(ynh_app_setting_get --app=$app --key=final_path)
-datadir=$(ynh_app_setting_get --app=$app --key=datadir)
-pvp=$(ynh_app_setting_get --app=$app --key=pvp)
-creative=$(ynh_app_setting_get --app=$app --key=creative)
-damage=$(ynh_app_setting_get --app=$app --key=damage)
-servername=$(ynh_app_setting_get --app=$app --key=servername)
+#REMOVEME? domain=$(ynh_app_setting_get --app=$app --key=domain)
+#REMOVEME? port=$(ynh_app_setting_get --app=$app --key=port)
+#REMOVEME? game=$(ynh_app_setting_get --app=$app --key=game)
+#REMOVEME? #REMOVEME? install_dir=$(ynh_app_setting_get --app=$app --key=install_dir)
+#REMOVEME? data_dir=$(ynh_app_setting_get --app=$app --key=data_dir)
+#REMOVEME? pvp=$(ynh_app_setting_get --app=$app --key=pvp)
+#REMOVEME? creative=$(ynh_app_setting_get --app=$app --key=creative)
+#REMOVEME? damage=$(ynh_app_setting_get --app=$app --key=damage)
+#REMOVEME? servername=$(ynh_app_setting_get --app=$app --key=servername)
 
 #=================================================
 # CHECK VERSION
@@ -36,17 +36,17 @@ upgrade_type=$(ynh_check_app_version_changed)
 #=================================================
 # BACKUP BEFORE UPGRADE THEN ACTIVE TRAP
 #=================================================
-ynh_script_progression --message="Backing up the app before upgrading (may take a while)..."
+#REMOVEME? ynh_script_progression --message="Backing up the app before upgrading (may take a while)..."
 
 # Backup the current version of the app
-ynh_backup_before_upgrade
-ynh_clean_setup () {
+#REMOVEME? ynh_backup_before_upgrade
+#REMOVEME? ynh_clean_setup () {
 	ynh_clean_check_starting
 	# Restore it if the upgrade fails
-	ynh_restore_upgradebackup
+#REMOVEME? 	ynh_restore_upgradebackup
 }
 # Exit if an error occurs during the execution of the script
-ynh_abort_if_errors
+#REMOVEME? ynh_abort_if_errors
 
 #=================================================
 # STANDARD UPGRADE STEPS
@@ -70,22 +70,22 @@ fi
 
 ynh_script_progression --message="Ensuring downward compatibility..."
 
-# If final_path doesn't exist, create it
-if [ -z $final_path ]; then
-	final_path=/opt/yunohost/$app
-	ynh_app_setting_set --app=$app --key=final_path --value=$final_path
+# If install_dir doesn't exist, create it
+if [ -z $install_dir ]; then
+#REMOVEME? 	install_dir=/opt/yunohost/$app
+#REMOVEME? 	ynh_app_setting_set --app=$app --key=install_dir --value=$install_dir
 fi
 
 # If domain doesn't exist, create it
 if [ -z "$domain" ]; then
-	domain=$(ynh_app_setting_get --app=$app --key=server_domain)
-	ynh_app_setting_set --app=$app --key=domain --value=$domain
+#REMOVEME? 	domain=$(ynh_app_setting_get --app=$app --key=server_domain)
+#REMOVEME? 	ynh_app_setting_set --app=$app --key=domain --value=$domain
 fi
 
-# If datadir doesn't exist, create it
-if [ -z $datadir ]; then
-	datadir=$(ynh_app_setting_get --app=$app --key=home_path)
-	ynh_app_setting_set --app=$app --key=datadir --value=$datadir
+# If data_dir doesn't exist, create it
+if [ -z $data_dir ]; then
+#REMOVEME? 	data_dir=$(ynh_app_setting_get --app=$app --key=home_path)
+#REMOVEME? 	ynh_app_setting_set --app=$app --key=data_dir --value=$data_dir
 	ynh_app_setting_delete --app=$app --key=home_path
 fi
 
@@ -96,8 +96,8 @@ if [ -z $game ]; then
 fi
 
 # Cleaning legacy permissions
-if ynh_legacy_permissions_exists; then
-	ynh_legacy_permissions_delete_all
+#REMOVEME? if ynh_legacy_permissions_exists; then
+#REMOVEME? 	ynh_legacy_permissions_delete_all
 
 	ynh_app_setting_delete --app=$app --key=is_public
 fi
@@ -105,10 +105,10 @@ fi
 #=================================================
 # CREATE DEDICATED USER
 #=================================================
-ynh_script_progression --message="Making sure dedicated system user exists..."
+#REMOVEME? ynh_script_progression --message="Making sure dedicated system user exists..."
 
 # Create a dedicated user (if not existing)
-ynh_system_user_create --username=$app --home_dir="$final_path"
+#REMOVEME? ynh_system_user_create --username=$app --home_dir="$install_dir"
 
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
@@ -119,22 +119,22 @@ then
 	ynh_script_progression --message="Upgrading source files..." --weight=1
 
 	# Remove old install
-	ynh_secure_remove --file="$final_path"
+#REMOVEME? 	ynh_secure_remove --file="$install_dir"
 
 	# Download, check integrity, uncompress and patch the source from app.src
-	ynh_setup_source --dest_dir="$final_path"
+	ynh_setup_source --dest_dir="$install_dir"
 fi
 
-chmod 750 "$final_path"
-chmod -R o-rwx "$final_path"
-chown -R $app:$app "$final_path"
+chmod 750 "$install_dir"
+chmod -R o-rwx "$install_dir"
+chown -R $app:$app "$install_dir"
 
 #=================================================
 # UPGRADE DEPENDENCIES
 #=================================================
-ynh_script_progression --message="Upgrading dependencies..."
+#REMOVEME? ynh_script_progression --message="Upgrading dependencies..."
 
-ynh_install_app_dependencies $pkg_dependencies
+#REMOVEME? ynh_install_app_dependencies $pkg_dependencies
 
 #=================================================
 # SPECIFIC UPGRADE
@@ -147,7 +147,7 @@ ynh_script_progression --message="Building Minetest..."
 if [ $game = "capturetheflag" ]; then
 	# Download Capture The Flag
 
-	pushd $final_path
+	pushd $install_dir
 		# To avoid mess remove this first
 		ynh_secure_remove games/capturetheflag/
 		# Then clone the latest version from git
@@ -155,13 +155,13 @@ if [ $game = "capturetheflag" ]; then
 	popd
 else
 	# Download Minetest Game
-	ynh_setup_source --dest_dir=$final_path/games/minetest_game --source_id=minetest_game
+	ynh_setup_source --dest_dir=$install_dir/games/minetest_game --source_id=minetest_game
 fi
 
 # Install IrrlichtMt
-ynh_setup_source --dest_dir=$final_path/lib/irrlichtmt --source_id=irrlichtmt
+ynh_setup_source --dest_dir=$install_dir/lib/irrlichtmt --source_id=irrlichtmt
 
-pushd $final_path
+pushd $install_dir
 	ynh_exec_warn_less cmake . -DRUN_IN_PLACE=TRUE -DENABLE_LUAJIT=TRUE -DBUILD_CLIENT=FALSE -DBUILD_SERVER=TRUE
 
 	ynh_exec_warn_less make -j$(nproc)
@@ -171,12 +171,12 @@ popd
 # COPY CONFIG FILE
 #=================================================
 
-if [ -e $datadir ]
+if [ -e $data_dir ]
 then
 	echo "Nothing to do..."
 else
-	mkdir -p $datadir/.minetest/
-	mkdir $datadir/.minetest/worlds/
+	mkdir -p $data_dir/.minetest/
+	mkdir $data_dir/.minetest/worlds/
 fi
 
 #=================================================
@@ -191,10 +191,10 @@ else
 	announce="false"
 fi
 
-ynh_add_config --template="../conf/minetest.conf" --destination="$datadir/.minetest/minetest.conf"
+ynh_add_config --template="../conf/minetest.conf" --destination="$data_dir/.minetest/minetest.conf"
 
-chmod 400 "$datadir/.minetest/minetest.conf"
-chown $app:$app "$datadir/.minetest/minetest.conf"
+chmod 400 "$data_dir/.minetest/minetest.conf"
+chown $app:$app "$data_dir/.minetest/minetest.conf"
 
 #=================================================
 # SETUP SYSTEMD

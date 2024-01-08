@@ -1,7 +1,0 @@
-SOURCE_URL=https://github.com/minetest/minetest_game/archive/5.8.0.tar.gz
-SOURCE_SUM=33a3bb43b08497a0bdb2f49f140a2829e582d5c16c0ad52be1595c803f706912
-SOURCE_SUM_PRG=sha256sum
-SOURCE_FORMAT=tar.gz
-SOURCE_IN_SUBDIR=true
-SOURCE_FILENAME=minetest_game-5.8.0.tar.gz
-SOURCE_EXTRACT=true
