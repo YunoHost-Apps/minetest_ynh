@@ -26,9 +26,8 @@ ynh_script_progression --message="Building Minetest..."
 
 # Install the game
 if [ $game = "capturetheflag" ]; then
-	pushd $install_dir
-		git clone --recursive https://github.com/MT-CTF/capturetheflag.git games/capturetheflag
-	popd
+	# Download Capture The Flag
+	ynh_setup_source --dest_dir=$install_dir/games/capturetheflag --source_id=capturetheflag
 else
 	# Download Minetest Game
 	ynh_setup_source --dest_dir=$install_dir/games/minetest_game --source_id=minetest_game
