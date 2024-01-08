@@ -13,6 +13,7 @@ maintainers = []
 license = "MIT"
 website = "http://www.minetest.net"
 code = "https://github.com/minetest/minetest"
+fund = "https://www.minetest.net/get-involved/#donate"
 
 [integration]
 yunohost = ">= 11.2"
@@ -51,7 +52,7 @@ ram.runtime = "50M"
 
     [install.pvp]
     ask.en = "Whether to enable players killing each other"
-    ask.fr = "Permettre aux joueurs de se tuer l'un l'autre"
+    ask.fr = "Permettre aux joueurs de s'entre-tuer"
     type = "boolean"
     default = false
 
@@ -63,7 +64,7 @@ ram.runtime = "50M"
 
     [install.damage]
     ask.en = "Enable players getting damage and dying"
-    ask.fr = "Les joueurs pourront-ils recevoir des dommages et mourir ?"
+    ask.fr = "Permettre aux joueurs de subir des dégâts et de mourir"
     type = "boolean"
     default = true
 
@@ -72,15 +73,17 @@ ram.runtime = "50M"
         [resources.sources.minetest_game]
         url = "https://github.com/minetest/minetest_game/archive/5.8.0.tar.gz"
         sha256 = "33a3bb43b08497a0bdb2f49f140a2829e582d5c16c0ad52be1595c803f706912"
+        autoupdate.strategy = "latest_github_tag"
 
         [resources.sources.main]
         url = "https://github.com/minetest/minetest/archive/5.8.0.tar.gz"
         sha256 = "610c85a24d77acdc3043a69d777bed9e6c00169406ca09df22ad490fe0d68c0c"
+        autoupdate.strategy = "latest_github_tag"
 
         [resources.sources.irrlichtmt]
         url = "https://github.com/minetest/irrlicht/archive/1.9.0mt13.tar.gz"
         sha256 = "2fde8e27144988210b9c0ff1e202905834d9d25aaa63ce452763fd7171096adc"
-
+        autoupdate.strategy = "latest_github_tag"
 
     [resources.system_user]
 
@@ -97,4 +100,3 @@ ram.runtime = "50M"
 
     [resources.apt]
     packages = "build-essential, libirrlicht-dev, cmake, libbz2-dev, libpng-dev, libjpeg-dev, libxxf86vm-dev, libgl1-mesa-dev, libsqlite3-dev, libogg-dev, libvorbis-dev, libopenal-dev, libcurl4-dev, libfreetype6-dev, zlib1g-dev, libgmp-dev, libjsoncpp-dev, libluajit-5.1-dev, libncurses-dev, libzstd-dev"
-
