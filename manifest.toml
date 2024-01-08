@@ -39,7 +39,7 @@ ram.runtime = "50M"
     [install.game]
     ask.en = "Choose a game for your server"
     ask.fr = "Choissisez un jeu pour votre serveur"
-    type = "selecte"
+    type = "select"
     choices = ["minetest_game", "capturetheflag"]
     default = "minetest_game"
 
