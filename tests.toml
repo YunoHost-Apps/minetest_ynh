@@ -23,3 +23,8 @@ test_format = 1.0
     # -------------------------------
 
     test_upgrade_from.7502e8155e0e5ee5d9e346af3ed96e431cd9fba3.name = "Upgrade from 5.5.1~ynh2"
+
+    ["Test-capturetheflag"]
+
+    only = ["install.root", "backup_restore", "upgrade"]
+    args.game = "capturetheflag"
