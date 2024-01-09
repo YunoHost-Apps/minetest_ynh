@@ -1,14 +1,15 @@
 [Unit]
-Description=Minetest multiplayer server minetest.conf server config
+Description=Minetest: multiplayer server minetest.conf server config
 Documentation=man:minetestserver(6)
 After=network.target
-RequiresMountsFor=/home/yunohost.app/__APP__
+RequiresMountsFor=__DATA_DIR__
 
 [Service]
-Restart=on-failure
+Type=simple
 User=__APP__
 Group=__APP__
-ExecStart=__FINALPATH__/bin/minetestserver --config __DATADIR__/.minetest/minetest.conf --logfile /var/log/__APP__/__APP__.log
+ExecStart=__INSTALL_DIR__/bin/minetestserver --gameid __GAME__ --config __DATA_DIR__/.minetest/minetest.conf --logfile /var/log/__APP__/__APP__.log
+Restart=on-failure
 
 # Sandboxing options to harden security
 # Depending on specificities of your service/app, you may need to tweak these 
