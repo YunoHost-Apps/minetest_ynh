@@ -28,6 +28,9 @@ ynh_script_progression --message="Building Minetest..."
 if [ $game = "capturetheflag" ]; then
 	# Download Capture The Flag
 	ynh_setup_source --dest_dir=$install_dir/games/capturetheflag --source_id=capturetheflag
+elif [ $game = "mineclonia" ]; then
+	# Download Mineclonia
+	ynh_setup_source --dest_dir=$install_dir/games/mineclonia --source_id=mineclonia
 else
 	# Download Minetest Game
 	ynh_setup_source --dest_dir=$install_dir/games/minetest_game --source_id=minetest_game
