@@ -5,7 +5,7 @@ name = "Minetest"
 description.en = "Voxel game engine and game. Need a client to connect to the server"
 description.fr = "Moteur de jeu de type « bac à sable ». Nécessite un client pour se connecter au serveur"
 
-version = "5.8.0~ynh1"
+version = "5.8.0~ynh2"
 
 maintainers = []
 
@@ -80,8 +80,8 @@ ram.runtime = "50M"
         autoupdate.strategy = "latest_github_release"
 
         [resources.sources.irrlichtmt]
-        url = "https://github.com/minetest/irrlicht/archive/1.9.0mt13.tar.gz"
-        sha256 = "2fde8e27144988210b9c0ff1e202905834d9d25aaa63ce452763fd7171096adc"
+        url = "https://github.com/minetest/irrlicht/archive/1.9.0mt14.tar.gz"
+        sha256 = "56ff07c89849df4b5a7d37e573afd7890f4c1f1d1fe010ade711193ca707306c"
         autoupdate.strategy = "latest_github_release"
 
         [resources.sources.capturetheflag]
@@ -90,8 +90,8 @@ ram.runtime = "50M"
         autoupdate.strategy = "latest_github_release"
 
         [resources.sources.mineclonia]
-        url = "https://codeberg.org/mineclonia/mineclonia/archive/0.93.2.tar.gz"
-        sha256 = "d4c237d85ffee1b41b3dac8b01589685ff4f806d5273bb47eb4cc7e4f443c27d"
+        url = "https://codeberg.org/mineclonia/mineclonia/archive/0.94.0.tar.gz"
+        sha256 = "ad3b0dfabb442b47d3b54f0dd6bc5c882573e98c2c924a29ea395b9a59d0bde6"
         autoupdate.strategy = "latest_github_release"
 
     [resources.system_user]
