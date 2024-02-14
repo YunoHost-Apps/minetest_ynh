@@ -72,6 +72,7 @@ ram.runtime = "50M"
         [resources.sources.minetest_game]
         url = "https://github.com/minetest/minetest_game/archive/5.8.0.tar.gz"
         sha256 = "33a3bb43b08497a0bdb2f49f140a2829e582d5c16c0ad52be1595c803f706912"
+        autoupdate.upstream = "https://github.com/minetest/minetest_game"
         autoupdate.strategy = "latest_github_release"
 
         [resources.sources.main]
@@ -82,16 +83,19 @@ ram.runtime = "50M"
         [resources.sources.irrlichtmt]
         url = "https://github.com/minetest/irrlicht/archive/1.9.0mt14.tar.gz"
         sha256 = "56ff07c89849df4b5a7d37e573afd7890f4c1f1d1fe010ade711193ca707306c"
+        autoupdate.upstream = "https://github.com/minetest/irrlicht"
         autoupdate.strategy = "latest_github_release"
 
         [resources.sources.capturetheflag]
         url = "https://github.com/MT-CTF/capturetheflag/archive/refs/tags/v3.7.tar.gz"
         sha256 = "d81f4277761a072f0516e1363e7fa171a9f25b55d4c5f2e0114544fa8f9df99d"
+        autoupdate.upstream = "https://github.com/MT-CTF/capturetheflag"
         autoupdate.strategy = "latest_github_release"
 
         [resources.sources.mineclonia]
         url = "https://codeberg.org/mineclonia/mineclonia/archive/0.94.0.tar.gz"
         sha256 = "ad3b0dfabb442b47d3b54f0dd6bc5c882573e98c2c924a29ea395b9a59d0bde6"
+        autoupdate.upstream = "https://codeberg.org/mineclonia/mineclonia"
         autoupdate.strategy = "latest_forgejo_release"
 
     [resources.system_user]
