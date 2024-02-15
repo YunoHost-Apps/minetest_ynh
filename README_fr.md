@@ -19,7 +19,7 @@ Si vous n’avez pas YunoHost, regardez [ici](https://yunohost.org/#/install) po
 Minetest est un moteur de jeu voxel open-source avec modding et création de jeux faciles.
 
 
-**Version incluse :** 5.8.0~ynh1
+**Version incluse :** 5.8.0~ynh2
 
 ## Captures d’écran
 
