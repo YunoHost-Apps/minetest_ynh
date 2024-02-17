@@ -1,3 +1,5 @@
+#:schema https://raw.githubusercontent.com/YunoHost/apps/master/schemas/manifest.v2.schema.json
+
 packaging_format = 2
 
 id = "minetest"
@@ -73,7 +75,7 @@ ram.runtime = "50M"
         url = "https://github.com/minetest/minetest_game/archive/5.8.0.tar.gz"
         sha256 = "33a3bb43b08497a0bdb2f49f140a2829e582d5c16c0ad52be1595c803f706912"
         autoupdate.upstream = "https://github.com/minetest/minetest_game"
-        autoupdate.strategy = "latest_github_release"
+        autoupdate.strategy = "latest_github_tag"
 
         [resources.sources.main]
         url = "https://github.com/minetest/minetest/archive/5.8.0.tar.gz"
@@ -85,6 +87,7 @@ ram.runtime = "50M"
         sha256 = "56ff07c89849df4b5a7d37e573afd7890f4c1f1d1fe010ade711193ca707306c"
         autoupdate.upstream = "https://github.com/minetest/irrlicht"
         autoupdate.strategy = "latest_github_release"
+        autoupdate.version_regex = "^(.*)mt(.*)$"
 
         [resources.sources.capturetheflag]
         url = "https://github.com/MT-CTF/capturetheflag/archive/refs/tags/v3.7.tar.gz"
