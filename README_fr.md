@@ -18,7 +18,6 @@ Si vous n’avez pas YunoHost, regardez [ici](https://yunohost.org/#/install) po
 
 Minetest est un moteur de jeu voxel open-source avec modding et création de jeux faciles.
 
-
 **Version incluse :** 5.8.0~ynh2
 
 ## Captures d’écran
@@ -27,10 +26,10 @@ Minetest est un moteur de jeu voxel open-source avec modding et création de jeu
 
 ## Documentations et ressources
 
-* Site officiel de l’app : <http://www.minetest.net>
-* Dépôt de code officiel de l’app : <https://github.com/minetest/minetest>
-* YunoHost Store: <https://apps.yunohost.org/app/minetest>
-* Signaler un bug : <https://github.com/YunoHost-Apps/minetest_ynh/issues>
+- Site officiel de l’app : <http://www.minetest.net>
+- Dépôt de code officiel de l’app : <https://github.com/minetest/minetest>
+- YunoHost Store : <https://apps.yunohost.org/app/minetest>
+- Signaler un bug : <https://github.com/YunoHost-Apps/minetest_ynh/issues>
 
 ## Informations pour les développeurs
 
@@ -38,7 +37,7 @@ Merci de faire vos pull request sur la [branche testing](https://github.com/Yuno
 
 Pour essayer la branche testing, procédez comme suit.
 
-``` bash
+```bash
 sudo yunohost app install https://github.com/YunoHost-Apps/minetest_ynh/tree/testing --debug
 ou
 sudo yunohost app upgrade minetest -u https://github.com/YunoHost-Apps/minetest_ynh/tree/testing --debug
