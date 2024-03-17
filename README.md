@@ -18,7 +18,7 @@ If you don't have YunoHost, please consult [the guide](https://yunohost.org/#/in
 
 Minetest is a free open-source voxel game engine with easy modding and game creation.
 
-**Shipped version:** 5.8.0~ynh2
+**Shipped version:** 5.8.0~ynh3
 
 ## Screenshots
 
