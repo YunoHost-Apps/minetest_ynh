@@ -18,8 +18,7 @@ If you don't have YunoHost, please consult [the guide](https://yunohost.org/#/in
 
 Minetest is a free open-source voxel game engine with easy modding and game creation.
 
-
-**Shipped version:** 5.8.0~ynh2
+**Shipped version:** 5.8.0~ynh3
 
 ## Screenshots
 
@@ -27,10 +26,10 @@ Minetest is a free open-source voxel game engine with easy modding and game crea
 
 ## Documentation and resources
 
-* Official app website: <http://www.minetest.net>
-* Upstream app code repository: <https://github.com/minetest/minetest>
-* YunoHost Store: <https://apps.yunohost.org/app/minetest>
-* Report a bug: <https://github.com/YunoHost-Apps/minetest_ynh/issues>
+- Official app website: <http://www.minetest.net>
+- Upstream app code repository: <https://github.com/minetest/minetest>
+- YunoHost Store: <https://apps.yunohost.org/app/minetest>
+- Report a bug: <https://github.com/YunoHost-Apps/minetest_ynh/issues>
 
 ## Developer info
 
@@ -38,7 +37,7 @@ Please send your pull request to the [testing branch](https://github.com/YunoHos
 
 To try the testing branch, please proceed like that.
 
-``` bash
+```bash
 sudo yunohost app install https://github.com/YunoHost-Apps/minetest_ynh/tree/testing --debug
 or
 sudo yunohost app upgrade minetest -u https://github.com/YunoHost-Apps/minetest_ynh/tree/testing --debug
