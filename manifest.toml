@@ -121,4 +121,10 @@ ram.runtime = "50M"
                 "libjsoncpp-dev",
                 "libzstd-dev",
                 "libluajit-5.1-dev",
-                "gettext"]
+                "g++",
+                "libarchive13",
+                "libjsoncpp25",
+                "librhash0",
+                "cmake-data",
+                "libgmpxx4ldbl",
+                "libluajit-5.1-2"]
