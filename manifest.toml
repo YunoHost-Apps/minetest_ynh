@@ -119,11 +119,11 @@ ram.runtime = "50M"
                 "zlib1g-dev",
                 "libgmp-dev",
                 "libjsoncpp-dev",
-                "libzstd-dev",
-                "libluajit2-5.1-dev",
-                "g++",
-                "libarchive13",
-                "libjsoncpp25",
-                "librhash0",
-                "cmake-data",
-                "libgmpxx4ldbl"]
+                "libzstd-dev"]
+    packages_from_raw_bash = packages_from_raw_bash = """
+    if [[ $YNH_DEBIAN_VERSION = "bullseye" ]]; then
+        echo "libluajit-5.1-dev";
+    elif [[ $YNH_DEBIAN_VERSION = "bookworm" ]]; then
+        echo "libluajit2-5.1-dev";
+    fi
+    """
