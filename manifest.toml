@@ -34,10 +34,6 @@ ram.runtime = "50M"
     [install.domain]
     type = "domain"
 
-    [install.init_main_permission]
-    type = "group"
-    default = false
-
     [install.game]
     ask.en = "Choose a game for your server"
     ask.fr = "Choissisez un jeu pour votre serveur"
@@ -113,6 +109,21 @@ ram.runtime = "50M"
     main.exposed = "UDP"
 
     [resources.permissions]
+    main.allowed = "visitors"
 
     [resources.apt]
-    packages = "build-essential, libirrlicht-dev, cmake, libbz2-dev, libpng-dev, libjpeg-dev, libxxf86vm-dev, libgl1-mesa-dev, libsqlite3-dev, libogg-dev, libvorbis-dev, libopenal-dev, libcurl4-dev, libfreetype6-dev, zlib1g-dev, libgmp-dev, libjsoncpp-dev, libluajit-5.1-dev, libncurses-dev, libzstd-dev"
+    packages = ["build-essential", 
+                "cmake", 
+                "libsqlite3-dev",
+                "libcurl4-gnutls-dev",
+                "zlib1g-dev",
+                "libgmp-dev",
+                "libjsoncpp-dev",
+                "libzstd-dev"]
+    packages_from_raw_bash = """
+    if [[ $YNH_DEBIAN_VERSION = "bullseye" ]]; then
+        echo "libluajit-5.1-dev";
+    elif [[ $YNH_DEBIAN_VERSION = "bookworm" ]]; then
+        echo "libluajit2-5.1-dev";
+    fi
+    """
