@@ -120,7 +120,7 @@ ram.runtime = "50M"
                 "libgmp-dev",
                 "libjsoncpp-dev",
                 "libzstd-dev"]
-    packages_from_raw_bash = packages_from_raw_bash = """
+    packages_from_raw_bash = """
     if [[ $YNH_DEBIAN_VERSION = "bullseye" ]]; then
         echo "libluajit-5.1-dev";
     elif [[ $YNH_DEBIAN_VERSION = "bookworm" ]]; then
