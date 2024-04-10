@@ -115,7 +115,7 @@ ram.runtime = "50M"
     packages = ["build-essential", 
                 "cmake", 
                 "libsqlite3-dev",
-                "libcurl4-gnutls-dev",
+                "libcurl4-dev",
                 "zlib1g-dev",
                 "libgmp-dev",
                 "libjsoncpp-dev",
