@@ -92,8 +92,8 @@ ram.runtime = "50M"
         autoupdate.strategy = "latest_github_release"
 
         [resources.sources.mineclonia]
-        url = "https://codeberg.org/mineclonia/mineclonia/archive/0.97.1.tar.gz"
-        sha256 = "a5bc5bee07d6e0b3bdf16fd8ffd19a98a5036e54222bd19bb16cd56247d164d7"
+        url = "https://codeberg.org/mineclonia/mineclonia/archive/0.99.0.tar.gz"
+        sha256 = "2fa7d386a77b12e9c8984aa63e1d38cf2793aa6df2fd6d30baddc9caf845e744"
         autoupdate.upstream = "https://codeberg.org/mineclonia/mineclonia"
         autoupdate.strategy = "latest_forgejo_release"
 
