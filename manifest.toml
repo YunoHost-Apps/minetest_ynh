@@ -97,6 +97,12 @@ ram.runtime = "50M"
         autoupdate.upstream = "https://codeberg.org/mineclonia/mineclonia"
         autoupdate.strategy = "latest_forgejo_release"
 
+        [resources.sources.mineclone2]
+        url = "https://git.minetest.land/VoxeLibre/VoxeLibre/archive/0.86.2.tar.gz"
+        sha256 = "97536a9e36482363112185ab936532d034163e3dc1ebd3cb365d018fc14b810d"
+        autoupdate.upstream = "https://git.minetest.land/VoxeLibre/VoxeLibre"
+        autoupdate.strategy = "latest_forgejo_release"
+        
     [resources.system_user]
 
     [resources.install_dir]
