@@ -38,14 +38,10 @@ fi
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
 #=================================================
+ynh_script_progression --message="Upgrading source files..." --weight=1
 
-if [ "$upgrade_type" == "UPGRADE_APP" ]
-then
-	ynh_script_progression --message="Upgrading source files..." --weight=1
-
-	# Download, check integrity, uncompress and patch the source from app.src
-	ynh_setup_source --dest_dir="$install_dir" --full_replace=1
-fi
+# Download, check integrity, uncompress and patch the source from app.src
+ynh_setup_source --dest_dir="$install_dir" --full_replace=1
 
 chmod -R o-rwx "$install_dir"
 chown -R $app:$app "$install_dir"
@@ -58,16 +54,7 @@ chown -R $app:$app "$install_dir"
 ynh_script_progression --message="Building Minetest..."
 
 # Install the game
-if [ $game = "capturetheflag" ]; then
-	# Download Capture The Flag
-	ynh_setup_source --dest_dir=$install_dir/games/capturetheflag --source_id=capturetheflag
-elif [ $game = "mineclonia" ]; then
-	# Download Mineclonia
-	ynh_setup_source --dest_dir=$install_dir/games/mineclonia --source_id=mineclonia
-else
-	# Download Minetest Game
-	ynh_setup_source --dest_dir=$install_dir/games/minetest_game --source_id=minetest_game
-fi
+ynh_setup_source --dest_dir=$install_dir/games/$game --source_id=$game
 
 # Install IrrlichtMt
 ynh_setup_source --dest_dir=$install_dir/lib/irrlichtmt --source_id=irrlichtmt
