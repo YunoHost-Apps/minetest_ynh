@@ -33,3 +33,8 @@ test_format = 1.0
 
     only = ["install.root", "backup_restore", "upgrade"]
     args.game = "mineclonia"
+
+    ["Test-mineclone2"]
+
+    only = ["install.root", "backup_restore", "upgrade"]
+    args.game = "mineclone2"
