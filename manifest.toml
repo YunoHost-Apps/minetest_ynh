@@ -38,7 +38,7 @@ ram.runtime = "50M"
     ask.en = "Choose a game for your server"
     ask.fr = "Choissisez un jeu pour votre serveur"
     type = "select"
-    choices = ["minetest_game", "capturetheflag", "mineclonia"]
+    choices = ["minetest_game", "capturetheflag", "mineclonia", "mineclone2"]
     default = "minetest_game"
 
     [install.servername]
@@ -95,6 +95,12 @@ ram.runtime = "50M"
         url = "https://codeberg.org/mineclonia/mineclonia/archive/0.100.0.tar.gz"
         sha256 = "6b5764fdb797788a10ffa7cb8cbdb05a8dc8dec6e4ea25d4d5403dcb425c6e48"
         autoupdate.upstream = "https://codeberg.org/mineclonia/mineclonia"
+        autoupdate.strategy = "latest_forgejo_release"
+
+        [resources.sources.mineclone2]
+        url = "https://git.minetest.land/VoxeLibre/VoxeLibre/archive/0.86.2.tar.gz"
+        sha256 = "97536a9e36482363112185ab936532d034163e3dc1ebd3cb365d018fc14b810d"
+        autoupdate.upstream = "https://git.minetest.land/VoxeLibre/VoxeLibre"
         autoupdate.strategy = "latest_forgejo_release"
 
     [resources.system_user]
