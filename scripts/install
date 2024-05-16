@@ -24,20 +24,7 @@ chown -R $app:$app "$install_dir"
 #=================================================
 ynh_script_progression --message="Building Minetest..."
 
-# Install the game
-if [ $game = "capturetheflag" ]; then
-	# Download Capture The Flag
-	ynh_setup_source --dest_dir=$install_dir/games/capturetheflag --source_id=capturetheflag
-elif [ $game = "mineclonia" ]; then
-	# Download Mineclonia
-	ynh_setup_source --dest_dir=$install_dir/games/mineclonia --source_id=mineclonia
-elif [ $game = "mineclone2" ]; then
-	# Download Mineclone2
-	ynh_setup_source --dest_dir=$install_dir/games/mineclone2 --source_id=mineclone2
-else
-	# Download Minetest Game
-	ynh_setup_source --dest_dir=$install_dir/games/minetest_game --source_id=minetest_game
-fi
+ynh_setup_source --dest_dir=$install_dir/games/$game --source_id=$game
 
 # Install IrrlichtMt
 ynh_setup_source --dest_dir=$install_dir/lib/irrlichtmt --source_id=irrlichtmt
