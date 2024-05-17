@@ -38,7 +38,7 @@ ram.runtime = "50M"
     ask.en = "Choose a game for your server"
     ask.fr = "Choissisez un jeu pour votre serveur"
     type = "select"
-    choices = ["minetest_game", "capturetheflag", "mineclonia"]
+    choices = ["minetest_game", "capturetheflag", "mineclonia", "mineclone2"]
     default = "minetest_game"
 
     [install.servername]
@@ -102,7 +102,7 @@ ram.runtime = "50M"
         sha256 = "97536a9e36482363112185ab936532d034163e3dc1ebd3cb365d018fc14b810d"
         autoupdate.upstream = "https://git.minetest.land/VoxeLibre/VoxeLibre"
         autoupdate.strategy = "latest_forgejo_release"
-        
+
     [resources.system_user]
 
     [resources.install_dir]
