@@ -99,7 +99,7 @@ ram.runtime = "50M"
 
         [resources.sources.mineclone2]
         url = "https://git.minetest.land/VoxeLibre/VoxeLibre/archive/0.86.2.tar.gz"
-        sha256 = "97536a9e36482363112185ab936532d034163e3dc1ebd3cb365d018fc14b810d"
+        sha256 = "5bc9a1d284d489e99a569adf238d8c28bf9493802020f53fb67d8ead71618763"
         autoupdate.upstream = "https://git.minetest.land/VoxeLibre/VoxeLibre"
         autoupdate.strategy = "latest_forgejo_release"
 
