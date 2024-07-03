@@ -92,16 +92,16 @@ ram.runtime = "50M"
         autoupdate.strategy = "latest_github_release"
 
         [resources.sources.mineclonia]
-        url = "https://codeberg.org/mineclonia/mineclonia/archive/0.100.0.tar.gz"
-        sha256 = "6b5764fdb797788a10ffa7cb8cbdb05a8dc8dec6e4ea25d4d5403dcb425c6e48"
+        url = "https://codeberg.org/mineclonia/mineclonia/archive/0.102.0.tar.gz"
+        sha256 = "5918fb7dd07a34d96733694177d64ffc705917ed349fc537dd5b75f0d70de261"
         autoupdate.upstream = "https://codeberg.org/mineclonia/mineclonia"
         autoupdate.strategy = "latest_forgejo_release"
 
         [resources.sources.mineclone2]
-        url = "https://git.minetest.land/VoxeLibre/VoxeLibre/archive/0.86.2.tar.gz"
-        sha256 = "5bc9a1d284d489e99a569adf238d8c28bf9493802020f53fb67d8ead71618763"
+        url = "https://git.minetest.land/VoxeLibre/VoxeLibre/archive/0.87.2.tar.gz"
+        sha256 = "b5dd88266660ceaf4f37e8ea3925dc276e15a7edc8bcf0b3442869a76dd2de3b"
         autoupdate.upstream = "https://git.minetest.land/VoxeLibre/VoxeLibre"
-        autoupdate.strategy = "latest_forgejo_release"
+        autoupdate.strategy = "latest_gitea_tag"
 
     [resources.system_user]
 

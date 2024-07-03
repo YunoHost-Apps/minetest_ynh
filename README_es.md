@@ -5,7 +5,7 @@ No se debe editar a mano.
 
 # Minetest para Yunohost
 
-[![Nivel de integración](https://dash.yunohost.org/integration/minetest.svg)](https://dash.yunohost.org/appci/app/minetest) ![Estado funcional](https://ci-apps.yunohost.org/ci/badges/minetest.status.svg) ![Estado En Mantención](https://ci-apps.yunohost.org/ci/badges/minetest.maintain.svg)
+[![Nivel de integración](https://dash.yunohost.org/integration/minetest.svg)](https://ci-apps.yunohost.org/ci/apps/minetest/) ![Estado funcional](https://ci-apps.yunohost.org/ci/badges/minetest.status.svg) ![Estado En Mantención](https://ci-apps.yunohost.org/ci/badges/minetest.maintain.svg)
 
 [![Instalar Minetest con Yunhost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=minetest)
 

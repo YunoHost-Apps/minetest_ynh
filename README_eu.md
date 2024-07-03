@@ -5,7 +5,7 @@ EZ editatu eskuz.
 
 # Minetest YunoHost-erako
 
-[![Integrazio maila](https://dash.yunohost.org/integration/minetest.svg)](https://dash.yunohost.org/appci/app/minetest) ![Funtzionamendu egoera](https://ci-apps.yunohost.org/ci/badges/minetest.status.svg) ![Mantentze egoera](https://ci-apps.yunohost.org/ci/badges/minetest.maintain.svg)
+[![Integrazio maila](https://dash.yunohost.org/integration/minetest.svg)](https://ci-apps.yunohost.org/ci/apps/minetest/) ![Funtzionamendu egoera](https://ci-apps.yunohost.org/ci/badges/minetest.status.svg) ![Mantentze egoera](https://ci-apps.yunohost.org/ci/badges/minetest.maintain.svg)
 
 [![Instalatu Minetest YunoHost-ekin](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=minetest)
 
