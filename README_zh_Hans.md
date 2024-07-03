@@ -5,7 +5,7 @@
 
 # YunoHost 上的 Minetest
 
-[![集成程度](https://dash.yunohost.org/integration/minetest.svg)](https://dash.yunohost.org/appci/app/minetest) ![工作状态](https://ci-apps.yunohost.org/ci/badges/minetest.status.svg) ![维护状态](https://ci-apps.yunohost.org/ci/badges/minetest.maintain.svg)
+[![集成程度](https://dash.yunohost.org/integration/minetest.svg)](https://ci-apps.yunohost.org/ci/apps/minetest/) ![工作状态](https://ci-apps.yunohost.org/ci/badges/minetest.status.svg) ![维护状态](https://ci-apps.yunohost.org/ci/badges/minetest.maintain.svg)
 
 [![使用 YunoHost 安装 Minetest](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=minetest)
 
