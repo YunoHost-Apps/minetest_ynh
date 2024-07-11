@@ -86,8 +86,8 @@ ram.runtime = "50M"
         autoupdate.version_regex = "^(.*)mt(.*)$"
 
         [resources.sources.capturetheflag]
-        url = "https://github.com/MT-CTF/capturetheflag/archive/refs/tags/v3.8.tar.gz"
-        sha256 = "b6426fa3681f760599f7aba18eec8f65df2c007d5cd1411372f39343c01b49bf"
+        url = "https://github.com/MT-CTF/capturetheflag/archive/refs/tags/v3.9.tar.gz"
+        sha256 = "8b182d3599b7c5eaa82f1420d0ae23685d2e6c9b2a4b0fd614bc0ded638bce7f"
         autoupdate.upstream = "https://github.com/MT-CTF/capturetheflag"
         autoupdate.strategy = "latest_github_release"
 
