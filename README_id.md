@@ -19,7 +19,7 @@ Ini TIDAK boleh diedit dengan tangan.
 Minetest is a free open-source voxel game engine with easy modding and game creation.
 
 
-**Versi terkirim:** 5.8.0~ynh6
+**Versi terkirim:** 5.8.0~ynh7
 
 ## Tangkapan Layar
 
@@ -28,7 +28,7 @@ Minetest is a free open-source voxel game engine with easy modding and game crea
 ## Dokumentasi dan sumber daya
 
 - Website aplikasi resmi: <http://www.minetest.net>
-- Repositori kode aplikasi hulu: <https://github.com/minetest/minetest>
+- Depot kode aplikasi hulu: <https://github.com/minetest/minetest>
 - Gudang YunoHost: <https://apps.yunohost.org/app/minetest>
 - Laporkan bug: <https://github.com/YunoHost-Apps/minetest_ynh/issues>
 
