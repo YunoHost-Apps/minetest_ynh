@@ -7,7 +7,7 @@ name = "Minetest"
 description.en = "Voxel game engine and game. Need a client to connect to the server"
 description.fr = "Moteur de jeu de type « bac à sable ». Nécessite un client pour se connecter au serveur"
 
-version = "5.8.0~ynh8"
+version = "5.8.0~ynh9"
 
 maintainers = []
 
@@ -92,8 +92,8 @@ ram.runtime = "50M"
         autoupdate.strategy = "latest_github_release"
 
         [resources.sources.mineclonia]
-        url = "https://codeberg.org/mineclonia/mineclonia/archive/0.103.0.tar.gz"
-        sha256 = "f5a0370f0bddb89c5f06873b275ca0b1f2693bf5992123120bddb4a4bdce4fc6"
+        url = "https://codeberg.org/mineclonia/mineclonia/archive/1.104.0.tar.gz"
+        sha256 = "2c51f026e8acc608d66d830c2bf457f74d82a8a7658c3a172dafbc95ac74ddbc"
         autoupdate.upstream = "https://codeberg.org/mineclonia/mineclonia"
         autoupdate.strategy = "latest_forgejo_release"
 
