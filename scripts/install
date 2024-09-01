@@ -10,8 +10,6 @@ ynh_script_progression "Setting up source files..."
 
 ynh_setup_source --dest_dir="$install_dir"
 
-#REMOVEME? Assuming the install dir is setup using ynh_setup_source, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chmod -R o-rwx "$install_dir"
-#REMOVEME? Assuming the install dir is setup using ynh_setup_source, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chown -R $app:$app "$install_dir"
 #=================================================
 # BUILDING
 #=================================================
@@ -19,12 +17,10 @@ ynh_script_progression "Building Minetest..."
 
 ynh_setup_source --dest_dir=$install_dir/games/$game --source_id=$game
 
-# Install IrrlichtMt
 ynh_setup_source --dest_dir=$install_dir/lib/irrlichtmt --source_id=irrlichtmt
 
 pushd $install_dir
 	ynh_hide_warnings cmake . -DRUN_IN_PLACE=TRUE -DENABLE_LUAJIT=TRUE -DBUILD_CLIENT=FALSE -DBUILD_SERVER=TRUE
-
 	ynh_hide_warnings make -j$(nproc)
 popd
 
@@ -35,21 +31,15 @@ ynh_script_progression "Adding $app's configuration..."
 
 ynh_config_add --template="minetest.conf" --destination="$data_dir/.minetest/minetest.conf"
 
-#REMOVEME? Assuming the file is setup using ynh_config_add, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chmod 400 "$data_dir/.minetest/minetest.conf"
-#REMOVEME? Assuming the file is setup using ynh_config_add, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chown $app:$app "$data_dir/.minetest/minetest.conf"
-
 #=================================================
 # SETUP SYSTEMD
 #=================================================
 ynh_script_progression "Configuring $app's systemd service..."
 
-# Create a dedicated systemd config
 ynh_config_add_systemd
 
 mkdir -p /var/log/$app
-#REMOVEME? Assuming ynh_config_add_logrotate is called, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chown -R $app:$app /var/log/$app
 
-# Use logrotate to manage application logfile(s)
 ynh_config_add_logrotate
 
 yunohost service add $app --description="Voxel game engine and game" --log="/var/log/$app/$app.log" --needs_exposed_ports="$port"
