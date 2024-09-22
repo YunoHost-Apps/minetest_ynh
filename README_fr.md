@@ -19,7 +19,7 @@ Il NE doit PAS être modifié à la main.
 Minetest est un moteur de jeu voxel open-source avec modding et création de jeux faciles.
 
 
-**Version incluse :** 5.9.1~ynh1
+**Version incluse :** 5.9.1~ynh2
 
 ## Captures d’écran
 
