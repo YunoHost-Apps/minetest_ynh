@@ -19,7 +19,7 @@ No se debe editar a mano.
 Minetest is a free open-source voxel game engine with easy modding and game creation.
 
 
-**Versión actual:** 5.9.0~ynh2
+**Versión actual:** 5.9.1~ynh2
 
 ## Capturas
 
@@ -34,7 +34,7 @@ Minetest is a free open-source voxel game engine with easy modding and game crea
 
 ## Información para desarrolladores
 
-Por favor enviar sus correcciones a la [`branch testing`](https://github.com/YunoHost-Apps/minetest_ynh/tree/testing
+Por favor enviar sus correcciones a la [rama `testing`](https://github.com/YunoHost-Apps/minetest_ynh/tree/testing).
 
 Para probar la rama `testing`, sigue asÍ:
 
