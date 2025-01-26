@@ -75,7 +75,7 @@ ram.runtime = "50M"
 
         [resources.sources.main]
         url = "https://github.com/minetest/minetest/archive/refs/tags/5.10.0.tar.gz"
-        sha256 = "2a3161c04e7389608006f01280eda30507f8bacfa1d6b64c2af1b820a62d2677"
+        sha256 = "13c559566937cfd9ed1cde594c20e7ab52f86dee0816ba12e828b14bb8e2c6ac"
         autoupdate.strategy = "latest_github_release"
 
         [resources.sources.irrlichtmt]
