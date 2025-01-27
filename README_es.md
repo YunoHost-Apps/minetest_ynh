@@ -21,7 +21,7 @@ No se debe editar a mano.
 Minetest is a free open-source voxel game engine with easy modding and game creation.
 
 
-**Versión actual:** 5.10.0~ynh9
+**Versión actual:** 5.10.0~ynh10
 
 ## Capturas
 
