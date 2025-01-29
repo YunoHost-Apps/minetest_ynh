@@ -5,7 +5,9 @@ NON debe editarse manualmente.
 
 # Minetest para YunoHost
 
-[![Nivel de integración](https://dash.yunohost.org/integration/minetest.svg)](https://ci-apps.yunohost.org/ci/apps/minetest/) ![Estado de funcionamento](https://ci-apps.yunohost.org/ci/badges/minetest.status.svg) ![Estado de mantemento](https://ci-apps.yunohost.org/ci/badges/minetest.maintain.svg)
+[![Nivel de integración](https://apps.yunohost.org/badge/integration/minetest)](https://ci-apps.yunohost.org/ci/apps/minetest/)
+![Estado de funcionamento](https://apps.yunohost.org/badge/state/minetest)
+![Estado de mantemento](https://apps.yunohost.org/badge/maintained/minetest)
 
 [![Instalar Minetest con YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=minetest)
 
@@ -19,7 +21,7 @@ NON debe editarse manualmente.
 Minetest is a free open-source voxel game engine with easy modding and game creation.
 
 
-**Versión proporcionada:** 5.9.0~ynh3
+**Versión proporcionada:** 5.10.0~ynh11
 
 ## Capturas de pantalla
 

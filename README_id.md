@@ -5,7 +5,9 @@ Ini TIDAK boleh diedit dengan tangan.
 
 # Minetest untuk YunoHost
 
-[![Tingkat integrasi](https://dash.yunohost.org/integration/minetest.svg)](https://ci-apps.yunohost.org/ci/apps/minetest/) ![Status kerja](https://ci-apps.yunohost.org/ci/badges/minetest.status.svg) ![Status pemeliharaan](https://ci-apps.yunohost.org/ci/badges/minetest.maintain.svg)
+[![Tingkat integrasi](https://apps.yunohost.org/badge/integration/minetest)](https://ci-apps.yunohost.org/ci/apps/minetest/)
+![Status kerja](https://apps.yunohost.org/badge/state/minetest)
+![Status pemeliharaan](https://apps.yunohost.org/badge/maintained/minetest)
 
 [![Pasang Minetest dengan YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=minetest)
 
@@ -19,7 +21,7 @@ Ini TIDAK boleh diedit dengan tangan.
 Minetest is a free open-source voxel game engine with easy modding and game creation.
 
 
-**Versi terkirim:** 5.9.0~ynh3
+**Versi terkirim:** 5.10.0~ynh11
 
 ## Tangkapan Layar
 
