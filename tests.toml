@@ -29,14 +29,17 @@ test_format = 1.0
 
     only = ["install.root", "backup_restore", "upgrade"]
     args.game = "capturetheflag"
+    test_upgrade_from.78964def0b8ea64d33b9a0ed2d3d0a2c54164d9c.name = "Upgrade from 5.10.0~ynh11"
 
     ["Test-mineclonia"]
 
     only = ["install.root", "backup_restore", "upgrade"]
     args.game = "mineclonia"
+    test_upgrade_from.78964def0b8ea64d33b9a0ed2d3d0a2c54164d9c.name = "Upgrade from 5.10.0~ynh11"
 
 
     ["Test-mineclone2"]
 
     only = ["install.root", "backup_restore", "upgrade"]
     args.game = "mineclone2"
+    test_upgrade_from.78964def0b8ea64d33b9a0ed2d3d0a2c54164d9c.name = "Upgrade from 5.10.0~ynh11"
