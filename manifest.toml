@@ -7,7 +7,7 @@ name = "Minetest"
 description.en = "Voxel game engine and game. Need a client to connect to the server"
 description.fr = "Moteur de jeu de type « bac à sable ». Nécessite un client pour se connecter au serveur"
 
-version = "5.11.0~ynh5"
+version = "5.11.0~ynh6"
 
 maintainers = []
 
@@ -85,8 +85,8 @@ ram.runtime = "50M"
     autoupdate.version_regex = "^(.*)mt(.*)$"
 
     [resources.sources.capturetheflag]
-    url = "https://github.com/MT-CTF/capturetheflag/archive/refs/tags/v3.10.tar.gz"
-    sha256 = "3d706bc29072d005cf807dc3b2014366a0044e65f9fe766afb77965302b00c25"
+    url = "https://github.com/MT-CTF/capturetheflag/archive/refs/tags/v3.11.tar.gz"
+    sha256 = "85a8ae0054f652415ef94688ce5eaf6e6e0f6b9496b2ccc84dac3a3b990f90e6"
     autoupdate.upstream = "https://github.com/MT-CTF/capturetheflag"
     autoupdate.strategy = "latest_github_release"
 
@@ -97,8 +97,8 @@ ram.runtime = "50M"
     autoupdate.strategy = "latest_forgejo_release"
 
     [resources.sources.mineclone2]
-    url = "https://git.minetest.land/VoxeLibre/VoxeLibre/archive/0.88.1.tar.gz"
-    sha256 = "0502767fcd912e1f746993b59deca9bc8d7dde5f2a3138c29c9e9a79b497d0a9"
+    url = "https://git.minetest.land/VoxeLibre/VoxeLibre/archive/0.89.0.tar.gz"
+    sha256 = "69883c314b7da94c83a87b23d822dfa02e3310d526e47cec661804451b1d4f5d"
     autoupdate.upstream = "https://git.minetest.land/VoxeLibre/VoxeLibre"
     autoupdate.strategy = "latest_gitea_tag"
 
