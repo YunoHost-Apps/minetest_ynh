@@ -27,7 +27,7 @@ popd
 #=================================================
 ynh_script_progression "Adding $app's configuration..."
 
-ynh_config_add --template="minetest.conf" --destination="$data_dir/.minetest/minetest.conf"
+ynh_config_add --template="luanti.conf" --destination="$data_dir/.luanti/luanti.conf"
 
 #=================================================
 # SETUP SYSTEMD
