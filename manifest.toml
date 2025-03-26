@@ -15,15 +15,15 @@ maintainers = []
 license = "MIT"
 website = "https://www.luanti.org/"
 code = "https://github.com/luanti-org/luanti"
-fund = "https://www.minetest.net/get-involved/#donate"
 
 [integration]
-yunohost = ">= 11.2.18"
+yunohost = ">= 12.0.9"
 helpers_version = "2.1"
 architectures = "all"
 multi_instance = true
 
 ldap = "not_relevant"
+
 sso = "not_relevant"
 
 disk = "50M"

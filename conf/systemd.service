@@ -1,5 +1,5 @@
 [Unit]
-Description=Minetest: multiplayer server minetest.conf server config
+Description=Luanti: multiplayer server
 Documentation=man:minetestserver(6)
 After=network.target
 RequiresMountsFor=__DATA_DIR__
