@@ -16,18 +16,15 @@ ynh_script_progression --message="Setting up source files..."
 
 ynh_setup_source --dest_dir="$install_dir"
 
-chmod -R o-rwx "$install_dir"
-chown -R $app:$app "$install_dir"
+#chmod -R o-rwx "$install_dir"
+#chown -R $app:$app "$install_dir"
 
 #=================================================
 # BUILDING
 #=================================================
 ynh_script_progression --message="Building Minetest..."
 
-ynh_setup_source --dest_dir=$install_dir/games/$game --source_id=$game
-
-# Install IrrlichtMt
-ynh_setup_source --dest_dir=$install_dir/lib/irrlichtmt --source_id=irrlichtmt
+#ynh_setup_source --dest_dir=$install_dir/games/$game --source_id=$game
 
 pushd $install_dir
 	ynh_exec_warn_less cmake . -DRUN_IN_PLACE=TRUE -DENABLE_LUAJIT=TRUE -DBUILD_CLIENT=FALSE -DBUILD_SERVER=TRUE
