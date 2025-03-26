@@ -15,7 +15,7 @@ ynh_setup_source --dest_dir="$install_dir"
 #=================================================
 ynh_script_progression "Building Minetest..."
 
-#ynh_setup_source --dest_dir=$install_dir/games/$game --source_id=$game
+ynh_setup_source --dest_dir=$install_dir/games/$game --source_id=$game
 
 pushd $install_dir
 	ynh_hide_warnings cmake . -DRUN_IN_PLACE=TRUE -DENABLE_LUAJIT=TRUE -DBUILD_CLIENT=FALSE -DBUILD_SERVER=TRUE
