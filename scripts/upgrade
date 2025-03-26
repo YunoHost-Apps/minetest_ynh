@@ -39,7 +39,6 @@ ynh_script_progression "Building Minetest..."
 
 pushd $install_dir
 	ynh_hide_warnings cmake . -DRUN_IN_PLACE=TRUE -DENABLE_LUAJIT=TRUE -DBUILD_CLIENT=FALSE -DBUILD_SERVER=TRUE
-
 	ynh_hide_warnings make -j$(nproc)
 popd
 
