@@ -13,7 +13,7 @@ ynh_setup_source --dest_dir="$install_dir"
 #=================================================
 # BUILDING
 #=================================================
-ynh_script_progression "Building Minetest..."
+ynh_script_progression "Building $app..."
 
 ynh_setup_source --dest_dir=$install_dir/games/$game --source_id=$game
 
@@ -30,9 +30,9 @@ ynh_script_progression "Adding $app's configuration..."
 ynh_config_add --template="luanti.conf" --destination="$data_dir/.luanti/luanti.conf"
 
 #=================================================
-# SETUP SYSTEMD
+# APP INITIAL CONFIGURATION
 #=================================================
-ynh_script_progression "Configuring $app's systemd service..."
+ynh_script_progression "Adding $app's configuration files..."
 
 # Create a dedicated systemd config
 ynh_config_add_systemd

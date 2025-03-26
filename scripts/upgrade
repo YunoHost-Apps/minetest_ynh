@@ -16,10 +16,7 @@ ynh_systemctl --service=$app --action="stop"
 ynh_script_progression "Ensuring downward compatibility..."
 
 # If game doesn't exist, create it
-if [ -z $game ]; then
-	game="minetest_game"
-	ynh_app_setting_set --key=game --value=$game
-fi
+ynh_app_setting_set_default --key=game --value="minetest_game"
 
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
@@ -32,7 +29,7 @@ ynh_setup_source --dest_dir="$install_dir" --full_replace
 #=================================================
 # BUILDING
 #=================================================
-ynh_script_progression "Building Minetest..."
+ynh_script_progression "Building $app..."
 
 # Install the game
 ynh_setup_source --dest_dir=$install_dir/games/$game --source_id=$game
@@ -47,11 +44,11 @@ popd
 #=================================================
 
 if [ -e $data_dir ]
-then
-	echo "Nothing to do..."
-else
-	mkdir -p $data_dir/.luanti/
-	mkdir $data_dir/.luanti/worlds/
+	then
+		echo "Nothing to do..."
+	else
+		mkdir -p $data_dir/.luanti/
+		mkdir $data_dir/.luanti/worlds/
 fi
 
 #=================================================
