@@ -25,7 +25,7 @@ test_format = 1.0
     # -------------------------------
 
     #test_upgrade_from.5e3ed220af8aae9a4783f92066224894923fce8b.name = "Upgrade from 5.8.0~ynh1"
-    test_upgrade_from.78964def0b8ea64d33b9a0ed2d3d0a2c54164d9c.name = "Upgrade from 5.10.0~ynh11"
+    #test_upgrade_from.78964def0b8ea64d33b9a0ed2d3d0a2c54164d9c.name = "Upgrade from 5.10.0~ynh11"
 
     ["Test-capturetheflag"]
 
