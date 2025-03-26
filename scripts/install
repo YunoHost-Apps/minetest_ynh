@@ -50,7 +50,7 @@ yunohost service add $app --description="Voxel game engine and game" --log="/var
 ynh_script_progression "Starting $app's systemd service..."
 
 # Start a systemd service
-ynh_systemctl --service=$app --action="start"  --wait_until="listening on"
+ynh_systemctl --service=$app --action="start" --wait_until="listening on"
 
 #=================================================
 # END OF SCRIPT
