@@ -38,7 +38,7 @@ Minetest is a free open-source voxel game engine with easy modding and game crea
 
 Bidali `pull request`a [`testing` abarrera](https://github.com/YunoHost-Apps/minetest_ynh/tree/testing).
 
-`testing` abarra probatzeko, ondorengoa egin:
+`testing` abarra probatzeko, honakoa egin:
 
 ```bash
 sudo yunohost app install https://github.com/YunoHost-Apps/minetest_ynh/tree/testing --debug
