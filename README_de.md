@@ -21,7 +21,7 @@ Sie darf NICHT von Hand bearbeitet werden.
 Luanti is a free open-source voxel game engine with easy modding and game creation.
 
 
-**Ausgelieferte Version:** 5.11.0~ynh8
+**Ausgelieferte Version:** 5.11.0~ynh9
 
 ## Bildschirmfotos
 
