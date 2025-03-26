@@ -3,47 +3,47 @@ N.B.: Aquest README ha estat generat automàticament per <https://github.com/Yun
 NO s'ha de modificar manualment.
 -->
 
-# Minetest per YunoHost
+# Luanti per YunoHost
 
-[![Nivell d'integració](https://apps.yunohost.org/badge/integration/minetest)](https://ci-apps.yunohost.org/ci/apps/minetest/)
-![Estat de funcionament](https://apps.yunohost.org/badge/state/minetest)
-![Estat de manteniment](https://apps.yunohost.org/badge/maintained/minetest)
+[![Nivell d'integració](https://apps.yunohost.org/badge/integration/luanti)](https://ci-apps.yunohost.org/ci/apps/luanti/)
+![Estat de funcionament](https://apps.yunohost.org/badge/state/luanti)
+![Estat de manteniment](https://apps.yunohost.org/badge/maintained/luanti)
 
-[![Instal·la Minetest amb YunoHosth](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=minetest)
+[![Instal·la Luanti amb YunoHosth](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=luanti)
 
 *[Llegeix aquest README en altres idiomes.](./ALL_README.md)*
 
-> *Aquest paquet et permet instal·lar Minetest de forma ràpida i senzilla en un servidor YunoHost.*  
+> *Aquest paquet et permet instal·lar Luanti de forma ràpida i senzilla en un servidor YunoHost.*  
 > *Si no tens YunoHost, consulta [la guia](https://yunohost.org/install) per saber com instal·lar-lo.*
 
 ## Visió general
 
-Minetest is a free open-source voxel game engine with easy modding and game creation.
+Luanti is a free open-source voxel game engine with easy modding and game creation.
 
 
 **Versió inclosa:** 5.11.0~ynh8
 
 ## Captures de pantalla
 
-![Captures de pantalla de Minetest](./doc/screenshots/screenshot.jpg)
+![Captures de pantalla de Luanti](./doc/screenshots/screenshot.jpg)
 
 ## Documentació i recursos
 
-- Lloc web oficial de l'aplicació: <http://www.minetest.net>
-- Repositori oficial del codi de l'aplicació: <https://github.com/minetest/minetest>
-- Botiga YunoHost: <https://apps.yunohost.org/app/minetest>
-- Reportar un error: <https://github.com/YunoHost-Apps/minetest_ynh/issues>
+- Lloc web oficial de l'aplicació: <https://www.luanti.org/>
+- Repositori oficial del codi de l'aplicació: <https://github.com/luanti-org/luanti>
+- Botiga YunoHost: <https://apps.yunohost.org/app/luanti>
+- Reportar un error: <https://github.com/YunoHost-Apps/luanti_ynh/issues>
 
 ## Informació per a desenvolupadors
 
-Envieu les pull request a la [branca `testing`](https://github.com/YunoHost-Apps/minetest_ynh/tree/testing).
+Envieu les pull request a la [branca `testing`](https://github.com/YunoHost-Apps/luanti_ynh/tree/testing).
 
 Per provar la branca `testing`, procedir com descrit a continuació:
 
 ```bash
-sudo yunohost app install https://github.com/YunoHost-Apps/minetest_ynh/tree/testing --debug
+sudo yunohost app install https://github.com/YunoHost-Apps/luanti_ynh/tree/testing --debug
 o
-sudo yunohost app upgrade minetest -u https://github.com/YunoHost-Apps/minetest_ynh/tree/testing --debug
+sudo yunohost app upgrade luanti -u https://github.com/YunoHost-Apps/luanti_ynh/tree/testing --debug
 ```
 
 **Més informació sobre l'empaquetatge d'aplicacions:** <https://yunohost.org/packaging_apps>
