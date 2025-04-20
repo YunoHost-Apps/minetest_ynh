@@ -19,12 +19,14 @@ ynh_backup "$install_dir"
 ynh_backup "$data_dir"
 
 #=================================================
-# SYSTEM CONFIGURATION
+# BACKUP SYSTEM CONFIGURATION
 #=================================================
 
-ynh_backup "/etc/logrotate.d/$app"
-
+# Backup the systemd service unit
 ynh_backup "/etc/systemd/system/$app.service"
+
+# Backup the logrotate configuration
+ynh_backup "/etc/logrotate.d/$app"
 
 #=================================================
 # BACKUP VARIOUS FILES
