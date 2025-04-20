@@ -45,7 +45,7 @@ ram.runtime = "50M"
     ask.en = "Choose a name for your server"
     ask.fr = "Choissisez un nom pour votre serveur"
     type = "string"
-    default = "Minetest server"
+    default = "Luanti server"
 
     [install.pvp]
     ask.en = "Whether to enable players killing each other"
