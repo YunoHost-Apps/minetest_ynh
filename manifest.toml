@@ -7,7 +7,7 @@ name = "Luanti"
 description.en = "Voxel game engine and game. Need a client to connect to the server"
 description.fr = "Moteur de jeu de type « bac à sable ». Nécessite un client pour se connecter au serveur"
 
-version = "5.11.0~ynh9"
+version = "5.11.0~ynh10"
 
 maintainers = []
 
@@ -86,14 +86,14 @@ ram.runtime = "50M"
     autoupdate.strategy = "latest_github_release"
 
     [resources.sources.mineclonia]
-    url = "https://codeberg.org/mineclonia/mineclonia/archive/0.113.0.tar.gz"
-    sha256 = "47dc57a5487ae19d65f6471a85638e073564d5209c8dbd84687891059d0e05a9"
+    url = "https://codeberg.org/mineclonia/mineclonia/archive/0.114.0.tar.gz"
+    sha256 = "5567efdbb9111ff66e0e7c96d972b1b1593dd7df75b98b815987e24a2e675bd8"
     autoupdate.upstream = "https://codeberg.org/mineclonia/mineclonia"
     autoupdate.strategy = "latest_forgejo_release"
 
     [resources.sources.mineclone2]
-    url = "https://git.minetest.land/VoxeLibre/VoxeLibre/archive/0.89.1.tar.gz"
-    sha256 = "2a3b1ded4527512823bae4505bb791d230c6c36ef0e32e5701106552e1996e80"
+    url = "https://git.minetest.land/VoxeLibre/VoxeLibre/archive/0.89.2.tar.gz"
+    sha256 = "933abb698fe26ad47d098f12cc57f57ef786a9f115ebd85d3f54754074e13f9d"
     autoupdate.upstream = "https://git.minetest.land/VoxeLibre/VoxeLibre"
     autoupdate.strategy = "latest_gitea_tag"
 
