@@ -7,7 +7,7 @@ name = "Minetest"
 description.en = "Voxel game engine and game. Need a client to connect to the server"
 description.fr = "Moteur de jeu de type « bac à sable ». Nécessite un client pour se connecter au serveur"
 
-version = "5.11.0~ynh9"
+version = "5.11.0~ynh12"
 
 maintainers = []
 
@@ -91,14 +91,14 @@ ram.runtime = "50M"
     autoupdate.strategy = "latest_github_release"
 
     [resources.sources.mineclonia]
-    url = "https://codeberg.org/mineclonia/mineclonia/archive/0.113.0.tar.gz"
-    sha256 = "47dc57a5487ae19d65f6471a85638e073564d5209c8dbd84687891059d0e05a9"
+    url = "https://codeberg.org/mineclonia/mineclonia/archive/0.114.1.tar.gz"
+    sha256 = "050e2c495a30f22b9a59bf129c7b7327c85a563b103daa77f6cdc832e37cc72f"
     autoupdate.upstream = "https://codeberg.org/mineclonia/mineclonia"
     autoupdate.strategy = "latest_forgejo_release"
 
     [resources.sources.mineclone2]
-    url = "https://git.minetest.land/VoxeLibre/VoxeLibre/archive/0.89.2.tar.gz"
-    sha256 = "933abb698fe26ad47d098f12cc57f57ef786a9f115ebd85d3f54754074e13f9d"
+    url = "https://git.minetest.land/VoxeLibre/VoxeLibre/archive/0.89.3.tar.gz"
+    sha256 = "42b6ece083fef8500d805db7036fd85adfe8f3c4755c8ec010c106ce0cec3356"
     autoupdate.upstream = "https://git.minetest.land/VoxeLibre/VoxeLibre"
     autoupdate.strategy = "latest_gitea_tag"
 

@@ -4,14 +4,14 @@ It shall NOT be edited by hand.
 -->
 
 <h1>
-  <img src="https://raw.githubusercontent.com/YunoHost/apps/master/logos/minetest.png" width="32px" alt="Logo of Minetest">
+  <img src="https://raw.githubusercontent.com/YunoHost/apps/main/logos/minetest.png" width="32px" alt="Logo of Minetest">
   Minetest, packaged for YunoHost
 </h1>
 
 Voxel game engine and game. Need a client to connect to the server
 
 [![🌐 Official app website](https://img.shields.io/badge/Official_app_website-darkgreen?style=for-the-badge)](http://www.minetest.net)
-![Version: 5.11.0~ynh9](https://img.shields.io/badge/Version-5.11.0~ynh9-rgba(0,150,0,1)?style=for-the-badge)
+[![Version: 5.11.0~ynh12](https://img.shields.io/badge/Version-5.11.0~ynh12-rgba(0,150,0,1)?style=for-the-badge)](https://ci-apps.yunohost.org/ci/apps/minetest/)
 
 <div align="center">
 <a href="https://apps.yunohost.org/app/minetest"><img height="100px" src="https://github.com/YunoHost/yunohost-artwork/raw/refs/heads/main/badges/neopossum-badges/badge_more_info_on_the_appstore.svg"/></a>
