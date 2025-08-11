@@ -7,7 +7,7 @@ name = "Minetest"
 description.en = "Voxel game engine and game. Need a client to connect to the server"
 description.fr = "Moteur de jeu de type « bac à sable ». Nécessite un client pour se connecter au serveur"
 
-version = "5.12.0~ynh3"
+version = "5.13.0~ynh1"
 
 maintainers = []
 
@@ -73,8 +73,8 @@ ram.runtime = "50M"
     autoupdate.strategy = "latest_github_tag"
 
     [resources.sources.main]
-    url = "https://github.com/minetest/minetest/archive/refs/tags/5.12.0.tar.gz"
-    sha256 = "876867ac874492f20968f2c2eb4e403231e8e9f29e0e06efa512200bd5152355"
+    url = "https://github.com/minetest/minetest/archive/refs/tags/5.13.0.tar.gz"
+    sha256 = "9a69725ecd15b793a8fa0094166a9081368b8fc9ccd6ce84d3985833c8284ea0"
     autoupdate.strategy = "latest_github_release"
 
     [resources.sources.irrlichtmt]
