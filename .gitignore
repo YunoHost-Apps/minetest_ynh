@@ -1,3 +1,6 @@
 *~
 *.sw[op]
 temp.txt
+'*~' 
+'*.sw[op]' 
+'.DS_Store' 

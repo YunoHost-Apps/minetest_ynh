@@ -1,51 +1,37 @@
 #!/bin/bash
 
-#=================================================
-# GENERIC START
-#=================================================
-# IMPORT GENERIC HELPERS
-#=================================================
-
-
 source /usr/share/yunohost/helpers
 
 #=================================================
-# STANDARD UPGRADE STEPS
-#=================================================
 # STOP SYSTEMD SERVICE
 #=================================================
-ynh_script_progression --message="Stopping a systemd service..."
+ynh_script_progression "Stopping $app's systemd service..."
 
-ynh_systemd_action --service_name=$app --action="stop" --log_path="/var/log/$app/$app.log"
+ynh_systemctl --service=$app --action="stop"
 
 #=================================================
 # ENSURE DOWNWARD COMPATIBILITY
 #=================================================
-ynh_script_progression --message="Ensuring downward compatibility..."
+ynh_script_progression "Ensuring downward compatibility..."
 
 # If game doesn't exist, create it
 if [ -z $game ]; then
 	game="minetest_game"
-	ynh_app_setting_set --app=$app --key=game --value=$game
+	ynh_app_setting_set --key=game --value=$game
 fi
 
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
 #=================================================
-ynh_script_progression --message="Upgrading source files..." --weight=1
+ynh_script_progression "Upgrading source files..."
 
 # Download, check integrity, uncompress and patch the source from app.src
-ynh_setup_source --dest_dir="$install_dir" --full_replace=1
+ynh_setup_source --dest_dir="$install_dir" --full_replace
 
-chmod -R o-rwx "$install_dir"
-chown -R $app:$app "$install_dir"
-
-#=================================================
-# SPECIFIC UPGRADE
 #=================================================
 # BUILDING
 #=================================================
-ynh_script_progression --message="Building Minetest..."
+ynh_script_progression "Building Minetest..."
 
 # Install the game
 ynh_setup_source --dest_dir=$install_dir/games/$game --source_id=$game
@@ -54,9 +40,9 @@ ynh_setup_source --dest_dir=$install_dir/games/$game --source_id=$game
 ynh_setup_source --dest_dir=$install_dir/lib/irrlichtmt --source_id=irrlichtmt
 
 pushd $install_dir
-	ynh_exec_warn_less cmake . -DRUN_IN_PLACE=TRUE -DENABLE_LUAJIT=TRUE -DBUILD_CLIENT=FALSE -DBUILD_SERVER=TRUE
+	ynh_hide_warnings cmake . -DRUN_IN_PLACE=TRUE -DENABLE_LUAJIT=TRUE -DBUILD_CLIENT=FALSE -DBUILD_SERVER=TRUE
 
-	ynh_exec_warn_less make -j$(nproc)
+	ynh_hide_warnings make -j$(nproc)
 popd
 
 #=================================================
@@ -74,35 +60,32 @@ fi
 #=================================================
 # UPDATE A CONFIG FILE
 #=================================================
-ynh_script_progression --message="Updating a configuration file..."
+ynh_script_progression "Updating configuration..."
 
-ynh_add_config --template="minetest.conf" --destination="$data_dir/.minetest/minetest.conf"
-
-chmod 400 "$data_dir/.minetest/minetest.conf"
-chown $app:$app "$data_dir/.minetest/minetest.conf"
+ynh_config_add --template="minetest.conf" --destination="$data_dir/.minetest/minetest.conf"
 
 #=================================================
 # SETUP SYSTEMD
 #=================================================
-ynh_script_progression --message="Upgrading systemd configuration..."
+ynh_script_progression "Upgrading systemd configuration..."
 
 # Create a dedicated systemd config
-ynh_add_systemd_config
+ynh_config_add_systemd
 
 # Use logrotate to manage app-specific logfile(s)
-ynh_use_logrotate --non-append
+ynh_config_add_logrotate
 
 yunohost service add $app --description="Voxel game engine and game" --log="/var/log/$app/$app.log" --needs_exposed_ports="$port"
 
 #=================================================
 # START SYSTEMD SERVICE
 #=================================================
-ynh_script_progression --message="Starting a systemd service..."
+ynh_script_progression "Starting $app's systemd service..."
 
-ynh_systemd_action --service_name=$app --action="start" --log_path="/var/log/$app/$app.log" --line_match="listening on"
+ynh_systemctl --service=$app --action="start"  --wait_until="listening on"
 
 #=================================================
 # END OF SCRIPT
 #=================================================
 
-ynh_script_progression --message="Upgrade of $app completed"
+ynh_script_progression "Upgrade of $app completed"
