@@ -7,7 +7,7 @@ name = "Minetest"
 description.en = "Voxel game engine and game. Need a client to connect to the server"
 description.fr = "Moteur de jeu de type « bac à sable ». Nécessite un client pour se connecter au serveur"
 
-version = "5.14.0~ynh5"
+version = "5.14.0~ynh6"
 
 maintainers = []
 
@@ -86,8 +86,8 @@ ram.runtime = "50M"
     autoupdate.version_regex = "^(.*)mt(.*)$"
 
     [resources.sources.capturetheflag]
-    url = "https://github.com/MT-CTF/capturetheflag/archive/refs/tags/v3.11.tar.gz"
-    sha256 = "85a8ae0054f652415ef94688ce5eaf6e6e0f6b9496b2ccc84dac3a3b990f90e6"
+    url = "https://github.com/MT-CTF/capturetheflag/archive/refs/tags/v3.12.tar.gz"
+    sha256 = "10b7d62e5dc43482843a4293028a4fa9bf0f93e0264e35bb7d7ebdeeb1e670af"
     autoupdate.upstream = "https://github.com/MT-CTF/capturetheflag"
     autoupdate.strategy = "latest_github_release"
 
