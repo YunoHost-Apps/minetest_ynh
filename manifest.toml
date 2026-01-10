@@ -7,7 +7,7 @@ name = "Minetest"
 description.en = "Voxel game engine and game. Need a client to connect to the server"
 description.fr = "Moteur de jeu de type « bac à sable ». Nécessite un client pour se connecter au serveur"
 
-version = "5.14.0~ynh7"
+version = "5.14.0~ynh8"
 
 maintainers = []
 
@@ -98,8 +98,8 @@ ram.runtime = "50M"
     autoupdate.strategy = "latest_forgejo_release"
 
     [resources.sources.mineclone2]
-    url = "https://git.minetest.land/VoxeLibre/VoxeLibre/archive/0.91.1.tar.gz"
-    sha256 = "a04ca92ffee3213ae7198e6f749fc3500dda80ebd6be06c3ea3d8db40ead65ae"
+    url = "https://git.minetest.land/VoxeLibre/VoxeLibre/archive/0.91.2.tar.gz"
+    sha256 = "c7765ec2220617179f4dc8dd1340166abc7e5eee4f64d3186773829b597a3477"
     autoupdate.upstream = "https://git.minetest.land/VoxeLibre/VoxeLibre"
     autoupdate.strategy = "latest_gitea_tag"
 
