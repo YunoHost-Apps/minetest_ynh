@@ -108,7 +108,7 @@ ram.runtime = "50M"
     [resources.install_dir]
 
     [resources.data_dir]
-    subdirs = [".minetest/worlds"]
+    subdirs = [".minetest", ".minetest/worlds"]
 
     [resources.permissions]
     main.allowed = "visitors"
