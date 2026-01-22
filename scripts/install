@@ -1,6 +1,5 @@
 #!/bin/bash
 
-source _common.sh
 source /usr/share/yunohost/helpers
 
 #=================================================
@@ -9,9 +8,6 @@ source /usr/share/yunohost/helpers
 ynh_script_progression "Setting up source files..."
 
 ynh_setup_source --dest_dir="$install_dir"
-
-chmod -R o-rwx "$install_dir"
-chown -R $app:$app "$install_dir"
 
 #=================================================
 # BUILDING
@@ -28,6 +24,7 @@ popd
 #=================================================
 # ADD A CONFIGURATION
 #=================================================
+ynh_script_progression "Adding $app's configuration..."
 ynh_script_progression "Adding $app's configuration..."
 
 ynh_config_add --template="luanti.conf" --destination="$data_dir/.luanti/luanti.conf"

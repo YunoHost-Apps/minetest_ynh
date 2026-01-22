@@ -7,7 +7,7 @@ name = "Luanti"
 description.en = "Voxel game engine and game. Need a client to connect to the server"
 description.fr = "Moteur de jeu de type « bac à sable ». Nécessite un client pour se connecter au serveur"
 
-version = "5.11.0~ynh10"
+version = "5.15.0~ynh1"
 
 maintainers = []
 
@@ -75,25 +75,25 @@ ram.runtime = "50M"
     autoupdate.strategy = "latest_github_tag"
 
     [resources.sources.main]
-    url = "https://github.com/luanti-org/luanti/archive/refs/tags/5.11.0.tar.gz"
-    sha256 = "70e531d0776988ce6e579ea5490fdf6be3e349a4ade5281f5111aa4fdd8ee510"
+    url = "https://github.com/luanti-org/luanti/archive/refs/tags/5.15.0.tar.gz"
+    sha256 = "07e044df0b87c83f78d8fe143f01693203b0ccc9dad6ed9c99b7f7b886c35313"
     autoupdate.strategy = "latest_github_release"
 
     [resources.sources.capturetheflag]
-    url = "https://github.com/MT-CTF/capturetheflag/archive/refs/tags/v3.11.tar.gz"
-    sha256 = "85a8ae0054f652415ef94688ce5eaf6e6e0f6b9496b2ccc84dac3a3b990f90e6"
+    url = "https://github.com/MT-CTF/capturetheflag/archive/refs/tags/v3.12.tar.gz"
+    sha256 = "10b7d62e5dc43482843a4293028a4fa9bf0f93e0264e35bb7d7ebdeeb1e670af"
     autoupdate.upstream = "https://github.com/MT-CTF/capturetheflag"
     autoupdate.strategy = "latest_github_release"
 
     [resources.sources.mineclonia]
-    url = "https://codeberg.org/mineclonia/mineclonia/archive/0.114.0.tar.gz"
-    sha256 = "5567efdbb9111ff66e0e7c96d972b1b1593dd7df75b98b815987e24a2e675bd8"
+    url = "https://codeberg.org/mineclonia/mineclonia/archive/0.118.1.tar.gz"
+    sha256 = "197542ccf20f0df825c7f4486b38f6f7894e59f18977d12506c6a8f75439dc3b"
     autoupdate.upstream = "https://codeberg.org/mineclonia/mineclonia"
     autoupdate.strategy = "latest_forgejo_release"
 
     [resources.sources.mineclone2]
-    url = "https://git.minetest.land/VoxeLibre/VoxeLibre/archive/0.89.2.tar.gz"
-    sha256 = "933abb698fe26ad47d098f12cc57f57ef786a9f115ebd85d3f54754074e13f9d"
+    url = "https://git.minetest.land/VoxeLibre/VoxeLibre/archive/0.91.2.tar.gz"
+    sha256 = "c7765ec2220617179f4dc8dd1340166abc7e5eee4f64d3186773829b597a3477"
     autoupdate.upstream = "https://git.minetest.land/VoxeLibre/VoxeLibre"
     autoupdate.strategy = "latest_gitea_tag"
 
@@ -102,7 +102,7 @@ ram.runtime = "50M"
     [resources.install_dir]
 
     [resources.data_dir]
-    subdirs = [".luanti/worlds"]
+    subdirs = [".luanti", ".luanti/worlds"]
 
     [resources.permissions]
     main.allowed = "visitors"
