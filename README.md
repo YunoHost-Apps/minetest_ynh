@@ -4,18 +4,18 @@ It shall NOT be edited by hand.
 -->
 
 <h1>
-  <img src="https://raw.githubusercontent.com/YunoHost/apps/main/logos/luanti.png" width="32px" alt="Logo of Luanti">
+  <img src="https://raw.githubusercontent.com/YunoHost/apps/main/logos/minetest.png" width="32px" alt="Logo of Luanti">
   Luanti, packaged for YunoHost
 </h1>
 
 Voxel game engine and game. Need a client to connect to the server
 
 [![🌐 Official app website](https://img.shields.io/badge/Official_app_website-darkgreen?style=for-the-badge)](https://www.luanti.org/)
-[![Version: 5.15.0~ynh2](https://img.shields.io/badge/Version-5.15.0~ynh2-rgb(18,138,11)?style=for-the-badge)](https://ci-apps.yunohost.org/ci/apps/luanti/)
+[![Version: 5.15.0~ynh2](https://img.shields.io/badge/Version-5.15.0~ynh2-rgb(18,138,11)?style=for-the-badge)](https://ci-apps.yunohost.org/ci/apps/minetest/)
 
 <div align="center">
-<a href="https://apps.yunohost.org/app/luanti"><img height="100px" src="https://github.com/YunoHost/yunohost-artwork/raw/refs/heads/main/badges/neopossum-badges/badge_more_info_on_the_appstore.svg"/></a>
-<a href="https://github.com/YunoHost-Apps/luanti_ynh/issues"><img height="100px" src="https://github.com/YunoHost/yunohost-artwork/raw/refs/heads/main/badges/neopossum-badges/badge_report_an_issue.svg"/></a>
+<a href="https://apps.yunohost.org/app/minetest"><img height="100px" src="https://github.com/YunoHost/yunohost-artwork/raw/refs/heads/main/badges/neopossum-badges/badge_more_info_on_the_appstore.svg"/></a>
+<a href="https://github.com/YunoHost-Apps/minetest_ynh/issues"><img height="100px" src="https://github.com/YunoHost/yunohost-artwork/raw/refs/heads/main/badges/neopossum-badges/badge_report_an_issue.svg"/></a>
 </div>
 
 
@@ -24,19 +24,19 @@ Voxel game engine and game. Need a client to connect to the server
 
 ## 📦 Developer info
 
-[![Automatic tests level](https://apps.yunohost.org/badge/cilevel/luanti)](https://ci-apps.yunohost.org/ci/apps/luanti/)
+[![Automatic tests level](https://apps.yunohost.org/badge/cilevel/minetest)](https://ci-apps.yunohost.org/ci/apps/minetest/)
 
 🛠️ Upstream Luanti repository: <https://github.com/luanti-org/luanti>
 
-Pull request are welcome and should target the [`testing` branch](https://github.com/YunoHost-Apps/luanti_ynh/tree/testing).
+Pull request are welcome and should target the [`testing` branch](https://github.com/YunoHost-Apps/minetest_ynh/tree/testing).
 
 The `testing` branch can be tested using:
 ```
 # fresh install:
-sudo yunohost app install https://github.com/YunoHost-Apps/luanti_ynh/tree/testing
+sudo yunohost app install https://github.com/YunoHost-Apps/minetest_ynh/tree/testing
 
 # upgrade an existing install:
-sudo yunohost app upgrade luanti -u https://github.com/YunoHost-Apps/luanti_ynh/tree/testing
+sudo yunohost app upgrade minetest -u https://github.com/YunoHost-Apps/minetest_ynh/tree/testing
 ```
 
 ### 📚 App packaging documentation
