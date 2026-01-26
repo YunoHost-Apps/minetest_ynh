@@ -45,12 +45,11 @@ popd
 # COPY CONFIG FILE
 #=================================================
 
-if [ -e $data_dir ]
-	then
-		echo "Nothing to do..."
-	else
-		mkdir -p $data_dir/.luanti/
-		mkdir $data_dir/.luanti/worlds/
+if ynh_app_upgrading_from_version_before 5.15.0~ynh1; then
+	ynh_script_progression "Migrating data files..."
+
+	mv $data_dir/.minetest/worlds/world $data_dir/.luanti/
+	ynh_safe_rm $data_dir/.minetest
 fi
 
 #=================================================

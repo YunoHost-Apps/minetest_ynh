@@ -31,100 +31,96 @@ ram.build = "2000M"
 ram.runtime = "50M"
 
 [install]
-    [install.domain]
-    type = "domain"
+[install.domain]
+type = "domain"
 
-    [install.game]
-    ask.en = "Choose a game for your server"
-    ask.fr = "Choissisez un jeu pour votre serveur"
-    type = "select"
-    choices = ["minetest_game", "capturetheflag", "mineclonia", "mineclone2"]
-    default = "minetest_game"
+[install.game]
+ask.en = "Choose a game for your server"
+ask.fr = "Choissisez un jeu pour votre serveur"
+type = "select"
+choices = ["minetest_game", "capturetheflag", "mineclonia", "mineclone2"]
+default = "minetest_game"
 
-    [install.servername]
-    ask.en = "Choose a name for your server"
-    ask.fr = "Choissisez un nom pour votre serveur"
-    type = "string"
-    default = "Luanti server"
+[install.servername]
+ask.en = "Choose a name for your server"
+ask.fr = "Choissisez un nom pour votre serveur"
+type = "string"
+default = "Luanti server"
 
-    [install.pvp]
-    ask.en = "Whether to enable players killing each other"
-    ask.fr = "Permettre aux joueurs de s'entre-tuer"
-    type = "boolean"
-    default = false
+[install.pvp]
+ask.en = "Whether to enable players killing each other"
+ask.fr = "Permettre aux joueurs de s'entre-tuer"
+type = "boolean"
+default = false
 
-    [install.creative]
-    ask.en = "Whether to enable creative mode (unlimited inventory)"
-    ask.fr = "Permettre l'utilisation du mode créatif (inventaire illimité)"
-    type = "boolean"
-    default = false
+[install.creative]
+ask.en = "Whether to enable creative mode (unlimited inventory)"
+ask.fr = "Permettre l'utilisation du mode créatif (inventaire illimité)"
+type = "boolean"
+default = false
 
-    [install.damage]
-    ask.en = "Enable players getting damage and dying"
-    ask.fr = "Permettre aux joueurs de subir des dégâts et de mourir"
-    type = "boolean"
-    default = true
+[install.damage]
+ask.en = "Enable players getting damage and dying"
+ask.fr = "Permettre aux joueurs de subir des dégâts et de mourir"
+type = "boolean"
+default = true
 
 [resources]
-    [resources.sources]
+[resources.sources]
 
-    [resources.sources.minetest_game]
-    url = "https://github.com/minetest/minetest_game/archive/refs/tags/5.8.0.tar.gz"
-    sha256 = "33a3bb43b08497a0bdb2f49f140a2829e582d5c16c0ad52be1595c803f706912"
-    autoupdate.upstream = "https://github.com/minetest/minetest_game"
-    autoupdate.strategy = "latest_github_tag"
+[resources.sources.minetest_game]
+url = "https://github.com/minetest/minetest_game/archive/refs/tags/5.8.0.tar.gz"
+sha256 = "33a3bb43b08497a0bdb2f49f140a2829e582d5c16c0ad52be1595c803f706912"
+autoupdate.upstream = "https://github.com/minetest/minetest_game"
+autoupdate.strategy = "latest_github_tag"
 
-    [resources.sources.main]
-    url = "https://github.com/luanti-org/luanti/archive/refs/tags/5.15.0.tar.gz"
-    sha256 = "07e044df0b87c83f78d8fe143f01693203b0ccc9dad6ed9c99b7f7b886c35313"
-    autoupdate.strategy = "latest_github_release"
+[resources.sources.main]
+url = "https://github.com/luanti-org/luanti/archive/refs/tags/5.15.0.tar.gz"
+sha256 = "07e044df0b87c83f78d8fe143f01693203b0ccc9dad6ed9c99b7f7b886c35313"
+autoupdate.strategy = "latest_github_release"
 
-    [resources.sources.capturetheflag]
-    url = "https://github.com/MT-CTF/capturetheflag/archive/refs/tags/v3.12.tar.gz"
-    sha256 = "10b7d62e5dc43482843a4293028a4fa9bf0f93e0264e35bb7d7ebdeeb1e670af"
-    autoupdate.upstream = "https://github.com/MT-CTF/capturetheflag"
-    autoupdate.strategy = "latest_github_release"
+[resources.sources.capturetheflag]
+url = "https://github.com/MT-CTF/capturetheflag/archive/refs/tags/v3.12.tar.gz"
+sha256 = "10b7d62e5dc43482843a4293028a4fa9bf0f93e0264e35bb7d7ebdeeb1e670af"
+autoupdate.upstream = "https://github.com/MT-CTF/capturetheflag"
+autoupdate.strategy = "latest_github_release"
 
-    [resources.sources.mineclonia]
-    url = "https://codeberg.org/mineclonia/mineclonia/archive/0.118.1.tar.gz"
-    sha256 = "197542ccf20f0df825c7f4486b38f6f7894e59f18977d12506c6a8f75439dc3b"
-    autoupdate.upstream = "https://codeberg.org/mineclonia/mineclonia"
-    autoupdate.strategy = "latest_forgejo_release"
+[resources.sources.mineclonia]
+url = "https://codeberg.org/mineclonia/mineclonia/archive/0.118.1.tar.gz"
+sha256 = "197542ccf20f0df825c7f4486b38f6f7894e59f18977d12506c6a8f75439dc3b"
+autoupdate.upstream = "https://codeberg.org/mineclonia/mineclonia"
+autoupdate.strategy = "latest_forgejo_release"
 
-    [resources.sources.mineclone2]
-    url = "https://git.minetest.land/VoxeLibre/VoxeLibre/archive/0.91.2.tar.gz"
-    sha256 = "c7765ec2220617179f4dc8dd1340166abc7e5eee4f64d3186773829b597a3477"
-    autoupdate.upstream = "https://git.minetest.land/VoxeLibre/VoxeLibre"
-    autoupdate.strategy = "latest_gitea_tag"
+[resources.sources.mineclone2]
+url = "https://git.minetest.land/VoxeLibre/VoxeLibre/archive/0.91.2.tar.gz"
+sha256 = "c7765ec2220617179f4dc8dd1340166abc7e5eee4f64d3186773829b597a3477"
+autoupdate.upstream = "https://git.minetest.land/VoxeLibre/VoxeLibre"
+autoupdate.strategy = "latest_gitea_tag"
 
-    [resources.system_user]
+[resources.system_user]
 
-    [resources.install_dir]
+[resources.install_dir]
 
-    [resources.data_dir]
-    subdirs = [".luanti", ".luanti/worlds"]
+[resources.data_dir]
+subdirs = [".luanti", ".luanti/worlds"]
 
-    [resources.permissions]
-    main.allowed = "visitors"
+[resources.permissions]
+main.allowed = "visitors"
 
-    [resources.ports]
-    main.default = 30000
-    main.exposed = "UDP"
+[resources.ports]
+main.default = 30000
+main.exposed = "UDP"
 
-    [resources.apt]
-    packages = ["build-essential", 
-                "cmake", 
-                "libsqlite3-dev",
-                "libcurl4-dev",
-                "zlib1g-dev",
-                "libgmp-dev",
-                "libjsoncpp-dev",
-                "libzstd-dev"]
-                
-    packages_from_raw_bash = """
-    if [[ $YNH_DEBIAN_VERSION = "bullseye" ]]; then
-        echo "libluajit-5.1-dev";
-    elif [[ $YNH_DEBIAN_VERSION = "bookworm" ]]; then
-        echo "libluajit2-5.1-dev";
-    fi
-    """
+[resources.apt]
+packages = [
+    "build-essential",
+    "cmake",
+    "libsqlite3-dev",
+    "libcurl4-dev",
+    "zlib1g-dev",
+    "libgmp-dev",
+    "libjsoncpp-dev",
+    "libzstd-dev",
+    "libluajit2-5.1-dev",
+]
+
