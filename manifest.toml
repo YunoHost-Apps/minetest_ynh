@@ -18,7 +18,7 @@ code = "https://github.com/minetest/minetest"
 fund = "https://www.minetest.net/get-involved/#donate"
 
 [integration]
-yunohost = ">= 11.2.18"
+yunohost = ">= 12.1.38"
 helpers_version = "2.1"
 architectures = "all"
 multi_instance = true
