@@ -48,7 +48,7 @@ popd
 if ynh_app_upgrading_from_version_before 5.15.0~ynh1; then
 	ynh_script_progression "Migrating data files..."
 
-	mv $data_dir/.minetest/worlds/world $data_dir/.luanti/
+	mv $data_dir/.minetest/worlds/world $data_dir/.luanti/worlds
 	ynh_safe_rm $data_dir/.minetest
 fi
 
