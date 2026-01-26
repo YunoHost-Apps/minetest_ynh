@@ -1,6 +1,6 @@
 [Unit]
-Description=Minetest: multiplayer server minetest.conf server config
-Documentation=man:minetestserver(6)
+Description=Luanti: multiplayer server
+Documentation=man:luantiserver(6)
 After=network.target
 RequiresMountsFor=__DATA_DIR__
 
@@ -8,7 +8,7 @@ RequiresMountsFor=__DATA_DIR__
 Type=simple
 User=__APP__
 Group=__APP__
-ExecStart=__INSTALL_DIR__/bin/minetestserver --gameid __GAME__ --config __DATA_DIR__/.minetest/minetest.conf --logfile /var/log/__APP__/__APP__.log
+ExecStart=__INSTALL_DIR__/bin/luantiserver --gameid __GAME__ --config __DATA_DIR__/.luanti/luanti.conf --logfile /var/log/__APP__/__APP__.log --world __DATA_DIR__/.luanti/worlds/world
 Restart=on-failure
 
 # Sandboxing options to harden security

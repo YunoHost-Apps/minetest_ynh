@@ -4,14 +4,14 @@ It shall NOT be edited by hand.
 -->
 
 <h1>
-  <img src="https://raw.githubusercontent.com/YunoHost/apps/main/logos/minetest.png" width="32px" alt="Logo of Minetest">
-  Minetest, packaged for YunoHost
+  <img src="https://raw.githubusercontent.com/YunoHost/apps/main/logos/minetest.png" width="32px" alt="Logo of Luanti">
+  Luanti, packaged for YunoHost
 </h1>
 
 Voxel game engine and game. Need a client to connect to the server
 
-[![🌐 Official app website](https://img.shields.io/badge/Official_app_website-darkgreen?style=for-the-badge)](http://www.minetest.net)
-[![Version: 5.14.0~ynh8](https://img.shields.io/badge/Version-5.14.0~ynh8-rgb(18,138,11)?style=for-the-badge)](https://ci-apps.yunohost.org/ci/apps/minetest/)
+[![🌐 Official app website](https://img.shields.io/badge/Official_app_website-darkgreen?style=for-the-badge)](https://www.luanti.org/)
+[![Version: 5.15.0~ynh2](https://img.shields.io/badge/Version-5.15.0~ynh2-rgb(18,138,11)?style=for-the-badge)](https://ci-apps.yunohost.org/ci/apps/minetest/)
 
 <div align="center">
 <a href="https://apps.yunohost.org/app/minetest"><img height="100px" src="https://github.com/YunoHost/yunohost-artwork/raw/refs/heads/main/badges/neopossum-badges/badge_more_info_on_the_appstore.svg"/></a>
@@ -20,13 +20,13 @@ Voxel game engine and game. Need a client to connect to the server
 
 
 ## Screenshots
-![Screenshot of Minetest](./doc/screenshots/screenshot.jpg)
+![Screenshot of Luanti](./doc/screenshots/screenshot.jpg)
 
 ## 📦 Developer info
 
 [![Automatic tests level](https://apps.yunohost.org/badge/cilevel/minetest)](https://ci-apps.yunohost.org/ci/apps/minetest/)
 
-🛠️ Upstream Minetest repository: <https://github.com/minetest/minetest>
+🛠️ Upstream Luanti repository: <https://github.com/luanti-org/luanti>
 
 Pull request are welcome and should target the [`testing` branch](https://github.com/YunoHost-Apps/minetest_ynh/tree/testing).
 

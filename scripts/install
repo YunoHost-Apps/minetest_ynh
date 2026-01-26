@@ -12,16 +12,12 @@ ynh_setup_source --dest_dir="$install_dir"
 #=================================================
 # BUILDING
 #=================================================
-ynh_script_progression "Building Minetest..."
+ynh_script_progression "Building $app..."
 
 ynh_setup_source --dest_dir=$install_dir/games/$game --source_id=$game
 
-# Install IrrlichtMt
-ynh_setup_source --dest_dir=$install_dir/lib/irrlichtmt --source_id=irrlichtmt
-
 pushd $install_dir
 	ynh_hide_warnings cmake . -DRUN_IN_PLACE=TRUE -DENABLE_LUAJIT=TRUE -DBUILD_CLIENT=FALSE -DBUILD_SERVER=TRUE
-
 	ynh_hide_warnings make -j$(nproc)
 popd
 
@@ -29,13 +25,14 @@ popd
 # ADD A CONFIGURATION
 #=================================================
 ynh_script_progression "Adding $app's configuration..."
+ynh_script_progression "Adding $app's configuration..."
 
-ynh_config_add --template="minetest.conf" --destination="$data_dir/.minetest/minetest.conf"
+ynh_config_add --template="luanti.conf" --destination="$data_dir/.luanti/luanti.conf"
 
 #=================================================
-# SETUP SYSTEMD
+# APP INITIAL CONFIGURATION
 #=================================================
-ynh_script_progression "Configuring $app's systemd service..."
+ynh_script_progression "Adding $app's configuration files..."
 
 # Create a dedicated systemd config
 ynh_config_add_systemd
@@ -53,7 +50,7 @@ yunohost service add $app --description="Voxel game engine and game" --log="/var
 ynh_script_progression "Starting $app's systemd service..."
 
 # Start a systemd service
-ynh_systemctl --service=$app --action="start"  --wait_until="listening on"
+ynh_systemctl --service=$app --action="start" --wait_until="listening on"
 
 #=================================================
 # END OF SCRIPT
