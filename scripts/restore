@@ -9,12 +9,17 @@ ynh_script_progression "Restoring the app main directory..."
 
 ynh_restore "$install_dir"
 
+chmod -R o-rwx "$install_dir"
+chown -R $app:$app "$install_dir"
+
 #=================================================
 # RESTORE THE DATA DIRECTORY
 #=================================================
 ynh_script_progression "Restoring the data directory..."
 
 ynh_restore "$data_dir"
+
+chown -R $app:$app "$data_dir"
 
 #=================================================
 # RESTORE SYSTEMD
@@ -25,6 +30,7 @@ ynh_restore "/etc/systemd/system/$app.service"
 systemctl enable $app.service --quiet
 
 mkdir /var/log/$app -p
+touch /var/log/$app/$app.log
 chown -R $app: /var/log/$app
 ynh_restore "/etc/logrotate.d/$app"
 
@@ -35,7 +41,7 @@ yunohost service add $app --description="Voxel game engine and game" --log="/var
 #=================================================
 ynh_script_progression "Starting $app's systemd service..."
 
-ynh_systemctl --service=$app --action="start"  --wait_until="listening on"
+ynh_systemctl --service=$app --action="start" --wait_until="listening on"
 
 #=================================================
 # END OF SCRIPT
