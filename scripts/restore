@@ -30,16 +30,11 @@ ynh_restore "/etc/systemd/system/$app.service"
 systemctl enable $app.service --quiet
 
 mkdir /var/log/$app -p
+touch /var/log/$app/$app.log
 chown -R $app: /var/log/$app
 ynh_restore "/etc/logrotate.d/$app"
 
 yunohost service add $app --description="Voxel game engine and game" --log="/var/log/$app/$app.log" --needs_exposed_ports="$port"
-
-#=================================================
-# RESTORE VARIOUS FILES
-#=================================================
-
-ynh_restore "/var/log/$app/"
 
 #=================================================
 # START SYSTEMD SERVICE
