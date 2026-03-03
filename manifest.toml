@@ -116,11 +116,18 @@ packages = [
     "build-essential",
     "cmake",
     "libsqlite3-dev",
-    "libcurl4-dev",
     "zlib1g-dev",
     "libgmp-dev",
     "libjsoncpp-dev",
     "libzstd-dev",
-    "libluajit2-5.1-dev",
 ]
+
+packages_from_raw_bash = """
+    if [[ $YNH_DEBIAN_VERSION == "bookworm" ]]; then
+        echo "libcurl4-dev, libluajit2-5.1-dev";
+    elif [[ $YNH_DEBIAN_VERSION == "trixie" ]]; then
+        echo "libcurl4t64, libluajit-5.1-dev";
+    fi
+    """
+
 
