@@ -7,7 +7,7 @@ name = "Luanti"
 description.en = "Voxel game engine and game. Need a client to connect to the server"
 description.fr = "Moteur de jeu de type « bac à sable ». Nécessite un client pour se connecter au serveur"
 
-version = "5.15.1~ynh3"
+version = "5.15.1~ynh4"
 
 maintainers = []
 
@@ -86,8 +86,8 @@ autoupdate.upstream = "https://github.com/MT-CTF/capturetheflag"
 autoupdate.strategy = "latest_github_release"
 
 [resources.sources.mineclonia]
-url = "https://codeberg.org/mineclonia/mineclonia/archive/0.120.1.tar.gz"
-sha256 = "721c9f4b7279905eb179140ecb365a789874c9ddff8130e5609f6783feae742b"
+url = "https://codeberg.org/mineclonia/mineclonia/archive/0.121.0.tar.gz"
+sha256 = "8161e02b87265ea148abdb17412f236845c0817b26d1e25637f464f0eee11cf3"
 autoupdate.upstream = "https://codeberg.org/mineclonia/mineclonia"
 autoupdate.strategy = "latest_forgejo_release"
 
