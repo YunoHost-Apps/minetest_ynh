@@ -91,10 +91,10 @@ autoupdate.upstream = "https://codeberg.org/mineclonia/mineclonia"
 autoupdate.strategy = "latest_forgejo_release"
 
 [resources.sources.mineclone2]
-url = "https://git.minetest.land/VoxeLibre/VoxeLibre/archive/0.91.2.tar.gz"
-sha256 = "c7765ec2220617179f4dc8dd1340166abc7e5eee4f64d3186773829b597a3477"
+url = "https://github.com/VoxeLibre/VoxeLibre/archive/refs/tags/0.91.2.tar.gz"
+sha256 = "427ba18af86e4af56d359c3af1aef24af6b855776758c76f4b2f95f143a19825"
 autoupdate.upstream = "https://git.minetest.land/VoxeLibre/VoxeLibre"
-autoupdate.strategy = "latest_gitea_tag"
+autoupdate.strategy = "latest_github_tag"
 
 [resources.system_user]
 
