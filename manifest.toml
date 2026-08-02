@@ -7,7 +7,7 @@ name = "Luanti"
 description.en = "Voxel game engine and game. Need a client to connect to the server"
 description.fr = "Moteur de jeu de type « bac à sable ». Nécessite un client pour se connecter au serveur"
 
-version = "5.16.1~ynh3"
+version = "5.16.1~ynh4"
 
 maintainers = []
 
@@ -91,8 +91,8 @@ autoupdate.upstream = "https://codeberg.org/mineclonia/mineclonia"
 autoupdate.strategy = "latest_forgejo_release"
 
 [resources.sources.mineclone2]
-url = "https://github.com/VoxeLibre/VoxeLibre/archive/refs/tags/0.91.2.tar.gz"
-sha256 = "427ba18af86e4af56d359c3af1aef24af6b855776758c76f4b2f95f143a19825"
+url = "https://github.com/VoxeLibre/VoxeLibre/archive/refs/tags/0.92.1.tar.gz"
+sha256 = "fb40aee782c254f6c1667d255f87998d3b9f34e37d761fb241259c3e9a00e446"
 autoupdate.upstream = "https://github.com/VoxeLibre/VoxeLibre"
 autoupdate.strategy = "latest_github_tag"
 
