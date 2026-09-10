@@ -7,7 +7,7 @@ name = "Luanti"
 description.en = "Voxel game engine and game. Need a client to connect to the server"
 description.fr = "Moteur de jeu de type « bac à sable ». Nécessite un client pour se connecter au serveur"
 
-version = "5.17.0~ynh3"
+version = "5.17.0~ynh4"
 
 maintainers = []
 
@@ -79,8 +79,8 @@ autoupdate.upstream = "https://github.com/luanti-org/minetest_game"
 autoupdate.strategy = "latest_github_tag"
 
 [resources.sources.capturetheflag]
-url = "https://github.com/MT-CTF/capturetheflag/archive/refs/tags/v3.12.tar.gz"
-sha256 = "10b7d62e5dc43482843a4293028a4fa9bf0f93e0264e35bb7d7ebdeeb1e670af"
+url = "https://github.com/MT-CTF/capturetheflag/archive/refs/tags/v3.13.tar.gz"
+sha256 = "86a919785abeda482310624aea520618a1478f742ecc45b56ea642a740cf473a"
 autoupdate.upstream = "https://github.com/MT-CTF/capturetheflag"
 autoupdate.strategy = "latest_github_release"
 
