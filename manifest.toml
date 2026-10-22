@@ -7,7 +7,7 @@ name = "Luanti"
 description.en = "Voxel game engine and game. Need a client to connect to the server"
 description.fr = "Moteur de jeu de type « bac à sable ». Nécessite un client pour se connecter au serveur"
 
-version = "5.17.0~ynh3"
+version = "5.17.0~ynh6"
 
 maintainers = []
 
@@ -17,7 +17,7 @@ website = "https://www.luanti.org/"
 code = "https://github.com/luanti-org/luanti"
 
 [integration]
-yunohost = ">= 12.1.38"
+yunohost = ">= 12.1.40"
 helpers_version = "2.1"
 architectures = "all"
 multi_instance = true
@@ -79,14 +79,14 @@ autoupdate.upstream = "https://github.com/luanti-org/minetest_game"
 autoupdate.strategy = "latest_github_tag"
 
 [resources.sources.capturetheflag]
-url = "https://github.com/MT-CTF/capturetheflag/archive/refs/tags/v3.12.tar.gz"
-sha256 = "10b7d62e5dc43482843a4293028a4fa9bf0f93e0264e35bb7d7ebdeeb1e670af"
+url = "https://github.com/MT-CTF/capturetheflag/archive/refs/tags/v3.13.tar.gz"
+sha256 = "86a919785abeda482310624aea520618a1478f742ecc45b56ea642a740cf473a"
 autoupdate.upstream = "https://github.com/MT-CTF/capturetheflag"
 autoupdate.strategy = "latest_github_release"
 
 [resources.sources.mineclonia]
-url = "https://codeberg.org/mineclonia/mineclonia/archive/0.123.1.tar.gz"
-sha256 = "0cc7f5a257b97fe6c7c687d6e1158342e285eb8b3ee1acd848e64a46fb8738d9"
+url = "https://codeberg.org/mineclonia/mineclonia/archive/0.124.1.tar.gz"
+sha256 = "11303893b521524c33928268cc900bf5b4bb2288a8dbe6db449252d77e102b80"
 autoupdate.upstream = "https://codeberg.org/mineclonia/mineclonia"
 autoupdate.strategy = "latest_forgejo_release"
 
