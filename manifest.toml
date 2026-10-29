@@ -7,7 +7,7 @@ name = "Luanti"
 description.en = "Voxel game engine and game. Need a client to connect to the server"
 description.fr = "Moteur de jeu de type « bac à sable ». Nécessite un client pour se connecter au serveur"
 
-version = "5.17.0~ynh6"
+version = "5.18.0~ynh1"
 
 maintainers = []
 
@@ -68,8 +68,8 @@ default = true
 [resources.sources]
 
 [resources.sources.main]
-url = "https://github.com/luanti-org/luanti/archive/refs/tags/5.17.0.tar.gz"
-sha256 = "52e7dd315ae0e5c3868a23231e691578cd694bcca5af627fc57c03f32bdc846f"
+url = "https://github.com/luanti-org/luanti/archive/refs/tags/5.18.0.tar.gz"
+sha256 = "384f1eafeb2bbb769eeb5b20cea35396daccd04b13df22344573100f3e8d3ccd"
 autoupdate.strategy = "latest_github_release"
 
 [resources.sources.minetest_game]
